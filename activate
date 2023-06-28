@@ -1,0 +1,17 @@
+for tool in python pyenv; do type $tool > /dev/null 2>&1 || { echo "ERROR: couldn't find '$tool' which is required by this script."; return; }; done
+( set -x; python --version )
+eval "$(pyenv init)"
+cd "$PWD"
+( set -x; python --version )
+export PIPENV_VENV_IN_PROJECT=1
+hash -r
+( set -x; python -m pip install -U --user pip pipx )
+hash -r
+( set -x; pipx install pipenv )
+hash -r
+if [[ ! -f "Pipfile.lock" ]]; then
+	pipenv lock
+fi
+( set -x; pipenv sync )
+hash -r
+pipenv shell

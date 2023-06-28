@@ -1,5 +1,6 @@
+.venv/
 cpp-docs/
 link/
-gc
-gc/
+msvc
+msvc/
 *.txt

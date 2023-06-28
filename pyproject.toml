@@ -1,0 +1,7 @@
+[tool.black]
+line-length = 120
+target-version = ['py311']
+verbose = true
+
+[tool.vulture]
+min_confidence = 80

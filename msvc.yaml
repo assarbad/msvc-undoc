@@ -1,0 +1,807 @@
+---
+msvc:
+  link:
+    cmdline:
+      align:
+        documented: true
+        realname: /align
+      allowbadrvaforfirstsection:
+        documented: false
+        realname: /allowbadrvaforfirstsection
+      allowbind:
+        documented: true
+        realname: /allowbind
+      allowimagesizeover2gb:
+        documented: false
+        realname: /allowimagesizeover2gb
+      allowisolation:
+        documented: true
+        realname: /allowisolation
+      allpdata:
+        documented: false
+        realname: /allpdata
+      alternatename:
+        documented: false
+        realname: /alternatename
+      appcontainer:
+        documented: true
+        realname: /appcontainer
+      arm64hazardexist:
+        documented: false
+        realname: /arm64hazardexist
+      arm64hazardfree:
+        documented: false
+        realname: /arm64hazardfree
+      arm64xaggressiverwdatafold:
+        documented: false
+        realname: /arm64xaggressiverwdatafold
+      arm64xcrossresolve:
+        documented: false
+        realname: /arm64xcrossresolve
+      arm64xemulatorbuild:
+        documented: false
+        realname: /arm64xemulatorbuild
+      arm64xfastforward:
+        documented: false
+        realname: /arm64xfastforward
+      arm64xfoldrwdata:
+        documented: false
+        realname: /arm64xfoldrwdata
+      arm64xhack:
+        documented: false
+        realname: /arm64xhack
+      arm64xnewchameleonlibfmt:
+        documented: false
+        realname: /arm64xnewchameleonlibfmt
+      arm64xnomergeimports:
+        documented: false
+        realname: /arm64xnomergeimports
+      arm64xnoreorderobjs:
+        documented: false
+        realname: /arm64xnoreorderobjs
+      arm64xsameaddress:
+        documented: false
+        realname: /arm64xsameaddress
+      arm64xuselegacyffs:
+        documented: false
+        realname: /arm64xuselegacyffs
+      armhazardexist:
+        documented: false
+        realname: /armhazardexist
+      armhazardfree:
+        documented: false
+        realname: /armhazardfree
+      assemblydebug:
+        documented: true
+        realname: /assemblydebug
+      assemblylinkresource:
+        documented: true
+        realname: /assemblylinkresource
+      assemblymodule:
+        documented: true
+        realname: /assemblymodule
+      assemblymodulemap:
+        documented: false
+        realname: /assemblymodulemap
+      assemblyresource:
+        documented: true
+        realname: /assemblyresource
+      b2:
+        documented: false
+        realname: /b2
+      base:
+        documented: true
+        realname: /base
+      baserelocclustering:
+        documented: false
+        realname: /baserelocclustering
+      brepro:
+        documented: false
+        realname: /brepro
+      cetcompat:
+        documented: true
+        realname: /cetcompat
+      cetcompatstrict:
+        documented: false
+        realname: /cetcompatstrict
+      cetdynamicapisinproc:
+        documented: false
+        realname: /cetdynamicapisinproc
+      cetipvalidationrelaxed:
+        documented: false
+        realname: /cetipvalidationrelaxed
+      cgthreads:
+        documented: true
+        realname: /cgthreads
+      clrimagetype:
+        documented: true
+        realname: /clrimagetype
+      clrloaderoptimization:
+        documented: false
+        realname: /clrloaderoptimization
+      clrnetcore:
+        documented: false
+        realname: /clrnetcore
+      clrrvaentry:
+        documented: false
+        realname: /clrrvaentry
+      clrsignhash:
+        documented: false
+        realname: /clrsignhash
+      clrsupportlasterror:
+        documented: true
+        realname: /clrsupportlasterror
+      clrsupportlasterrordll:
+        documented: false
+        realname: /clrsupportlasterrordll
+      clrthreadattribute:
+        documented: true
+        realname: /clrthreadattribute
+      clrunmanagedcodecheck:
+        documented: true
+        realname: /clrunmanagedcodecheck
+      coffsecttopdbstrm:
+        documented: false
+        realname: /coffsecttopdbstrm
+      crashondiag:
+        documented: false
+        realname: /crashondiag
+      cvtres:
+        documented: false
+        realname: /cvtres
+      cxxmodulestrongownership:
+        documented: false
+        realname: /cxxmodulestrongownership
+      d2:
+        documented: false
+        realname: /d2
+      db:
+        documented: false
+        realname: /db
+      debug:
+        documented: true
+        realname: /debug
+      debugtype:
+        documented: true
+        realname: /debugtype
+      def:
+        documented: true
+        realname: /def
+      defarm64native:
+        documented: false
+        realname: /defarm64native
+      defaultlib:
+        documented: true
+        realname: /defaultlib
+      delay:
+        documented: true
+        realname: /delay
+      delayload:
+        documented: true
+        realname: /delayload
+      delaysign:
+        documented: true
+        realname: /delaysign
+      dependentloadflag:
+        documented: true
+        realname: /dependentloadflag
+      didatownsection:
+        documented: false
+        realname: /didatownsection
+      disallowlib:
+        documented: false
+        realname: /disallowlib
+      discardtrack:
+        documented: false
+        realname: /discardtrack
+      dll:
+        documented: true
+        realname: /dll
+      dllrename:
+        documented: false
+        realname: /dllrename
+      driver:
+        documented: true
+        realname: /driver
+      dynamicbase:
+        documented: true
+        realname: /dynamicbase
+      dynamicvalue:
+        documented: false
+        realname: /dynamicvalue
+      editandcontinue:
+        documented: false
+        realname: /editandcontinue
+      emitasx64image:
+        documented: false
+        realname: /emitasx64image
+      emitasx64imagewithaa64:
+        documented: false
+        realname: /emitasx64imagewithaa64
+      emitpogophaseinfo:
+        documented: false
+        realname: /emitpogophaseinfo
+      emittoolversioninfo:
+        documented: false
+        realname: /emittoolversioninfo
+      emitvolatilemetadata:
+        documented: false
+        realname: /emitvolatilemetadata
+      enclave:
+        documented: false
+        realname: /enclave
+      encpadsize:
+        documented: false
+        realname: /encpadsize
+      entry:
+        documented: true
+        realname: /entry
+      errorreport:
+        documented: true
+        realname: /errorreport
+      etm:
+        documented: false
+        realname: /etm
+      expectedoutputsize:
+        documented: false
+        realname: /expectedoutputsize
+      experimental:
+        documented: false
+        realname: /experimental
+      export:
+        documented: true
+        realname: /export
+      exportarm64native:
+        documented: false
+        realname: /exportarm64native
+      exportpadmin:
+        documented: false
+        realname: /exportpadmin
+      fastfail:
+        documented: false
+        realname: /fastfail
+      fastgenprofile:
+        documented: false
+        realname: /fastgenprofile
+      fe:
+        documented: false
+        realname: /fe
+      filealign:
+        documented: true
+        realname: /filealign
+      fixed:
+        documented: true
+        realname: /fixed
+      force:
+        documented: true
+        realname: /force
+      forcewinmdversion12:
+        documented: false
+        realname: /forcewinmdversion12
+      fullbuild:
+        documented: false
+        realname: /fullbuild
+      funcoverride:
+        documented: false
+        realname: /funcoverride
+      funcoverridedisablefunc:
+        documented: false
+        realname: /funcoverridedisablefunc
+      funcoverrideemitcand:
+        documented: false
+        realname: /funcoverrideemitcand
+      funcoverrideoncallsites:
+        documented: false
+        realname: /funcoverrideoncallsites
+      functionpadmin:
+        documented: true
+        realname: /functionpadmin
+      genpdbfromscratch:
+        documented: false
+        realname: /genpdbfromscratch
+      genprofile:
+        documented: true
+        realname: /genprofile
+      guard:
+        documented: true
+        realname: /guard
+      guardsym:
+        documented: false
+        realname: /guardsym
+      heap:
+        documented: true
+        realname: /heap
+      highentropyva:
+        documented: true
+        realname: /highentropyva
+      hotpatchcompatible:
+        documented: false
+        realname: /hotpatchcompatible
+      hybriddefupgrade:
+        documented: false
+        realname: /hybriddefupgrade
+      hybridexportthunks:
+        documented: false
+        realname: /hybridexportthunks
+      hybriduseguestmachine:
+        documented: false
+        realname: /hybriduseguestmachine
+      icfsection:
+        documented: false
+        realname: /icfsection
+      idlout:
+        documented: true
+        realname: /idlout
+      ignore:
+        documented: true
+        realname: /ignore
+      ignoreidl:
+        documented: true
+        realname: /ignoreidl
+      ilk:
+        documented: true
+        realname: /ilk
+      iltcgwarningoff:
+        documented: false
+        realname: /iltcgwarningoff
+      implib:
+        documented: true
+        realname: /implib
+      impthunkalign:
+        documented: false
+        realname: /impthunkalign
+      include:
+        documented: true
+        realname: /include
+      includecoffsection:
+        documented: false
+        realname: /includecoffsection
+      incremental:
+        documented: true
+        realname: /incremental
+      inferasanlibs:
+        documented: true
+        realname: /inferasanlibs
+      integritycheck:
+        documented: true
+        realname: /integritycheck
+      kernel:
+        documented: false
+        realname: /kernel
+      keycontainer:
+        documented: true
+        realname: /keycontainer
+      keyfile:
+        documented: true
+        realname: /keyfile
+      largeaddressaware:
+        documented: true
+        realname: /largeaddressaware
+      last:
+        documented: false
+        realname: /last
+      layoutpagesize:
+        documented: false
+        realname: /layoutpagesize
+      libpath:
+        documented: true
+        realname: /libpath
+      linkrepro:
+        documented: true
+        realname: /linkrepro
+      linkreprotarget:
+        documented: true
+        realname: /linkreprotarget
+      logo:
+        documented: false
+        realname: /logo
+      ltcg:
+        documented: true
+        realname: /ltcg
+      ltcgasmlist:
+        documented: false
+        realname: /ltcgasmlist
+      ltcgout:
+        documented: false
+        realname: /ltcgout
+      machine:
+        documented: true
+        realname: /machine
+      manifest:
+        documented: true
+        realname: /manifest
+      manifestdependency:
+        documented: true
+        realname: /manifestdependency
+      manifestfile:
+        documented: true
+        realname: /manifestfile
+      manifestinput:
+        documented: true
+        realname: /manifestinput
+      manifestuac:
+        documented: true
+        realname: /manifestuac
+      map:
+        documented: true
+        realname: /map
+      mapinfo:
+        documented: true
+        realname: /mapinfo
+      maxilksize:
+        documented: false
+        realname: /maxilksize
+      merge:
+        documented: true
+        realname: /merge
+      midl:
+        documented: true
+        realname: /midl
+      midlexe:
+        documented: false
+        realname: /midlexe
+      minpdbpathlen:
+        documented: false
+        realname: /minpdbpathlen
+      mt:
+        documented: false
+        realname: /mt
+      natvis:
+        documented: true
+        realname: /natvis
+      noassembly:
+        documented: true
+        realname: /noassembly
+      nocoffgrpinfo:
+        documented: false
+        realname: /nocoffgrpinfo
+      nocomentry:
+        documented: false
+        realname: /nocomentry
+      nod:
+        documented: false
+        realname: /nod
+      nodbgdirmerge:
+        documented: false
+        realname: /nodbgdirmerge
+      nodefaultlib:
+        documented: true
+        realname: /nodefaultlib
+      noentry:
+        documented: true
+        realname: /noentry
+      noexp:
+        documented: false
+        realname: /noexp
+      nofunctionpadsection:
+        documented: false
+        realname: /nofunctionpadsection
+      noilinkcoffgrppad:
+        documented: false
+        realname: /noilinkcoffgrppad
+      noimplib:
+        documented: false
+        realname: /noimplib
+      nolinkrepro:
+        documented: false
+        realname: /nolinkrepro
+      nologo:
+        documented: true
+        realname: /nologo
+      noltcgoptref:
+        documented: false
+        realname: /noltcgoptref
+      nomap:
+        documented: false
+        realname: /nomap
+      noonfailrepro:
+        documented: false
+        realname: /noonfailrepro
+      nooptcfg:
+        documented: false
+        realname: /nooptcfg
+      nooptdidat:
+        documented: false
+        realname: /nooptdidat
+      nooptgids:
+        documented: false
+        realname: /nooptgids
+      nooptidata:
+        documented: false
+        realname: /nooptidata
+      nooptrefbeforeltcg:
+        documented: false
+        realname: /nooptrefbeforeltcg
+      noopttls:
+        documented: false
+        realname: /noopttls
+      novcfeature:
+        documented: false
+        realname: /novcfeature
+      noxdatamerge:
+        documented: false
+        realname: /noxdatamerge
+      nxcompat:
+        documented: true
+        realname: /nxcompat
+      objmap:
+        documented: false
+        realname: /objmap
+      odr:
+        documented: false
+        realname: /odr
+      odrignore:
+        documented: false
+        realname: /odrignore
+      odrignoresamesize:
+        documented: false
+        realname: /odrignoresamesize
+      onfailrepro:
+        documented: false
+        realname: /onfailrepro
+      opt:
+        documented: true
+        realname: /opt
+      opticfbytecomp:
+        documented: false
+        realname: /opticfbytecomp
+      order:
+        documented: true
+        realname: /order
+      osversion:
+        documented: false
+        realname: /osversion
+      out:
+        documented: true
+        realname: /out
+      pagesize:
+        documented: false
+        realname: /pagesize
+      pathmap:
+        documented: false
+        realname: /pathmap
+      pchmap:
+        documented: false
+        realname: /pchmap
+      pdb:
+        documented: true
+        realname: /pdb
+      pdbaltpath:
+        documented: true
+        realname: /pdbaltpath
+      pdbcompress:
+        documented: false
+        realname: /pdbcompress
+      pdbdbgqsize:
+        documented: false
+        realname: /pdbdbgqsize
+      pdbdbgst:
+        documented: false
+        realname: /pdbdbgst
+      pdbdll:
+        documented: false
+        realname: /pdbdll
+      pdbmap:
+        documented: false
+        realname: /pdbmap
+      pdbmodclosethreads:
+        documented: false
+        realname: /pdbmodclosethreads
+      pdbpagesize:
+        documented: false
+        realname: /pdbpagesize
+      pdbpath:
+        documented: false
+        realname: /pdbpath
+      pdbrpc:
+        documented: false
+        realname: /pdbrpc
+      pdbstripped:
+        documented: true
+        realname: /pdbstripped
+      pdbthreads:
+        documented: false
+        realname: /pdbthreads
+      pdbtmcache:
+        documented: false
+        realname: /pdbtmcache
+      pgd:
+        documented: true
+        realname: /pgd
+      pogonoshare:
+        documented: false
+        realname: /pogonoshare
+      pogosafemode:
+        documented: true
+        realname: /pogosafemode
+      prefetch:
+        documented: false
+        realname: /prefetch
+      profile:
+        documented: true
+        realname: /profile
+      rc:
+        documented: false
+        realname: /rc
+      re:
+        documented: false
+        realname: /re
+      reportnoncomdatguardfunc:
+        documented: false
+        realname: /reportnoncomdatguardfunc
+      retryonfileopenfailure:
+        documented: false
+        realname: /retryonfileopenfailure
+      runbelow4gb:
+        documented: false
+        realname: /runbelow4gb
+      safeseh:
+        documented: true
+        realname: /safeseh
+      savebaserelocations:
+        documented: false
+        realname: /savebaserelocations
+      section:
+        documented: true
+        realname: /section
+      sectionlayout:
+        documented: false
+        realname: /sectionlayout
+      simarm:
+        documented: false
+        realname: /simarm
+      simarm64:
+        documented: false
+        realname: /simarm64
+      skipincrementalchecks:
+        documented: false
+        realname: /skipincrementalchecks
+      sourcelink:
+        documented: true
+        realname: /sourcelink
+      sourcemap:
+        documented: false
+        realname: /sourcemap
+      spdembed:
+        documented: false
+        realname: /spdembed
+      spdidstr:
+        documented: false
+        realname: /spdidstr
+      spdin:
+        documented: false
+        realname: /spdin
+      spdindex:
+        documented: false
+        realname: /spdindex
+      spgo:
+        documented: false
+        realname: /spgo
+      stack:
+        documented: true
+        realname: /stack
+      stricticfthunkalign:
+        documented: false
+        realname: /stricticfthunkalign
+      striprtti:
+        documented: false
+        realname: /striprtti
+      stub:
+        documented: true
+        realname: /stub
+      subsystem:
+        documented: true
+        realname: /subsystem
+      subsystemversion:
+        documented: false
+        realname: /subsystemversion
+      swaprun:
+        documented: true
+        realname: /swaprun
+      test:
+        documented: false
+        realname: /test
+      throwingnew:
+        documented: false
+        realname: /throwingnew
+      time:
+        documented: true
+        realname: /time
+      time_plus:
+        realname: /time+
+      tlbid:
+        documented: true
+        realname: /tlbid
+      tlbout:
+        documented: true
+        realname: /tlbout
+      trimfile:
+        documented: false
+        realname: /trimfile
+      tsaware:
+        documented: true
+        realname: /tsaware
+      useprofile:
+        documented: true
+        realname: /useprofile
+      verbose:
+        documented: true
+        realname: /verbose
+      version:
+        documented: true
+        realname: /version
+      vulcannotrecognizenewdelaythunk:
+        documented: false
+        realname: /vulcannotrecognizenewdelaythunk
+      warnduplicatesections:
+        documented: false
+        realname: /warnduplicatesections
+      wbrdcfg:
+        documented: false
+        realname: /wbrdcfg
+      wbrddll:
+        documented: false
+        realname: /wbrddll
+      wbrdlog:
+        documented: false
+        realname: /wbrdlog
+      wbrdreporterrors:
+        documented: false
+        realname: /wbrdreporterrors
+      wbrdschema:
+        documented: false
+        realname: /wbrdschema
+      wbrdsummary:
+        documented: false
+        realname: /wbrdsummary
+      wbrdtestencrypt:
+        documented: false
+        realname: /wbrdtestencrypt
+      weakorder:
+        documented: false
+        realname: /weakorder
+      wholearchive:
+        documented: true
+        realname: /wholearchive
+      win32version:
+        documented: false
+        realname: /win32version
+      winmd:
+        documented: true
+        realname: /winmd
+      winmddelaysign:
+        documented: true
+        realname: /winmddelaysign
+      winmdfile:
+        documented: true
+        realname: /winmdfile
+      winmdkeycontainer:
+        documented: true
+        realname: /winmdkeycontainer
+      winmdkeyfile:
+        documented: true
+        realname: /winmdkeyfile
+      winmdmap:
+        documented: false
+        realname: /winmdmap
+      winmdsignhash:
+        documented: false
+        realname: /winmdsignhash
+      winmdversion:
+        documented: false
+        realname: /winmdversion
+      wowa64:
+        documented: false
+        realname: /wowa64
+      wowa64lib:
+        documented: false
+        realname: /wowa64lib
+      wx:
+        documented: true
+        realname: /wx
+      x86pdata:
+        documented: false
+        realname: /x86pdata
+      xoff:
+        documented: false
+        realname: /xoff

@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+distlib = "*"
+pip = "*"
+pipenv = "*"
+setuptools = "*"
+virtualenv = "*"
+flake8 = "*"
+vulture = "*"
+jupyterlab = "*"
+notebook = "*"
+PyYAML = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
