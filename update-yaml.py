@@ -70,6 +70,7 @@ def process_link_cmd(data):
     data["cmdline"] = newcmdline
     return data
 
+
 def main(**kwargs):
     """ """
     with open(kwargs.get("yaml"), "r") as yamlfile:

@@ -1,4 +1,4 @@
-PYSCRIPTS:=update-yaml.py
+PYSCRIPTS:=update-yaml.py IDAPython/get_envvar_refs.py
 all: linkexe_documented.txt black lint vulture
 
 cpp-docs/docs/build/reference/linker-options.md:
