@@ -4,3 +4,4 @@ link/
 msvc
 msvc/
 *.txt
+*.backup.*

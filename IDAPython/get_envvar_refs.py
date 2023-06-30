@@ -4,9 +4,7 @@ import ida_funcs
 import idc
 from collections import namedtuple
 
-EnvVarRef = namedtuple(
-    "EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"]
-)
+EnvVarRef = namedtuple("EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"])
 
 env_interesting_funcs = {
     "putenv": {"reg": "rcx"},  # varname=value -> rcx
@@ -44,11 +42,7 @@ def analyze_envvar_call(callee, ea):
 
 
 def main():
-    env_funcs = [
-        func
-        for func in idautils.Names()
-        if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)
-    ]
+    env_funcs = [func for func in idautils.Names() if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)]
     env_refs = {}
     for ea, name in env_funcs:
         if (

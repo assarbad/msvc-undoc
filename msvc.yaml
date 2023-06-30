@@ -4,804 +4,1202 @@ msvc:
     cmdline:
       align:
         documented: true
+        msdocs-moniker: align-section-alignment
+        purpose: Specifies the alignment of each section.
         realname: /align
       allowbadrvaforfirstsection:
         documented: false
         realname: /allowbadrvaforfirstsection
+        researched: false
       allowbind:
         documented: true
+        msdocs-moniker: allowbind-prevent-dll-binding
+        purpose: Specifies that a DLL can't be bound.
         realname: /allowbind
       allowimagesizeover2gb:
         documented: false
         realname: /allowimagesizeover2gb
+        researched: false
       allowisolation:
         documented: true
+        msdocs-moniker: allowisolation-manifest-lookup
+        purpose: Specifies behavior for manifest lookup.
         realname: /allowisolation
       allpdata:
         documented: false
         realname: /allpdata
+        researched: false
       alternatename:
         documented: false
         realname: /alternatename
+        researched: false
       appcontainer:
         documented: true
+        msdocs-moniker: appcontainer-windows-store-app
+        purpose: Specifies whether the app must run within an appcontainer process
+          environment.
         realname: /appcontainer
       arm64hazardexist:
         documented: false
         realname: /arm64hazardexist
+        researched: false
       arm64hazardfree:
         documented: false
         realname: /arm64hazardfree
+        researched: false
       arm64xaggressiverwdatafold:
         documented: false
         realname: /arm64xaggressiverwdatafold
+        researched: false
       arm64xcrossresolve:
         documented: false
         realname: /arm64xcrossresolve
+        researched: false
       arm64xemulatorbuild:
         documented: false
         realname: /arm64xemulatorbuild
+        researched: false
       arm64xfastforward:
         documented: false
         realname: /arm64xfastforward
+        researched: false
       arm64xfoldrwdata:
         documented: false
         realname: /arm64xfoldrwdata
+        researched: false
       arm64xhack:
         documented: false
         realname: /arm64xhack
+        researched: false
       arm64xnewchameleonlibfmt:
         documented: false
         realname: /arm64xnewchameleonlibfmt
+        researched: false
       arm64xnomergeimports:
         documented: false
         realname: /arm64xnomergeimports
+        researched: false
       arm64xnoreorderobjs:
         documented: false
         realname: /arm64xnoreorderobjs
+        researched: false
       arm64xsameaddress:
         documented: false
         realname: /arm64xsameaddress
+        researched: false
       arm64xuselegacyffs:
         documented: false
         realname: /arm64xuselegacyffs
+        researched: false
       armhazardexist:
         documented: false
         realname: /armhazardexist
+        researched: false
       armhazardfree:
         documented: false
         realname: /armhazardfree
+        researched: false
       assemblydebug:
         documented: true
+        msdocs-moniker: assemblydebug-add-debuggableattribute
+        purpose: Adds the <xref:System.Diagnostics.DebuggableAttribute> to a managed
+          image.
         realname: /assemblydebug
       assemblylinkresource:
         documented: true
+        msdocs-moniker: assemblylinkresource-link-to-dotnet-framework-resource
+        purpose: Creates a link to a managed resource.
         realname: /assemblylinkresource
       assemblymodule:
         documented: true
+        msdocs-moniker: assemblymodule-add-a-msil-module-to-the-assembly
+        purpose: Specifies that a Microsoft intermediate language (MSIL) module should
+          be imported into the assembly.
         realname: /assemblymodule
       assemblymodulemap:
         documented: false
         realname: /assemblymodulemap
+        researched: false
       assemblyresource:
         documented: true
+        msdocs-moniker: assemblyresource-embed-a-managed-resource
+        purpose: Embeds a managed resource file in an assembly.
         realname: /assemblyresource
+      at_responsefile:
+        documented: true
+        realname: '@'
       b2:
         documented: false
         realname: /b2
+        researched: false
       base:
         documented: true
+        msdocs-moniker: base-base-address
+        purpose: Sets a base address for the program.
         realname: /base
       baserelocclustering:
         documented: false
         realname: /baserelocclustering
+        researched: false
       brepro:
         documented: false
         realname: /brepro
+        researched: false
       cetcompat:
         documented: true
+        msdocs-moniker: cetcompat
+        purpose: Marks the binary as CET Shadow Stack compatible.
         realname: /cetcompat
       cetcompatstrict:
         documented: false
         realname: /cetcompatstrict
+        researched: false
       cetdynamicapisinproc:
         documented: false
         realname: /cetdynamicapisinproc
+        researched: false
       cetipvalidationrelaxed:
         documented: false
         realname: /cetipvalidationrelaxed
+        researched: false
       cgthreads:
         documented: true
+        msdocs-moniker: cgthreads-compiler-threads
+        purpose: Sets number of cl.exe threads to use for optimization and code generation
+          when link-time code generation is specified.
         realname: /cgthreads
       clrimagetype:
         documented: true
+        msdocs-moniker: clrimagetype-specify-type-of-clr-image
+        purpose: Sets the type (IJW, pure, or safe) of a CLR image.
         realname: /clrimagetype
       clrloaderoptimization:
         documented: false
         realname: /clrloaderoptimization
+        researched: false
       clrnetcore:
         documented: false
         realname: /clrnetcore
+        researched: false
       clrrvaentry:
         documented: false
         realname: /clrrvaentry
+        researched: false
       clrsignhash:
         documented: false
         realname: /clrsignhash
+        researched: false
       clrsupportlasterror:
         documented: true
+        msdocs-moniker: clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls
+        purpose: Preserves the last error code of functions that are called through
+          the P/Invoke mechanism.
         realname: /clrsupportlasterror
       clrsupportlasterrordll:
         documented: false
         realname: /clrsupportlasterrordll
+        researched: false
       clrthreadattribute:
         documented: true
+        msdocs-moniker: clrthreadattribute-set-clr-thread-attribute
+        purpose: Specifies the threading attribute to apply to the entry point of
+          your CLR program.
         realname: /clrthreadattribute
       clrunmanagedcodecheck:
         documented: true
+        msdocs-moniker: clrunmanagedcodecheck-add-suppressunmanagedcodesecurityattribute
+        purpose: Specifies whether the linker will apply the `SuppressUnmanagedCodeSecurity`
+          attribute to linker-generated P/Invoke stubs that call from managed code
+          into native DLLs.
         realname: /clrunmanagedcodecheck
       coffsecttopdbstrm:
         documented: false
         realname: /coffsecttopdbstrm
+        researched: false
       crashondiag:
         documented: false
         realname: /crashondiag
+        researched: false
       cvtres:
         documented: false
         realname: /cvtres
+        researched: false
       cxxmodulestrongownership:
         documented: false
         realname: /cxxmodulestrongownership
+        researched: false
       d2:
         documented: false
         realname: /d2
+        researched: false
       db:
         documented: false
         realname: /db
+        researched: false
       debug:
         documented: true
+        msdocs-moniker: debug-generate-debug-info
+        purpose: Creates debugging information.
         realname: /debug
       debugtype:
         documented: true
+        msdocs-moniker: debugtype-debug-info-options
+        purpose: Specifies which data to include in debugging information.
         realname: /debugtype
       def:
         documented: true
+        msdocs-moniker: def-specify-module-definition-file
+        purpose: Passes a module-definition (.def) file to the linker.
         realname: /def
       defarm64native:
         documented: false
         realname: /defarm64native
+        researched: false
       defaultlib:
         documented: true
+        msdocs-moniker: defaultlib-specify-default-library
+        purpose: Searches the specified library when external references are resolved.
         realname: /defaultlib
       delay:
         documented: true
+        msdocs-moniker: delay-delay-load-import-settings
+        purpose: Controls the delayed loading of DLLs.
         realname: /delay
       delayload:
         documented: true
+        msdocs-moniker: delayload-delay-load-import
+        purpose: Causes the delayed loading of the specified DLL.
         realname: /delayload
       delaysign:
         documented: true
+        msdocs-moniker: delaysign-partially-sign-an-assembly
+        purpose: Partially signs an assembly.
         realname: /delaysign
       dependentloadflag:
         documented: true
+        msdocs-moniker: dependentloadflag
+        purpose: Sets default flags on dependent DLL loads.
         realname: /dependentloadflag
       didatownsection:
         documented: false
         realname: /didatownsection
+        researched: false
       disallowlib:
         documented: false
         realname: /disallowlib
+        researched: false
       discardtrack:
         documented: false
         realname: /discardtrack
+        researched: false
       dll:
         documented: true
+        msdocs-moniker: dll-build-a-dll
+        purpose: Builds a DLL.
         realname: /dll
       dllrename:
         documented: false
         realname: /dllrename
+        researched: false
       driver:
         documented: true
+        msdocs-moniker: driver-windows-nt-kernel-mode-driver
+        purpose: Creates a kernel mode driver.
         realname: /driver
       dynamicbase:
         documented: true
+        msdocs-moniker: dynamicbase-use-address-space-layout-randomization
+        purpose: Specifies whether to generate an executable image that's rebased
+          at load time by using the address space layout randomization (ASLR) feature.
         realname: /dynamicbase
       dynamicvalue:
         documented: false
         realname: /dynamicvalue
+        researched: false
       editandcontinue:
         documented: false
         realname: /editandcontinue
+        researched: false
       emitasx64image:
         documented: false
         realname: /emitasx64image
+        researched: false
       emitasx64imagewithaa64:
         documented: false
         realname: /emitasx64imagewithaa64
+        researched: false
       emitpogophaseinfo:
         documented: false
         realname: /emitpogophaseinfo
+        researched: false
       emittoolversioninfo:
         documented: false
         realname: /emittoolversioninfo
+        researched: false
       emitvolatilemetadata:
         documented: false
         realname: /emitvolatilemetadata
+        researched: false
       enclave:
         documented: false
         realname: /enclave
+        researched: false
       encpadsize:
         documented: false
         realname: /encpadsize
+        researched: false
       entry:
         documented: true
+        msdocs-moniker: entry-entry-point-symbol
+        purpose: Sets the starting address.
         realname: /entry
       errorreport:
         documented: true
+        msdocs-moniker: errorreport-report-internal-linker-errors
+        purpose: Deprecated. Error reporting is controlled by [Windows Error Reporting
+          (WER)](/windows/win32/wer/windows-error-reporting) settings.
         realname: /errorreport
       etm:
         documented: false
         realname: /etm
+        researched: false
       expectedoutputsize:
         documented: false
         realname: /expectedoutputsize
+        researched: false
       experimental:
         documented: false
         realname: /experimental
+        researched: false
       export:
         documented: true
+        msdocs-moniker: export-exports-a-function
+        purpose: Exports a function.
         realname: /export
       exportarm64native:
         documented: false
         realname: /exportarm64native
+        researched: false
       exportpadmin:
         documented: false
         realname: /exportpadmin
+        researched: false
       fastfail:
         documented: false
         realname: /fastfail
+        researched: false
       fastgenprofile:
         documented: false
         realname: /fastgenprofile
+        researched: false
       fe:
         documented: false
         realname: /fe
+        researched: false
       filealign:
         documented: true
+        msdocs-moniker: filealign
+        purpose: Aligns sections within the output file on multiples of a specified
+          value.
         realname: /filealign
       fixed:
         documented: true
+        msdocs-moniker: fixed-fixed-base-address
+        purpose: Creates a program that can be loaded only at its preferred base address.
         realname: /fixed
       force:
         documented: true
+        msdocs-moniker: force-force-file-output
+        purpose: Forces a link to complete even with unresolved symbols or symbols
+          defined more than once.
         realname: /force
       forcewinmdversion12:
         documented: false
         realname: /forcewinmdversion12
+        researched: false
       fullbuild:
         documented: false
         realname: /fullbuild
+        researched: false
       funcoverride:
         documented: false
         realname: /funcoverride
+        researched: false
       funcoverridedisablefunc:
         documented: false
         realname: /funcoverridedisablefunc
+        researched: false
       funcoverrideemitcand:
         documented: false
         realname: /funcoverrideemitcand
+        researched: false
       funcoverrideoncallsites:
         documented: false
         realname: /funcoverrideoncallsites
+        researched: false
       functionpadmin:
         documented: true
+        msdocs-moniker: functionpadmin-create-hotpatchable-image
+        purpose: Creates an image that can be hot patched.
         realname: /functionpadmin
       genpdbfromscratch:
         documented: false
         realname: /genpdbfromscratch
+        researched: false
       genprofile:
         documented: true
         realname: /genprofile
       guard:
         documented: true
+        msdocs-moniker: guard-enable-guard-checks
+        purpose: Enables Control Flow Guard protection.
         realname: /guard
       guardsym:
         documented: false
         realname: /guardsym
+        researched: false
       heap:
         documented: true
+        msdocs-moniker: heap-set-heap-size
+        purpose: Sets the size of the heap, in bytes.
         realname: /heap
       highentropyva:
         documented: true
+        msdocs-moniker: highentropyva-support-64-bit-aslr
+        purpose: Specifies support for high-entropy 64-bit address space layout randomization
+          (ASLR).
         realname: /highentropyva
       hotpatchcompatible:
         documented: false
         realname: /hotpatchcompatible
+        researched: false
       hybriddefupgrade:
         documented: false
         realname: /hybriddefupgrade
+        researched: false
       hybridexportthunks:
         documented: false
         realname: /hybridexportthunks
+        researched: false
       hybriduseguestmachine:
         documented: false
         realname: /hybriduseguestmachine
+        researched: false
       icfsection:
         documented: false
         realname: /icfsection
+        researched: false
       idlout:
         documented: true
+        msdocs-moniker: idlout-name-midl-output-files
+        purpose: Specifies the name of the *`.idl`* file and other MIDL output files.
         realname: /idlout
       ignore:
         documented: true
+        msdocs-moniker: ignore-ignore-specific-warnings
+        purpose: Suppresses output of specified linker warnings.
         realname: /ignore
       ignoreidl:
         documented: true
+        msdocs-moniker: ignoreidl-don-t-process-attributes-into-midl
+        purpose: Prevents the processing of attribute information into an *`.idl`*
+          file.
         realname: /ignoreidl
       ilk:
         documented: true
+        msdocs-moniker: ilk-name-incremental-database-file
+        purpose: Overrides the default incremental database file name.
         realname: /ilk
       iltcgwarningoff:
         documented: false
         realname: /iltcgwarningoff
+        researched: false
       implib:
         documented: true
+        msdocs-moniker: implib-name-import-library
+        purpose: Overrides the default import library name.
         realname: /implib
       impthunkalign:
         documented: false
         realname: /impthunkalign
+        researched: false
       include:
         documented: true
+        msdocs-moniker: include-force-symbol-references
+        purpose: Forces symbol references.
         realname: /include
       includecoffsection:
         documented: false
         realname: /includecoffsection
+        researched: false
       incremental:
         documented: true
+        msdocs-moniker: incremental-link-incrementally
+        purpose: Controls incremental linking.
         realname: /incremental
       inferasanlibs:
         documented: true
+        msdocs-moniker: inferasanlibs
+        purpose: Uses inferred sanitizer libraries.
         realname: /inferasanlibs
       integritycheck:
         documented: true
+        msdocs-moniker: integritycheck-require-signature-check
+        purpose: Specifies that the module requires a signature check at load time.
         realname: /integritycheck
       kernel:
         documented: false
         realname: /kernel
+        researched: false
       keycontainer:
         documented: true
+        msdocs-moniker: keycontainer-specify-a-key-container-to-sign-an-assembly
+        purpose: Specifies a key container to sign an assembly.
         realname: /keycontainer
       keyfile:
         documented: true
+        msdocs-moniker: keyfile-specify-key-or-key-pair-to-sign-an-assembly
+        purpose: Specifies a key or key pair to sign an assembly.
         realname: /keyfile
       largeaddressaware:
         documented: true
+        msdocs-moniker: largeaddressaware-handle-large-addresses
+        purpose: Tells the compiler that the application supports addresses larger
+          than 2 gigabytes
         realname: /largeaddressaware
       last:
         documented: false
         realname: /last
+        researched: false
       layoutpagesize:
         documented: false
         realname: /layoutpagesize
+        researched: false
       libpath:
         documented: true
+        msdocs-moniker: libpath-additional-libpath
+        purpose: Specifies a path to search before the environmental library path.
         realname: /libpath
       linkrepro:
         documented: true
+        msdocs-moniker: linkrepro
+        purpose: Specifies a path to generate link repro artifacts in.
         realname: /linkrepro
       linkreprotarget:
         documented: true
+        msdocs-moniker: linkreprotarget
+        purpose: Generates a link repro only when producing the specified target.<sup>16.1</sup>
         realname: /linkreprotarget
       logo:
         documented: false
         realname: /logo
+        researched: false
       ltcg:
         documented: true
+        msdocs-moniker: ltcg-link-time-code-generation
+        purpose: Specifies link-time code generation.
         realname: /ltcg
       ltcgasmlist:
         documented: false
         realname: /ltcgasmlist
+        researched: false
       ltcgout:
         documented: false
         realname: /ltcgout
+        researched: false
       machine:
         documented: true
+        msdocs-moniker: machine-specify-target-platform
+        purpose: Specifies the target platform.
         realname: /machine
       manifest:
         documented: true
+        msdocs-moniker: manifest-create-side-by-side-assembly-manifest
+        purpose: Creates a side-by-side manifest file and optionally embeds it in
+          the binary.
         realname: /manifest
       manifestdependency:
         documented: true
+        msdocs-moniker: manifestdependency-specify-manifest-dependencies
+        purpose: Specifies a \<dependentAssembly> section in the manifest file.
         realname: /manifestdependency
       manifestfile:
         documented: true
+        msdocs-moniker: manifestfile-name-manifest-file
+        purpose: Changes the default name of the manifest file.
         realname: /manifestfile
       manifestinput:
         documented: true
+        msdocs-moniker: manifestinput-specify-manifest-input
+        purpose: Specifies a manifest input file for the linker to process and embed
+          in the binary. You can use this option multiple times to specify more than
+          one manifest input file.
         realname: /manifestinput
       manifestuac:
         documented: true
+        msdocs-moniker: manifestuac-embeds-uac-information-in-manifest
+        purpose: Specifies whether User Account Control (UAC) information is embedded
+          in the program manifest.
         realname: /manifestuac
       map:
         documented: true
+        msdocs-moniker: map-generate-mapfile
+        purpose: Creates a mapfile.
         realname: /map
       mapinfo:
         documented: true
+        msdocs-moniker: mapinfo-include-information-in-mapfile
+        purpose: Includes the specified information in the mapfile.
         realname: /mapinfo
       maxilksize:
         documented: false
         realname: /maxilksize
+        researched: false
       merge:
         documented: true
+        msdocs-moniker: merge-combine-sections
+        purpose: Combines sections.
         realname: /merge
       midl:
         documented: true
+        msdocs-moniker: midl-specify-midl-command-line-options
+        purpose: Specifies MIDL command-line options.
         realname: /midl
       midlexe:
         documented: false
         realname: /midlexe
+        researched: false
       minpdbpathlen:
         documented: false
         realname: /minpdbpathlen
+        researched: false
       mt:
         documented: false
         realname: /mt
+        researched: false
       natvis:
         documented: true
+        msdocs-moniker: natvis-add-natvis-to-pdb
+        purpose: Adds debugger visualizers from a Natvis file to the program database
+          (PDB).
         realname: /natvis
       noassembly:
         documented: true
+        msdocs-moniker: noassembly-create-a-msil-module
+        purpose: Suppresses the creation of a .NET Framework assembly.
         realname: /noassembly
       nocoffgrpinfo:
         documented: false
         realname: /nocoffgrpinfo
+        researched: false
       nocomentry:
         documented: false
         realname: /nocomentry
+        researched: false
       nod:
         documented: false
         realname: /nod
+        researched: false
       nodbgdirmerge:
         documented: false
         realname: /nodbgdirmerge
+        researched: false
       nodefaultlib:
         documented: true
+        msdocs-moniker: nodefaultlib-ignore-libraries
+        purpose: Ignores all (or the specified) default libraries when external references
+          are resolved.
         realname: /nodefaultlib
       noentry:
         documented: true
+        msdocs-moniker: noentry-no-entry-point
+        purpose: Creates a resource-only DLL.
         realname: /noentry
       noexp:
         documented: false
         realname: /noexp
+        researched: false
       nofunctionpadsection:
         documented: false
         realname: /nofunctionpadsection
+        researched: false
       noilinkcoffgrppad:
         documented: false
         realname: /noilinkcoffgrppad
+        researched: false
       noimplib:
         documented: false
         realname: /noimplib
+        researched: false
       nolinkrepro:
         documented: false
         realname: /nolinkrepro
+        researched: false
       nologo:
         documented: true
+        msdocs-moniker: nologo-suppress-startup-banner-linker
+        purpose: Suppresses the startup banner.
         realname: /nologo
       noltcgoptref:
         documented: false
         realname: /noltcgoptref
+        researched: false
       nomap:
         documented: false
         realname: /nomap
+        researched: false
       noonfailrepro:
         documented: false
         realname: /noonfailrepro
+        researched: false
       nooptcfg:
         documented: false
         realname: /nooptcfg
+        researched: false
       nooptdidat:
         documented: false
         realname: /nooptdidat
+        researched: false
       nooptgids:
         documented: false
         realname: /nooptgids
+        researched: false
       nooptidata:
         documented: false
         realname: /nooptidata
+        researched: false
       nooptrefbeforeltcg:
         documented: false
         realname: /nooptrefbeforeltcg
+        researched: false
       noopttls:
         documented: false
         realname: /noopttls
+        researched: false
       novcfeature:
         documented: false
         realname: /novcfeature
+        researched: false
       noxdatamerge:
         documented: false
         realname: /noxdatamerge
+        researched: false
       nxcompat:
         documented: true
+        msdocs-moniker: nxcompat-compatible-with-data-execution-prevention
+        purpose: Marks an executable as verified to be compatible with the Windows
+          Data Execution Prevention feature.
         realname: /nxcompat
       objmap:
         documented: false
         realname: /objmap
+        researched: false
       odr:
         documented: false
         realname: /odr
+        researched: false
       odrignore:
         documented: false
         realname: /odrignore
+        researched: false
       odrignoresamesize:
         documented: false
         realname: /odrignoresamesize
+        researched: false
       onfailrepro:
         documented: false
         realname: /onfailrepro
+        researched: false
       opt:
         documented: true
+        msdocs-moniker: opt-optimizations
+        purpose: Controls LINK optimizations.
         realname: /opt
       opticfbytecomp:
         documented: false
         realname: /opticfbytecomp
+        researched: false
       order:
         documented: true
+        msdocs-moniker: order-put-functions-in-order
+        purpose: Places COMDATs into the image in a predetermined order.
         realname: /order
       osversion:
         documented: false
         realname: /osversion
+        researched: false
       out:
         documented: true
+        msdocs-moniker: out-output-file-name
+        purpose: Specifies the output file name.
         realname: /out
       pagesize:
         documented: false
         realname: /pagesize
+        researched: false
       pathmap:
         documented: false
         realname: /pathmap
+        researched: false
       pchmap:
         documented: false
         realname: /pchmap
+        researched: false
       pdb:
         documented: true
+        msdocs-moniker: pdb-use-program-database
+        purpose: Creates a PDB file.
         realname: /pdb
       pdbaltpath:
         documented: true
+        msdocs-moniker: pdbaltpath-use-alternate-pdb-path
+        purpose: Uses an alternate location to save a PDB file.
         realname: /pdbaltpath
       pdbcompress:
         documented: false
         realname: /pdbcompress
+        researched: false
       pdbdbgqsize:
         documented: false
         realname: /pdbdbgqsize
+        researched: false
       pdbdbgst:
         documented: false
         realname: /pdbdbgst
+        researched: false
       pdbdll:
         documented: false
         realname: /pdbdll
+        researched: false
       pdbmap:
         documented: false
         realname: /pdbmap
+        researched: false
       pdbmodclosethreads:
         documented: false
         realname: /pdbmodclosethreads
+        researched: false
       pdbpagesize:
         documented: false
         realname: /pdbpagesize
+        researched: false
       pdbpath:
         documented: false
         realname: /pdbpath
+        researched: false
       pdbrpc:
         documented: false
         realname: /pdbrpc
+        researched: false
       pdbstripped:
         documented: true
+        msdocs-moniker: pdbstripped-strip-private-symbols
+        purpose: Creates a PDB file that has no private symbols.
         realname: /pdbstripped
       pdbthreads:
         documented: false
         realname: /pdbthreads
+        researched: false
       pdbtmcache:
         documented: false
         realname: /pdbtmcache
+        researched: false
       pgd:
         documented: true
+        msdocs-moniker: pgd-specify-database-for-profile-guided-optimizations
+        purpose: Specifies a *`.pgd`* file for profile-guided optimizations.
         realname: /pgd
       pogonoshare:
         documented: false
         realname: /pogonoshare
+        researched: false
       pogosafemode:
         documented: true
+        msdocs-moniker: pogosafemode-linker-option
+        purpose: '**Obsolete** Creates a thread-safe PGO instrumented build.'
         realname: /pogosafemode
       prefetch:
         documented: false
         realname: /prefetch
+        researched: false
       profile:
         documented: true
+        msdocs-moniker: profile-performance-tools-profiler
+        purpose: Produces an output file that can be used with the Performance Tools
+          profiler.
         realname: /profile
       rc:
         documented: false
         realname: /rc
+        researched: false
       re:
         documented: false
         realname: /re
+        researched: false
       reportnoncomdatguardfunc:
         documented: false
         realname: /reportnoncomdatguardfunc
+        researched: false
       retryonfileopenfailure:
         documented: false
         realname: /retryonfileopenfailure
+        researched: false
       runbelow4gb:
         documented: false
         realname: /runbelow4gb
+        researched: false
       safeseh:
         documented: true
+        msdocs-moniker: safeseh-image-has-safe-exception-handlers
+        purpose: Specifies that the image will contain a table of safe exception handlers.
         realname: /safeseh
       savebaserelocations:
         documented: false
         realname: /savebaserelocations
+        researched: false
       section:
         documented: true
+        msdocs-moniker: section-specify-section-attributes
+        purpose: Overrides the attributes of a section.
         realname: /section
       sectionlayout:
         documented: false
         realname: /sectionlayout
+        researched: false
       simarm:
         documented: false
         realname: /simarm
+        researched: false
       simarm64:
         documented: false
         realname: /simarm64
+        researched: false
       skipincrementalchecks:
         documented: false
         realname: /skipincrementalchecks
+        researched: false
       sourcelink:
         documented: true
+        msdocs-moniker: sourcelink
+        purpose: Specifies a SourceLink file to add to the PDB.
         realname: /sourcelink
       sourcemap:
         documented: false
         realname: /sourcemap
+        researched: false
       spdembed:
         documented: false
         realname: /spdembed
+        researched: false
       spdidstr:
         documented: false
         realname: /spdidstr
+        researched: false
       spdin:
         documented: false
         realname: /spdin
+        researched: false
       spdindex:
         documented: false
         realname: /spdindex
+        researched: false
       spgo:
         documented: false
         realname: /spgo
+        researched: false
       stack:
         documented: true
+        msdocs-moniker: stack-stack-allocations
+        purpose: Sets the size of the stack in bytes.
         realname: /stack
       stricticfthunkalign:
         documented: false
         realname: /stricticfthunkalign
+        researched: false
       striprtti:
         documented: false
         realname: /striprtti
+        researched: false
       stub:
         documented: true
+        msdocs-moniker: stub-ms-dos-stub-file-name
+        purpose: Attaches an MS-DOS stub program to a Win32 program.
         realname: /stub
       subsystem:
         documented: true
+        msdocs-moniker: subsystem-specify-subsystem
+        purpose: Tells the operating system how to run the *`.exe`* file.
         realname: /subsystem
       subsystemversion:
         documented: false
         realname: /subsystemversion
+        researched: false
       swaprun:
         documented: true
+        msdocs-moniker: swaprun-load-linker-output-to-swap-file
+        purpose: Tells the operating system to copy the linker output to a swap file
+          before it's run.
         realname: /swaprun
       test:
         documented: false
         realname: /test
+        researched: false
       throwingnew:
         documented: false
         realname: /throwingnew
+        researched: false
       time:
         documented: true
+        msdocs-moniker: time-linker-time-information
+        purpose: Output linker pass timing information.
         realname: /time
       time_plus:
+        documented: false
         realname: /time+
+        researched: false
       tlbid:
         documented: true
+        msdocs-moniker: tlbid-specify-resource-id-for-typelib
+        purpose: Specifies the resource ID of the linker-generated type library.
         realname: /tlbid
       tlbout:
         documented: true
+        msdocs-moniker: tlbout-name-dot-tlb-file
+        purpose: Specifies the name of the *`.tlb`* file and other MIDL output files.
         realname: /tlbout
       trimfile:
         documented: false
         realname: /trimfile
+        researched: false
       tsaware:
         documented: true
+        msdocs-moniker: tsaware-create-terminal-server-aware-application
+        purpose: Creates an application that is designed specifically to run under
+          Terminal Server.
         realname: /tsaware
       useprofile:
         documented: true
+        msdocs-moniker: useprofile
+        purpose: Uses profile-guided optimization training data to create an optimized
+          image.
         realname: /useprofile
       verbose:
         documented: true
+        msdocs-moniker: verbose-print-progress-messages
+        purpose: Prints linker progress messages.
         realname: /verbose
       version:
         documented: true
+        msdocs-moniker: version-version-information
+        purpose: Assigns a version number.
         realname: /version
       vulcannotrecognizenewdelaythunk:
         documented: false
         realname: /vulcannotrecognizenewdelaythunk
+        researched: false
       warnduplicatesections:
         documented: false
         realname: /warnduplicatesections
+        researched: false
       wbrdcfg:
         documented: false
         realname: /wbrdcfg
+        researched: false
       wbrddll:
         documented: false
         realname: /wbrddll
+        researched: false
       wbrdlog:
         documented: false
         realname: /wbrdlog
+        researched: false
       wbrdreporterrors:
         documented: false
         realname: /wbrdreporterrors
+        researched: false
       wbrdschema:
         documented: false
         realname: /wbrdschema
+        researched: false
       wbrdsummary:
         documented: false
         realname: /wbrdsummary
+        researched: false
       wbrdtestencrypt:
         documented: false
         realname: /wbrdtestencrypt
+        researched: false
       weakorder:
         documented: false
         realname: /weakorder
+        researched: false
       wholearchive:
         documented: true
+        msdocs-moniker: wholearchive-include-all-library-object-files
+        purpose: Includes every object file from specified static libraries.
         realname: /wholearchive
       win32version:
         documented: false
         realname: /win32version
+        researched: false
       winmd:
         documented: true
+        msdocs-moniker: winmd-generate-windows-metadata
+        purpose: Enables generation of a Windows Runtime Metadata file.
         realname: /winmd
       winmddelaysign:
         documented: true
+        msdocs-moniker: winmddelaysign-partially-sign-a-winmd
+        purpose: Partially signs a Windows Runtime Metadata (*`.winmd`*) file by placing
+          the public key in the winmd file.
         realname: /winmddelaysign
       winmdfile:
         documented: true
+        msdocs-moniker: winmdfile-specify-winmd-file
+        purpose: Specifies the file name for the Windows Runtime Metadata (winmd)
+          output file that's generated by the [`/WINMD`](winmd-generate-windows-metadata.md)
+          linker option.
         realname: /winmdfile
       winmdkeycontainer:
         documented: true
+        msdocs-moniker: winmdkeycontainer-specify-key-container
+        purpose: Specifies a key container to sign a Windows Metadata file.
         realname: /winmdkeycontainer
       winmdkeyfile:
         documented: true
+        msdocs-moniker: winmdkeyfile-specify-winmd-key-file
+        purpose: Specifies a key or key pair to sign a Windows Runtime Metadata file.
         realname: /winmdkeyfile
       winmdmap:
         documented: false
         realname: /winmdmap
+        researched: false
       winmdsignhash:
         documented: false
         realname: /winmdsignhash
+        researched: false
       winmdversion:
         documented: false
         realname: /winmdversion
+        researched: false
       wowa64:
         documented: false
         realname: /wowa64
+        researched: false
       wowa64lib:
         documented: false
         realname: /wowa64lib
+        researched: false
       wx:
         documented: true
+        msdocs-moniker: wx-treat-linker-warnings-as-errors
+        purpose: Treats linker warnings as errors.
         realname: /wx
       x86pdata:
         documented: false
         realname: /x86pdata
+        researched: false
       xoff:
         documented: false
         realname: /xoff
+        researched: false

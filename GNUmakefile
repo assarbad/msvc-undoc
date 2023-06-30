@@ -1,5 +1,5 @@
 PYSCRIPTS:=update-yaml.py IDAPython/get_envvar_refs.py
-all: linkexe_documented.txt black lint vulture
+all: linkexe_documented.txt black lint vulture msvc.yaml
 
 cpp-docs/docs/build/reference/linker-options.md:
 	git clone https://github.com/MicrosoftDocs/cpp-docs.git
@@ -8,6 +8,9 @@ linkexe_documented.txt: cpp-docs/docs/build/reference/linker-options.md
 	git -C cpp-docs clean -dfx
 	git -C cpp-docs reset --hard
 	rg  '\| \[`(/[^`]+)' -or '$$1' cpp-docs/docs/build/reference/linker-options.md |cut -d : -f 2|tr 'A-Z' 'a-z'|sort -u|tee $@
+
+msvc.yaml: update-yaml.py
+	./update-yaml.py -vY $@
 
 clean:
 	rm -f linkexe_documented.txt
@@ -34,5 +37,5 @@ vulture: $(PYSCRIPTS)
 	$@ $^
 
 .DEFAULT: all
-.PHONY: all black lint pretty prerequisites vulture
+.PHONY: all black lint pretty prerequisites vulture msvc.yaml
 .NOTPARALLEL: all clean rebuild CLEAN REBUILD
