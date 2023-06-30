@@ -1,10 +1,12 @@
 import idaapi
 import idautils
+import ida_bytes
 import ida_funcs
 import idc
 from collections import namedtuple
 
 EnvVarRef = namedtuple("EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"])
+Op = namedtuple("Op", ["op", "type", "value", "strlit"])
 
 env_interesting_funcs = {
     "putenv": {"reg": "rcx"},  # varname=value -> rcx
@@ -27,6 +29,8 @@ def reverse_walk_envvar_insns(callee, ea, xreffunc, refname):
             insn = idaapi.insn_t()
             length = idaapi.decode_insn(insn, fea)
             disasm = idc.generate_disasm_line(fea, 0)
+            if idc.print_insn_mnem(fea) not in {"mov", "lea"}:
+                continue
             op1 = idc.print_operand(fea, 0)
             if regname in disasm and regname == op1:
                 return EnvVarRef(callee, ea, xreffunc, fea, insn, length, disasm, regname, op1, refname)
@@ -41,28 +45,56 @@ def analyze_envvar_call(callee, ea):
         return reverse_walk_envvar_insns(callee, ea, xreffunc, refname)
 
 
+def clear_output_console():
+    form = idaapi.find_widget("Output window")
+    idaapi.activate_widget(form, True)
+    idaapi.process_ui_action("msglist:Clear")
+
+
+def get_op_details(ea, opidx):
+    op = idc.print_operand(ea, opidx)
+    optype = idc.get_operand_type(ea, opidx)
+    opvalue = idc.get_operand_value(ea, opidx)
+    strlit = None
+    if optype in {idc.o_mem} and opvalue != -1:
+        flags = ida_bytes.get_flags(opvalue)
+        if ida_bytes.is_strlit(flags):
+            strtype = idc.get_str_type(opvalue)
+            strlit = idc.get_strlit_contents(opvalue, -1, strtype)
+            if strlit is not None:
+                strlit = strlit.decode("utf-8")
+    return Op(op, optype, opvalue, strlit)
+
+
 def main():
+    clear_output_console()
     env_funcs = [func for func in idautils.Names() if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)]
     env_refs = {}
+    env_varnames = set()
+    print(60 * "=")
     for ea, name in env_funcs:
-        if (
+        key = (
             ea,
             name,
-        ) in env_refs:
+        )
+        if key in env_refs:
             continue
         refsbyea = {}
         for ref in idautils.XrefsTo(ea):
             refsbyea[ref.frm] = analyze_envvar_call(name, ref.frm)
-        env_refs[
-            (
-                ea,
-                name,
-            )
-        ] = refsbyea
+        env_refs[key] = refsbyea
     for (ea, name), byea_dict in env_refs.items():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
-            print(f"  {byea.insn_ea:#x}: {byea.disasm}")
+            op2 = get_op_details(byea.insn_ea, 1)
+            if op2.strlit:
+                env_varnames.add(op2.strlit)
+                print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}"')
+            else:
+                print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=})")
+    print(60 * "=")
+    for varname in sorted(env_varnames):
+        print(varname)
 
 
 if __name__ == "__main__":

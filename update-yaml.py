@@ -86,7 +86,7 @@ def process_link_cmd(data):
     newcmdline = {}
     documented = set()
     with open("linkexe_documented.txt", "r") as docs:
-        documented = {line.strip() for line in docs.readlines()}
+        documented = {line.strip() for line in docs.readlines() if line.strip()}
     for switch, values in cmdline.items():
         newcmdline[switch] = {} if values is None else values
         realname = f"/{switch}"
