@@ -1467,5 +1467,18 @@ msvc:
         researched: false
         resources:
         - gc.link://link/options/xoff.htm
+    environment:
+      LINK_REPRO: {}
+      LINK_REPRO_NAME: {}
+      LOG_BUILD_COMMANDLINES: {}
+      MSVCETW_PARENT_CONTEXT_THREAD_ID: {}
+      PATH: {}
+      PRINT_HRESULT_ON_FAIL: {}
+      VSLANG: {}
+      VS_UNICODE_OUTPUT: {}
+      _EXT: {}
+      _LIB_: {}
+      _PDB: {}
+      _PRELIB_: {}
     meta:
       msdocs_entryurl: https://learn.microsoft.com/cpp/build/reference/linker-options

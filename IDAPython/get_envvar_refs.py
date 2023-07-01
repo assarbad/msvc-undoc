@@ -4,6 +4,7 @@ import ida_bytes
 import ida_funcs
 import idc
 from collections import namedtuple
+from typing import Optional
 
 EnvVarRef = namedtuple("EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"])
 Op = namedtuple("Op", ["op", "type", "value", "strlit"])
@@ -22,7 +23,7 @@ env_interesting_funcs = {
 }
 
 
-def reverse_walk_envvar_insns(callee, ea, xreffunc, refname):
+def reverse_walk_envvar_insns(callee: str, ea: int, xreffunc, refname: str) -> EnvVarRef:
     regname = [env_interesting_funcs[k]["reg"] for k in env_interesting_funcs.keys() if callee.endswith(k)][0]
     for fea in sorted(xreffunc.head_items(), reverse=True):
         if fea <= ea:
@@ -36,7 +37,7 @@ def reverse_walk_envvar_insns(callee, ea, xreffunc, refname):
                 return EnvVarRef(callee, ea, xreffunc, fea, insn, length, disasm, regname, op1, refname)
 
 
-def analyze_envvar_call(callee, ea):
+def analyze_envvar_call(callee: str, ea: int) -> Optional[EnvVarRef]:
     refname = idc.get_func_name(ea)
     dmngld_refname = idc.demangle_name(refname, idc.get_inf_attr(idc.INF_SHORT_DN))
     refname = dmngld_refname if dmngld_refname else refname
@@ -51,7 +52,7 @@ def clear_output_console():
     idaapi.process_ui_action("msglist:Clear")
 
 
-def get_op_details(ea, opidx):
+def get_op_details(ea: int, opidx: int) -> Op:
     op = idc.print_operand(ea, opidx)
     optype = idc.get_operand_type(ea, opidx)
     opvalue = idc.get_operand_value(ea, opidx)
