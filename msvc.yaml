@@ -1,1205 +1,1471 @@
 ---
+meta:
+  geoffchappell_baseurl: https://www.geoffchappell.com/studies/msvc
+  msdocs_baseurl: https://learn.microsoft.com/cpp/build/reference
 msvc:
   link:
+    binaries:
+    - hash: 38f375b084e796c6be3ae724641136897770fbc4858e578724f7956c41c48fce
+      host: x86-64
+      name: link.exe
+      target: x86-64
+      toolchain: 14.34.31933
+      version:
+        file: 14.34.31937.0
+        product: 14.34.31937.0
     cmdline:
       align:
-        documented: true
-        msdocs-moniker: align-section-alignment
+        documented: msdocs.link://align-section-alignment
         purpose: Specifies the alignment of each section.
-        realname: /align
+        researched: false
+        resources:
+        - gc.link://link/options/align.htm
       allowbadrvaforfirstsection:
-        documented: false
-        realname: /allowbadrvaforfirstsection
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       allowbind:
-        documented: true
-        msdocs-moniker: allowbind-prevent-dll-binding
+        documented: msdocs.link://allowbind-prevent-dll-binding
         purpose: Specifies that a DLL can't be bound.
-        realname: /allowbind
+        researched: false
+        resources:
+        - gc.link://link/options/allowbind.htm
       allowimagesizeover2gb:
-        documented: false
-        realname: /allowimagesizeover2gb
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       allowisolation:
-        documented: true
-        msdocs-moniker: allowisolation-manifest-lookup
+        documented: msdocs.link://allowisolation-manifest-lookup
         purpose: Specifies behavior for manifest lookup.
-        realname: /allowisolation
+        researched: false
+        resources: []
       allpdata:
-        documented: false
-        realname: /allpdata
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       alternatename:
-        documented: false
-        realname: /alternatename
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       appcontainer:
-        documented: true
-        msdocs-moniker: appcontainer-windows-store-app
+        documented: msdocs.link://appcontainer-windows-store-app
         purpose: Specifies whether the app must run within an appcontainer process
           environment.
-        realname: /appcontainer
+        researched: false
+        resources: []
       arm64hazardexist:
-        documented: false
-        realname: /arm64hazardexist
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64hazardfree:
-        documented: false
-        realname: /arm64hazardfree
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xaggressiverwdatafold:
-        documented: false
-        realname: /arm64xaggressiverwdatafold
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xcrossresolve:
-        documented: false
-        realname: /arm64xcrossresolve
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xemulatorbuild:
-        documented: false
-        realname: /arm64xemulatorbuild
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xfastforward:
-        documented: false
-        realname: /arm64xfastforward
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xfoldrwdata:
-        documented: false
-        realname: /arm64xfoldrwdata
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xhack:
-        documented: false
-        realname: /arm64xhack
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xnewchameleonlibfmt:
-        documented: false
-        realname: /arm64xnewchameleonlibfmt
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xnomergeimports:
-        documented: false
-        realname: /arm64xnomergeimports
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xnoreorderobjs:
-        documented: false
-        realname: /arm64xnoreorderobjs
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xsameaddress:
-        documented: false
-        realname: /arm64xsameaddress
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       arm64xuselegacyffs:
-        documented: false
-        realname: /arm64xuselegacyffs
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       armhazardexist:
-        documented: false
-        realname: /armhazardexist
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       armhazardfree:
-        documented: false
-        realname: /armhazardfree
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       assemblydebug:
-        documented: true
-        msdocs-moniker: assemblydebug-add-debuggableattribute
+        documented: msdocs.link://assemblydebug-add-debuggableattribute
         purpose: Adds the <xref:System.Diagnostics.DebuggableAttribute> to a managed
           image.
-        realname: /assemblydebug
+        researched: false
+        resources: []
       assemblylinkresource:
-        documented: true
-        msdocs-moniker: assemblylinkresource-link-to-dotnet-framework-resource
+        documented: msdocs.link://assemblylinkresource-link-to-dotnet-framework-resource
         purpose: Creates a link to a managed resource.
-        realname: /assemblylinkresource
+        researched: false
+        resources: []
       assemblymodule:
-        documented: true
-        msdocs-moniker: assemblymodule-add-a-msil-module-to-the-assembly
+        documented: msdocs.link://assemblymodule-add-a-msil-module-to-the-assembly
         purpose: Specifies that a Microsoft intermediate language (MSIL) module should
           be imported into the assembly.
-        realname: /assemblymodule
+        researched: false
+        resources:
+        - gc.link://link/options/assemblymodule.htm
       assemblymodulemap:
-        documented: false
-        realname: /assemblymodulemap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       assemblyresource:
-        documented: true
-        msdocs-moniker: assemblyresource-embed-a-managed-resource
+        documented: msdocs.link://assemblyresource-embed-a-managed-resource
         purpose: Embeds a managed resource file in an assembly.
-        realname: /assemblyresource
+        researched: false
+        resources:
+        - gc.link://link/options/assemblyresource.htm
       at_responsefile:
-        documented: true
-        realname: '@'
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       b2:
-        documented: false
-        realname: /b2
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/b2.htm
       base:
-        documented: true
-        msdocs-moniker: base-base-address
+        documented: msdocs.link://base-base-address
         purpose: Sets a base address for the program.
-        realname: /base
+        researched: false
+        resources:
+        - gc.link://link/options/base.htm
       baserelocclustering:
-        documented: false
-        realname: /baserelocclustering
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       brepro:
-        documented: false
-        realname: /brepro
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/brepro.htm
       cetcompat:
-        documented: true
-        msdocs-moniker: cetcompat
+        documented: msdocs.link://cetcompat
         purpose: Marks the binary as CET Shadow Stack compatible.
-        realname: /cetcompat
+        researched: false
+        resources: []
       cetcompatstrict:
-        documented: false
-        realname: /cetcompatstrict
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       cetdynamicapisinproc:
-        documented: false
-        realname: /cetdynamicapisinproc
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       cetipvalidationrelaxed:
-        documented: false
-        realname: /cetipvalidationrelaxed
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       cgthreads:
-        documented: true
-        msdocs-moniker: cgthreads-compiler-threads
+        documented: msdocs.link://cgthreads-compiler-threads
         purpose: Sets number of cl.exe threads to use for optimization and code generation
           when link-time code generation is specified.
-        realname: /cgthreads
+        researched: false
+        resources: []
       clrimagetype:
-        documented: true
-        msdocs-moniker: clrimagetype-specify-type-of-clr-image
+        documented: msdocs.link://clrimagetype-specify-type-of-clr-image
         purpose: Sets the type (IJW, pure, or safe) of a CLR image.
-        realname: /clrimagetype
+        researched: false
+        resources: []
       clrloaderoptimization:
-        documented: false
-        realname: /clrloaderoptimization
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       clrnetcore:
-        documented: false
-        realname: /clrnetcore
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       clrrvaentry:
-        documented: false
-        realname: /clrrvaentry
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       clrsignhash:
-        documented: false
-        realname: /clrsignhash
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       clrsupportlasterror:
-        documented: true
-        msdocs-moniker: clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls
+        documented: msdocs.link://clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls
         purpose: Preserves the last error code of functions that are called through
           the P/Invoke mechanism.
-        realname: /clrsupportlasterror
-      clrsupportlasterrordll:
-        documented: false
-        realname: /clrsupportlasterrordll
         researched: false
+        resources: []
+      clrsupportlasterrordll:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       clrthreadattribute:
-        documented: true
-        msdocs-moniker: clrthreadattribute-set-clr-thread-attribute
+        documented: msdocs.link://clrthreadattribute-set-clr-thread-attribute
         purpose: Specifies the threading attribute to apply to the entry point of
           your CLR program.
-        realname: /clrthreadattribute
+        researched: false
+        resources: []
       clrunmanagedcodecheck:
-        documented: true
-        msdocs-moniker: clrunmanagedcodecheck-add-suppressunmanagedcodesecurityattribute
+        documented: msdocs.link://clrunmanagedcodecheck-add-suppressunmanagedcodesecurityattribute
         purpose: Specifies whether the linker will apply the `SuppressUnmanagedCodeSecurity`
           attribute to linker-generated P/Invoke stubs that call from managed code
           into native DLLs.
-        realname: /clrunmanagedcodecheck
+        researched: false
+        resources: []
       coffsecttopdbstrm:
-        documented: false
-        realname: /coffsecttopdbstrm
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       crashondiag:
-        documented: false
-        realname: /crashondiag
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       cvtres:
-        documented: false
-        realname: /cvtres
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       cxxmodulestrongownership:
-        documented: false
-        realname: /cxxmodulestrongownership
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       d2:
-        documented: false
-        realname: /d2
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/d2.htm
       db:
-        documented: false
-        realname: /db
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       debug:
-        documented: true
-        msdocs-moniker: debug-generate-debug-info
+        documented: msdocs.link://debug-generate-debug-info
         purpose: Creates debugging information.
-        realname: /debug
+        researched: false
+        resources:
+        - gc.link://link/options/debug.htm
       debugtype:
-        documented: true
-        msdocs-moniker: debugtype-debug-info-options
+        documented: msdocs.link://debugtype-debug-info-options
         purpose: Specifies which data to include in debugging information.
-        realname: /debugtype
+        researched: false
+        resources:
+        - gc.link://link/options/debugtype.htm
       def:
-        documented: true
-        msdocs-moniker: def-specify-module-definition-file
+        documented: msdocs.link://def-specify-module-definition-file
         purpose: Passes a module-definition (.def) file to the linker.
-        realname: /def
+        researched: false
+        resources:
+        - gc.link://link/options/def.htm
       defarm64native:
-        documented: false
-        realname: /defarm64native
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       defaultlib:
-        documented: true
-        msdocs-moniker: defaultlib-specify-default-library
+        documented: msdocs.link://defaultlib-specify-default-library
         purpose: Searches the specified library when external references are resolved.
-        realname: /defaultlib
+        researched: false
+        resources:
+        - gc.link://link/options/defaultlib.htm
       delay:
-        documented: true
-        msdocs-moniker: delay-delay-load-import-settings
+        documented: msdocs.link://delay-delay-load-import-settings
         purpose: Controls the delayed loading of DLLs.
-        realname: /delay
+        researched: false
+        resources:
+        - gc.link://link/options/delay.htm
       delayload:
-        documented: true
-        msdocs-moniker: delayload-delay-load-import
+        documented: msdocs.link://delayload-delay-load-import
         purpose: Causes the delayed loading of the specified DLL.
-        realname: /delayload
+        researched: false
+        resources:
+        - gc.link://link/options/delayload.htm
       delaysign:
-        documented: true
-        msdocs-moniker: delaysign-partially-sign-an-assembly
+        documented: msdocs.link://delaysign-partially-sign-an-assembly
         purpose: Partially signs an assembly.
-        realname: /delaysign
+        researched: false
+        resources: []
       dependentloadflag:
-        documented: true
-        msdocs-moniker: dependentloadflag
+        documented: msdocs.link://dependentloadflag
         purpose: Sets default flags on dependent DLL loads.
-        realname: /dependentloadflag
+        researched: false
+        resources: []
       didatownsection:
-        documented: false
-        realname: /didatownsection
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       disallowlib:
-        documented: false
-        realname: /disallowlib
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/disallowlib.htm
       discardtrack:
-        documented: false
-        realname: /discardtrack
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       dll:
-        documented: true
-        msdocs-moniker: dll-build-a-dll
+        documented: msdocs.link://dll-build-a-dll
         purpose: Builds a DLL.
-        realname: /dll
-      dllrename:
-        documented: false
-        realname: /dllrename
         researched: false
+        resources:
+        - gc.link://link/options/dll.htm
+      dllrename:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       driver:
-        documented: true
-        msdocs-moniker: driver-windows-nt-kernel-mode-driver
+        documented: msdocs.link://driver-windows-nt-kernel-mode-driver
         purpose: Creates a kernel mode driver.
-        realname: /driver
+        researched: false
+        resources:
+        - gc.link://link/options/driver.htm
       dynamicbase:
-        documented: true
-        msdocs-moniker: dynamicbase-use-address-space-layout-randomization
+        documented: msdocs.link://dynamicbase-use-address-space-layout-randomization
         purpose: Specifies whether to generate an executable image that's rebased
           at load time by using the address space layout randomization (ASLR) feature.
-        realname: /dynamicbase
+        researched: false
+        resources: []
       dynamicvalue:
-        documented: false
-        realname: /dynamicvalue
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       editandcontinue:
-        documented: false
-        realname: /editandcontinue
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       emitasx64image:
-        documented: false
-        realname: /emitasx64image
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       emitasx64imagewithaa64:
-        documented: false
-        realname: /emitasx64imagewithaa64
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       emitpogophaseinfo:
-        documented: false
-        realname: /emitpogophaseinfo
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       emittoolversioninfo:
-        documented: false
-        realname: /emittoolversioninfo
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       emitvolatilemetadata:
-        documented: false
-        realname: /emitvolatilemetadata
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       enclave:
-        documented: false
-        realname: /enclave
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       encpadsize:
-        documented: false
-        realname: /encpadsize
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/encpadsize.htm
       entry:
-        documented: true
-        msdocs-moniker: entry-entry-point-symbol
+        documented: msdocs.link://entry-entry-point-symbol
         purpose: Sets the starting address.
-        realname: /entry
+        researched: false
+        resources:
+        - gc.link://link/options/entry.htm
       errorreport:
-        documented: true
-        msdocs-moniker: errorreport-report-internal-linker-errors
+        documented: msdocs.link://errorreport-report-internal-linker-errors
         purpose: Deprecated. Error reporting is controlled by [Windows Error Reporting
           (WER)](/windows/win32/wer/windows-error-reporting) settings.
-        realname: /errorreport
+        researched: false
+        resources: []
       etm:
-        documented: false
-        realname: /etm
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       expectedoutputsize:
-        documented: false
-        realname: /expectedoutputsize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       experimental:
-        documented: false
-        realname: /experimental
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       export:
-        documented: true
-        msdocs-moniker: export-exports-a-function
+        documented: msdocs.link://export-exports-a-function
         purpose: Exports a function.
-        realname: /export
+        researched: false
+        resources:
+        - gc.link://link/options/export.htm
       exportarm64native:
-        documented: false
-        realname: /exportarm64native
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       exportpadmin:
-        documented: false
-        realname: /exportpadmin
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       fastfail:
-        documented: false
-        realname: /fastfail
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       fastgenprofile:
-        documented: false
-        realname: /fastgenprofile
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       fe:
-        documented: false
-        realname: /fe
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/fe.htm
       filealign:
-        documented: true
-        msdocs-moniker: filealign
+        documented: msdocs.link://filealign
         purpose: Aligns sections within the output file on multiples of a specified
           value.
-        realname: /filealign
+        researched: false
+        resources:
+        - gc.link://link/options/filealign.htm
       fixed:
-        documented: true
-        msdocs-moniker: fixed-fixed-base-address
+        documented: msdocs.link://fixed-fixed-base-address
         purpose: Creates a program that can be loaded only at its preferred base address.
-        realname: /fixed
+        researched: false
+        resources:
+        - gc.link://link/options/fixed.htm
       force:
-        documented: true
-        msdocs-moniker: force-force-file-output
+        documented: msdocs.link://force-force-file-output
         purpose: Forces a link to complete even with unresolved symbols or symbols
           defined more than once.
-        realname: /force
+        researched: false
+        resources:
+        - gc.link://link/options/force.htm
       forcewinmdversion12:
-        documented: false
-        realname: /forcewinmdversion12
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       fullbuild:
-        documented: false
-        realname: /fullbuild
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/fullbuild.htm
       funcoverride:
-        documented: false
-        realname: /funcoverride
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       funcoverridedisablefunc:
-        documented: false
-        realname: /funcoverridedisablefunc
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       funcoverrideemitcand:
-        documented: false
-        realname: /funcoverrideemitcand
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       funcoverrideoncallsites:
-        documented: false
-        realname: /funcoverrideoncallsites
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       functionpadmin:
-        documented: true
-        msdocs-moniker: functionpadmin-create-hotpatchable-image
+        documented: msdocs.link://functionpadmin-create-hotpatchable-image
         purpose: Creates an image that can be hot patched.
-        realname: /functionpadmin
+        researched: false
+        resources: []
       genpdbfromscratch:
-        documented: false
-        realname: /genpdbfromscratch
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       genprofile:
-        documented: true
-        realname: /genprofile
-      guard:
-        documented: true
-        msdocs-moniker: guard-enable-guard-checks
-        purpose: Enables Control Flow Guard protection.
-        realname: /guard
-      guardsym:
-        documented: false
-        realname: /guardsym
+        documented: null
+        purpose: null
         researched: false
+        resources: []
+      guard:
+        documented: msdocs.link://guard-enable-guard-checks
+        purpose: Enables Control Flow Guard protection.
+        researched: false
+        resources: []
+      guardsym:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       heap:
-        documented: true
-        msdocs-moniker: heap-set-heap-size
+        documented: msdocs.link://heap-set-heap-size
         purpose: Sets the size of the heap, in bytes.
-        realname: /heap
+        researched: false
+        resources: []
       highentropyva:
-        documented: true
-        msdocs-moniker: highentropyva-support-64-bit-aslr
+        documented: msdocs.link://highentropyva-support-64-bit-aslr
         purpose: Specifies support for high-entropy 64-bit address space layout randomization
           (ASLR).
-        realname: /highentropyva
+        researched: false
+        resources: []
       hotpatchcompatible:
-        documented: false
-        realname: /hotpatchcompatible
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       hybriddefupgrade:
-        documented: false
-        realname: /hybriddefupgrade
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       hybridexportthunks:
-        documented: false
-        realname: /hybridexportthunks
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       hybriduseguestmachine:
-        documented: false
-        realname: /hybriduseguestmachine
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       icfsection:
-        documented: false
-        realname: /icfsection
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       idlout:
-        documented: true
-        msdocs-moniker: idlout-name-midl-output-files
+        documented: msdocs.link://idlout-name-midl-output-files
         purpose: Specifies the name of the *`.idl`* file and other MIDL output files.
-        realname: /idlout
+        researched: false
+        resources:
+        - gc.link://link/options/idlout.htm
       ignore:
-        documented: true
-        msdocs-moniker: ignore-ignore-specific-warnings
+        documented: msdocs.link://ignore-ignore-specific-warnings
         purpose: Suppresses output of specified linker warnings.
-        realname: /ignore
+        researched: false
+        resources:
+        - gc.link://link/options/ignore.htm
       ignoreidl:
-        documented: true
-        msdocs-moniker: ignoreidl-don-t-process-attributes-into-midl
+        documented: msdocs.link://ignoreidl-don-t-process-attributes-into-midl
         purpose: Prevents the processing of attribute information into an *`.idl`*
           file.
-        realname: /ignoreidl
+        researched: false
+        resources:
+        - gc.link://link/options/ignoreidl.htm
       ilk:
-        documented: true
-        msdocs-moniker: ilk-name-incremental-database-file
+        documented: msdocs.link://ilk-name-incremental-database-file
         purpose: Overrides the default incremental database file name.
-        realname: /ilk
+        researched: false
+        resources: []
       iltcgwarningoff:
-        documented: false
-        realname: /iltcgwarningoff
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       implib:
-        documented: true
-        msdocs-moniker: implib-name-import-library
+        documented: msdocs.link://implib-name-import-library
         purpose: Overrides the default import library name.
-        realname: /implib
+        researched: false
+        resources:
+        - gc.link://link/options/implib.htm
       impthunkalign:
-        documented: false
-        realname: /impthunkalign
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       include:
-        documented: true
-        msdocs-moniker: include-force-symbol-references
+        documented: msdocs.link://include-force-symbol-references
         purpose: Forces symbol references.
-        realname: /include
+        researched: false
+        resources:
+        - gc.link://link/options/include.htm
       includecoffsection:
-        documented: false
-        realname: /includecoffsection
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       incremental:
-        documented: true
-        msdocs-moniker: incremental-link-incrementally
+        documented: msdocs.link://incremental-link-incrementally
         purpose: Controls incremental linking.
-        realname: /incremental
-      inferasanlibs:
-        documented: true
-        msdocs-moniker: inferasanlibs
-        purpose: Uses inferred sanitizer libraries.
-        realname: /inferasanlibs
-      integritycheck:
-        documented: true
-        msdocs-moniker: integritycheck-require-signature-check
-        purpose: Specifies that the module requires a signature check at load time.
-        realname: /integritycheck
-      kernel:
-        documented: false
-        realname: /kernel
         researched: false
+        resources:
+        - gc.link://link/options/incremental.htm
+      inferasanlibs:
+        documented: msdocs.link://inferasanlibs
+        purpose: Uses inferred sanitizer libraries.
+        researched: false
+        resources: []
+      integritycheck:
+        documented: msdocs.link://integritycheck-require-signature-check
+        purpose: Specifies that the module requires a signature check at load time.
+        researched: false
+        resources: []
+      kernel:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       keycontainer:
-        documented: true
-        msdocs-moniker: keycontainer-specify-a-key-container-to-sign-an-assembly
+        documented: msdocs.link://keycontainer-specify-a-key-container-to-sign-an-assembly
         purpose: Specifies a key container to sign an assembly.
-        realname: /keycontainer
+        researched: false
+        resources: []
       keyfile:
-        documented: true
-        msdocs-moniker: keyfile-specify-key-or-key-pair-to-sign-an-assembly
+        documented: msdocs.link://keyfile-specify-key-or-key-pair-to-sign-an-assembly
         purpose: Specifies a key or key pair to sign an assembly.
-        realname: /keyfile
+        researched: false
+        resources: []
       largeaddressaware:
-        documented: true
-        msdocs-moniker: largeaddressaware-handle-large-addresses
+        documented: msdocs.link://largeaddressaware-handle-large-addresses
         purpose: Tells the compiler that the application supports addresses larger
           than 2 gigabytes
-        realname: /largeaddressaware
+        researched: false
+        resources:
+        - gc.link://link/options/largeaddressaware.htm
       last:
-        documented: false
-        realname: /last
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/last.htm
       layoutpagesize:
-        documented: false
-        realname: /layoutpagesize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       libpath:
-        documented: true
-        msdocs-moniker: libpath-additional-libpath
+        documented: msdocs.link://libpath-additional-libpath
         purpose: Specifies a path to search before the environmental library path.
-        realname: /libpath
+        researched: false
+        resources: []
       linkrepro:
-        documented: true
-        msdocs-moniker: linkrepro
+        documented: msdocs.link://linkrepro
         purpose: Specifies a path to generate link repro artifacts in.
-        realname: /linkrepro
+        researched: false
+        resources:
+        - gc.link://link/options/linkrepro.htm
       linkreprotarget:
-        documented: true
-        msdocs-moniker: linkreprotarget
+        documented: msdocs.link://linkreprotarget
         purpose: Generates a link repro only when producing the specified target.<sup>16.1</sup>
-        realname: /linkreprotarget
+        researched: false
+        resources: []
       logo:
-        documented: false
-        realname: /logo
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       ltcg:
-        documented: true
-        msdocs-moniker: ltcg-link-time-code-generation
+        documented: msdocs.link://ltcg-link-time-code-generation
         purpose: Specifies link-time code generation.
-        realname: /ltcg
+        researched: false
+        resources:
+        - gc.link://link/options/ltcg.htm
       ltcgasmlist:
-        documented: false
-        realname: /ltcgasmlist
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       ltcgout:
-        documented: false
-        realname: /ltcgout
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       machine:
-        documented: true
-        msdocs-moniker: machine-specify-target-platform
+        documented: msdocs.link://machine-specify-target-platform
         purpose: Specifies the target platform.
-        realname: /machine
+        researched: false
+        resources:
+        - gc.link://link/options/machine.htm
       manifest:
-        documented: true
-        msdocs-moniker: manifest-create-side-by-side-assembly-manifest
+        documented: msdocs.link://manifest-create-side-by-side-assembly-manifest
         purpose: Creates a side-by-side manifest file and optionally embeds it in
           the binary.
-        realname: /manifest
+        researched: false
+        resources: []
       manifestdependency:
-        documented: true
-        msdocs-moniker: manifestdependency-specify-manifest-dependencies
+        documented: msdocs.link://manifestdependency-specify-manifest-dependencies
         purpose: Specifies a \<dependentAssembly> section in the manifest file.
-        realname: /manifestdependency
+        researched: false
+        resources: []
       manifestfile:
-        documented: true
-        msdocs-moniker: manifestfile-name-manifest-file
+        documented: msdocs.link://manifestfile-name-manifest-file
         purpose: Changes the default name of the manifest file.
-        realname: /manifestfile
+        researched: false
+        resources: []
       manifestinput:
-        documented: true
-        msdocs-moniker: manifestinput-specify-manifest-input
+        documented: msdocs.link://manifestinput-specify-manifest-input
         purpose: Specifies a manifest input file for the linker to process and embed
           in the binary. You can use this option multiple times to specify more than
           one manifest input file.
-        realname: /manifestinput
+        researched: false
+        resources: []
       manifestuac:
-        documented: true
-        msdocs-moniker: manifestuac-embeds-uac-information-in-manifest
+        documented: msdocs.link://manifestuac-embeds-uac-information-in-manifest
         purpose: Specifies whether User Account Control (UAC) information is embedded
           in the program manifest.
-        realname: /manifestuac
+        researched: false
+        resources: []
       map:
-        documented: true
-        msdocs-moniker: map-generate-mapfile
+        documented: msdocs.link://map-generate-mapfile
         purpose: Creates a mapfile.
-        realname: /map
+        researched: false
+        resources:
+        - gc.link://link/options/options/map.htm
       mapinfo:
-        documented: true
-        msdocs-moniker: mapinfo-include-information-in-mapfile
+        documented: msdocs.link://mapinfo-include-information-in-mapfile
         purpose: Includes the specified information in the mapfile.
-        realname: /mapinfo
+        researched: false
+        resources:
+        - gc.link://link/options/mapinfo.htm
       maxilksize:
-        documented: false
-        realname: /maxilksize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       merge:
-        documented: true
-        msdocs-moniker: merge-combine-sections
+        documented: msdocs.link://merge-combine-sections
         purpose: Combines sections.
-        realname: /merge
+        researched: false
+        resources:
+        - gc.link://link/options/merge.htm
       midl:
-        documented: true
-        msdocs-moniker: midl-specify-midl-command-line-options
+        documented: msdocs.link://midl-specify-midl-command-line-options
         purpose: Specifies MIDL command-line options.
-        realname: /midl
+        researched: false
+        resources:
+        - gc.link://link/options/midl.htm
       midlexe:
-        documented: false
-        realname: /midlexe
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       minpdbpathlen:
-        documented: false
-        realname: /minpdbpathlen
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       mt:
-        documented: false
-        realname: /mt
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       natvis:
-        documented: true
-        msdocs-moniker: natvis-add-natvis-to-pdb
+        documented: msdocs.link://natvis-add-natvis-to-pdb
         purpose: Adds debugger visualizers from a Natvis file to the program database
           (PDB).
-        realname: /natvis
+        researched: false
+        resources: []
       noassembly:
-        documented: true
-        msdocs-moniker: noassembly-create-a-msil-module
+        documented: msdocs.link://noassembly-create-a-msil-module
         purpose: Suppresses the creation of a .NET Framework assembly.
-        realname: /noassembly
+        researched: false
+        resources:
+        - gc.link://link/options/noassembly.htm
       nocoffgrpinfo:
-        documented: false
-        realname: /nocoffgrpinfo
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nocomentry:
-        documented: false
-        realname: /nocomentry
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nod:
-        documented: false
-        realname: /nod
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/nod.htm
       nodbgdirmerge:
-        documented: false
-        realname: /nodbgdirmerge
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nodefaultlib:
-        documented: true
-        msdocs-moniker: nodefaultlib-ignore-libraries
+        documented: msdocs.link://nodefaultlib-ignore-libraries
         purpose: Ignores all (or the specified) default libraries when external references
           are resolved.
-        realname: /nodefaultlib
+        researched: false
+        resources:
+        - gc.link://link/options/nod.htm
       noentry:
-        documented: true
-        msdocs-moniker: noentry-no-entry-point
+        documented: msdocs.link://noentry-no-entry-point
         purpose: Creates a resource-only DLL.
-        realname: /noentry
+        researched: false
+        resources:
+        - gc.link://link/options/noentry.htm
       noexp:
-        documented: false
-        realname: /noexp
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nofunctionpadsection:
-        documented: false
-        realname: /nofunctionpadsection
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       noilinkcoffgrppad:
-        documented: false
-        realname: /noilinkcoffgrppad
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       noimplib:
-        documented: false
-        realname: /noimplib
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nolinkrepro:
-        documented: false
-        realname: /nolinkrepro
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nologo:
-        documented: true
-        msdocs-moniker: nologo-suppress-startup-banner-linker
+        documented: msdocs.link://nologo-suppress-startup-banner-linker
         purpose: Suppresses the startup banner.
-        realname: /nologo
+        researched: false
+        resources:
+        - gc.link://link/options/nologo.htm
       noltcgoptref:
-        documented: false
-        realname: /noltcgoptref
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nomap:
-        documented: false
-        realname: /nomap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       noonfailrepro:
-        documented: false
-        realname: /noonfailrepro
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nooptcfg:
-        documented: false
-        realname: /nooptcfg
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nooptdidat:
-        documented: false
-        realname: /nooptdidat
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nooptgids:
-        documented: false
-        realname: /nooptgids
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nooptidata:
-        documented: false
-        realname: /nooptidata
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/nooptidata.htm
       nooptrefbeforeltcg:
-        documented: false
-        realname: /nooptrefbeforeltcg
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       noopttls:
-        documented: false
-        realname: /noopttls
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       novcfeature:
-        documented: false
-        realname: /novcfeature
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       noxdatamerge:
-        documented: false
-        realname: /noxdatamerge
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       nxcompat:
-        documented: true
-        msdocs-moniker: nxcompat-compatible-with-data-execution-prevention
+        documented: msdocs.link://nxcompat-compatible-with-data-execution-prevention
         purpose: Marks an executable as verified to be compatible with the Windows
           Data Execution Prevention feature.
-        realname: /nxcompat
+        researched: false
+        resources: []
       objmap:
-        documented: false
-        realname: /objmap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       odr:
-        documented: false
-        realname: /odr
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       odrignore:
-        documented: false
-        realname: /odrignore
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       odrignoresamesize:
-        documented: false
-        realname: /odrignoresamesize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       onfailrepro:
-        documented: false
-        realname: /onfailrepro
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       opt:
-        documented: true
-        msdocs-moniker: opt-optimizations
+        documented: msdocs.link://opt-optimizations
         purpose: Controls LINK optimizations.
-        realname: /opt
+        researched: false
+        resources:
+        - gc.link://link/options/opt.htm
       opticfbytecomp:
-        documented: false
-        realname: /opticfbytecomp
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       order:
-        documented: true
-        msdocs-moniker: order-put-functions-in-order
+        documented: msdocs.link://order-put-functions-in-order
         purpose: Places COMDATs into the image in a predetermined order.
-        realname: /order
+        researched: false
+        resources:
+        - gc.link://link/options/order.htm
       osversion:
-        documented: false
-        realname: /osversion
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/osversion.htm
       out:
-        documented: true
-        msdocs-moniker: out-output-file-name
+        documented: msdocs.link://out-output-file-name
         purpose: Specifies the output file name.
-        realname: /out
+        researched: false
+        resources:
+        - gc.link://link/options/out.htm
       pagesize:
-        documented: false
-        realname: /pagesize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pathmap:
-        documented: false
-        realname: /pathmap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pchmap:
-        documented: false
-        realname: /pchmap
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/pchmap.htm
       pdb:
-        documented: true
-        msdocs-moniker: pdb-use-program-database
+        documented: msdocs.link://pdb-use-program-database
         purpose: Creates a PDB file.
-        realname: /pdb
+        researched: false
+        resources:
+        - gc.link://link/options/pdb.htm
       pdbaltpath:
-        documented: true
-        msdocs-moniker: pdbaltpath-use-alternate-pdb-path
+        documented: msdocs.link://pdbaltpath-use-alternate-pdb-path
         purpose: Uses an alternate location to save a PDB file.
-        realname: /pdbaltpath
+        researched: false
+        resources:
+        - gc.link://link/options/pdbaltpath.htm
       pdbcompress:
-        documented: false
-        realname: /pdbcompress
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/pdbcompress.htm
       pdbdbgqsize:
-        documented: false
-        realname: /pdbdbgqsize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbdbgst:
-        documented: false
-        realname: /pdbdbgst
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbdll:
-        documented: false
-        realname: /pdbdll
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbmap:
-        documented: false
-        realname: /pdbmap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbmodclosethreads:
-        documented: false
-        realname: /pdbmodclosethreads
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbpagesize:
-        documented: false
-        realname: /pdbpagesize
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbpath:
-        documented: false
-        realname: /pdbpath
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/pdbpath.htm
       pdbrpc:
-        documented: false
-        realname: /pdbrpc
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbstripped:
-        documented: true
-        msdocs-moniker: pdbstripped-strip-private-symbols
+        documented: msdocs.link://pdbstripped-strip-private-symbols
         purpose: Creates a PDB file that has no private symbols.
-        realname: /pdbstripped
+        researched: false
+        resources:
+        - gc.link://link/options/pdbstripped.htm
       pdbthreads:
-        documented: false
-        realname: /pdbthreads
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pdbtmcache:
-        documented: false
-        realname: /pdbtmcache
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pgd:
-        documented: true
-        msdocs-moniker: pgd-specify-database-for-profile-guided-optimizations
+        documented: msdocs.link://pgd-specify-database-for-profile-guided-optimizations
         purpose: Specifies a *`.pgd`* file for profile-guided optimizations.
-        realname: /pgd
+        researched: false
+        resources:
+        - gc.link://link/options/pgd.htm
       pogonoshare:
-        documented: false
-        realname: /pogonoshare
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       pogosafemode:
-        documented: true
-        msdocs-moniker: pogosafemode-linker-option
+        documented: msdocs.link://pogosafemode-linker-option
         purpose: '**Obsolete** Creates a thread-safe PGO instrumented build.'
-        realname: /pogosafemode
-      prefetch:
-        documented: false
-        realname: /prefetch
         researched: false
+        resources: []
+      prefetch:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       profile:
-        documented: true
-        msdocs-moniker: profile-performance-tools-profiler
+        documented: msdocs.link://profile-performance-tools-profiler
         purpose: Produces an output file that can be used with the Performance Tools
           profiler.
-        realname: /profile
+        researched: false
+        resources:
+        - gc.link://link/options/profile.htm
       rc:
-        documented: false
-        realname: /rc
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       re:
-        documented: false
-        realname: /re
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/re.htm
+      release:
+        documented: msdocs.link://release-set-the-checksum
+        purpose: Sets the Checksum in the *`.exe`* header.
+        researched: false
+        resources:
+        - gc.link://link/options/release.htm
       reportnoncomdatguardfunc:
-        documented: false
-        realname: /reportnoncomdatguardfunc
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       retryonfileopenfailure:
-        documented: false
-        realname: /retryonfileopenfailure
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       runbelow4gb:
-        documented: false
-        realname: /runbelow4gb
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       safeseh:
-        documented: true
-        msdocs-moniker: safeseh-image-has-safe-exception-handlers
+        documented: msdocs.link://safeseh-image-has-safe-exception-handlers
         purpose: Specifies that the image will contain a table of safe exception handlers.
-        realname: /safeseh
+        researched: false
+        resources: []
       savebaserelocations:
-        documented: false
-        realname: /savebaserelocations
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       section:
-        documented: true
-        msdocs-moniker: section-specify-section-attributes
+        documented: msdocs.link://section-specify-section-attributes
         purpose: Overrides the attributes of a section.
-        realname: /section
+        researched: false
+        resources:
+        - gc.link://link/options/section.htm
       sectionlayout:
-        documented: false
-        realname: /sectionlayout
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       simarm:
-        documented: false
-        realname: /simarm
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       simarm64:
-        documented: false
-        realname: /simarm64
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       skipincrementalchecks:
-        documented: false
-        realname: /skipincrementalchecks
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       sourcelink:
-        documented: true
-        msdocs-moniker: sourcelink
+        documented: msdocs.link://sourcelink
         purpose: Specifies a SourceLink file to add to the PDB.
-        realname: /sourcelink
+        researched: false
+        resources: []
       sourcemap:
-        documented: false
-        realname: /sourcemap
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/sourcemap.htm
       spdembed:
-        documented: false
-        realname: /spdembed
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       spdidstr:
-        documented: false
-        realname: /spdidstr
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       spdin:
-        documented: false
-        realname: /spdin
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       spdindex:
-        documented: false
-        realname: /spdindex
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       spgo:
-        documented: false
-        realname: /spgo
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       stack:
-        documented: true
-        msdocs-moniker: stack-stack-allocations
+        documented: msdocs.link://stack-stack-allocations
         purpose: Sets the size of the stack in bytes.
-        realname: /stack
+        researched: false
+        resources: []
       stricticfthunkalign:
-        documented: false
-        realname: /stricticfthunkalign
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       striprtti:
-        documented: false
-        realname: /striprtti
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       stub:
-        documented: true
-        msdocs-moniker: stub-ms-dos-stub-file-name
+        documented: msdocs.link://stub-ms-dos-stub-file-name
         purpose: Attaches an MS-DOS stub program to a Win32 program.
-        realname: /stub
-      subsystem:
-        documented: true
-        msdocs-moniker: subsystem-specify-subsystem
-        purpose: Tells the operating system how to run the *`.exe`* file.
-        realname: /subsystem
-      subsystemversion:
-        documented: false
-        realname: /subsystemversion
         researched: false
+        resources:
+        - gc.link://link/options/stub.htm
+      subsystem:
+        documented: msdocs.link://subsystem-specify-subsystem
+        purpose: Tells the operating system how to run the *`.exe`* file.
+        researched: false
+        resources:
+        - gc.link://link/options/subsystem.htm
+      subsystemversion:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       swaprun:
-        documented: true
-        msdocs-moniker: swaprun-load-linker-output-to-swap-file
+        documented: msdocs.link://swaprun-load-linker-output-to-swap-file
         purpose: Tells the operating system to copy the linker output to a swap file
           before it's run.
-        realname: /swaprun
+        researched: false
+        resources:
+        - gc.link://link/options/swaprun.htm
       test:
-        documented: false
-        realname: /test
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/test.htm
       throwingnew:
-        documented: false
-        realname: /throwingnew
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       time:
-        documented: true
-        msdocs-moniker: time-linker-time-information
+        documented: msdocs.link://time-linker-time-information
         purpose: Output linker pass timing information.
-        realname: /time
+        researched: false
+        resources:
+        - gc.link://link/options/time.htm
       time_plus:
-        documented: false
-        realname: /time+
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       tlbid:
-        documented: true
-        msdocs-moniker: tlbid-specify-resource-id-for-typelib
+        documented: msdocs.link://tlbid-specify-resource-id-for-typelib
         purpose: Specifies the resource ID of the linker-generated type library.
-        realname: /tlbid
-      tlbout:
-        documented: true
-        msdocs-moniker: tlbout-name-dot-tlb-file
-        purpose: Specifies the name of the *`.tlb`* file and other MIDL output files.
-        realname: /tlbout
-      trimfile:
-        documented: false
-        realname: /trimfile
         researched: false
+        resources:
+        - gc.link://link/options/tlbid.htm
+      tlbout:
+        documented: msdocs.link://tlbout-name-dot-tlb-file
+        purpose: Specifies the name of the *`.tlb`* file and other MIDL output files.
+        researched: false
+        resources:
+        - gc.link://link/options/tlbout.htm
+      trimfile:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       tsaware:
-        documented: true
-        msdocs-moniker: tsaware-create-terminal-server-aware-application
+        documented: msdocs.link://tsaware-create-terminal-server-aware-application
         purpose: Creates an application that is designed specifically to run under
           Terminal Server.
-        realname: /tsaware
+        researched: false
+        resources:
+        - gc.link://link/options/tsaware.htm
       useprofile:
-        documented: true
-        msdocs-moniker: useprofile
+        documented: msdocs.link://useprofile
         purpose: Uses profile-guided optimization training data to create an optimized
           image.
-        realname: /useprofile
+        researched: false
+        resources: []
       verbose:
-        documented: true
-        msdocs-moniker: verbose-print-progress-messages
+        documented: msdocs.link://verbose-print-progress-messages
         purpose: Prints linker progress messages.
-        realname: /verbose
+        researched: false
+        resources:
+        - gc.link://link/options/verbose.htm
       version:
-        documented: true
-        msdocs-moniker: version-version-information
+        documented: msdocs.link://version-version-information
         purpose: Assigns a version number.
-        realname: /version
+        researched: false
+        resources:
+        - gc.link://link/options/version.htm
       vulcannotrecognizenewdelaythunk:
-        documented: false
-        realname: /vulcannotrecognizenewdelaythunk
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       warnduplicatesections:
-        documented: false
-        realname: /warnduplicatesections
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdcfg:
-        documented: false
-        realname: /wbrdcfg
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrddll:
-        documented: false
-        realname: /wbrddll
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdlog:
-        documented: false
-        realname: /wbrdlog
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdreporterrors:
-        documented: false
-        realname: /wbrdreporterrors
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdschema:
-        documented: false
-        realname: /wbrdschema
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdsummary:
-        documented: false
-        realname: /wbrdsummary
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wbrdtestencrypt:
-        documented: false
-        realname: /wbrdtestencrypt
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       weakorder:
-        documented: false
-        realname: /weakorder
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wholearchive:
-        documented: true
-        msdocs-moniker: wholearchive-include-all-library-object-files
+        documented: msdocs.link://wholearchive-include-all-library-object-files
         purpose: Includes every object file from specified static libraries.
-        realname: /wholearchive
-      win32version:
-        documented: false
-        realname: /win32version
         researched: false
+        resources: []
+      win32version:
+        documented: null
+        purpose: null
+        researched: false
+        resources: []
       winmd:
-        documented: true
-        msdocs-moniker: winmd-generate-windows-metadata
+        documented: msdocs.link://winmd-generate-windows-metadata
         purpose: Enables generation of a Windows Runtime Metadata file.
-        realname: /winmd
+        researched: false
+        resources: []
       winmddelaysign:
-        documented: true
-        msdocs-moniker: winmddelaysign-partially-sign-a-winmd
+        documented: msdocs.link://winmddelaysign-partially-sign-a-winmd
         purpose: Partially signs a Windows Runtime Metadata (*`.winmd`*) file by placing
           the public key in the winmd file.
-        realname: /winmddelaysign
+        researched: false
+        resources: []
       winmdfile:
-        documented: true
-        msdocs-moniker: winmdfile-specify-winmd-file
+        documented: msdocs.link://winmdfile-specify-winmd-file
         purpose: Specifies the file name for the Windows Runtime Metadata (winmd)
           output file that's generated by the [`/WINMD`](winmd-generate-windows-metadata.md)
           linker option.
-        realname: /winmdfile
+        researched: false
+        resources: []
       winmdkeycontainer:
-        documented: true
-        msdocs-moniker: winmdkeycontainer-specify-key-container
+        documented: msdocs.link://winmdkeycontainer-specify-key-container
         purpose: Specifies a key container to sign a Windows Metadata file.
-        realname: /winmdkeycontainer
+        researched: false
+        resources: []
       winmdkeyfile:
-        documented: true
-        msdocs-moniker: winmdkeyfile-specify-winmd-key-file
+        documented: msdocs.link://winmdkeyfile-specify-winmd-key-file
         purpose: Specifies a key or key pair to sign a Windows Runtime Metadata file.
-        realname: /winmdkeyfile
+        researched: false
+        resources: []
       winmdmap:
-        documented: false
-        realname: /winmdmap
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       winmdsignhash:
-        documented: false
-        realname: /winmdsignhash
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       winmdversion:
-        documented: false
-        realname: /winmdversion
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wowa64:
-        documented: false
-        realname: /wowa64
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wowa64lib:
-        documented: false
-        realname: /wowa64lib
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       wx:
-        documented: true
-        msdocs-moniker: wx-treat-linker-warnings-as-errors
+        documented: msdocs.link://wx-treat-linker-warnings-as-errors
         purpose: Treats linker warnings as errors.
-        realname: /wx
+        researched: false
+        resources:
+        - gc.link://link/options/wx.htm
       x86pdata:
-        documented: false
-        realname: /x86pdata
+        documented: null
+        purpose: null
         researched: false
+        resources: []
       xoff:
-        documented: false
-        realname: /xoff
+        documented: null
+        purpose: null
         researched: false
+        resources:
+        - gc.link://link/options/xoff.htm
+    meta:
+      msdocs_entryurl: https://learn.microsoft.com/cpp/build/reference/linker-options

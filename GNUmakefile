@@ -9,6 +9,8 @@ linkexe_documented.txt: cpp-docs/docs/build/reference/linker-options.md
 	git -C cpp-docs reset --hard
 	rg  '\| \[`(/[^`]+)' -or '$$1' cpp-docs/docs/build/reference/linker-options.md |cut -d : -f 2|tr 'A-Z' 'a-z'|sort -u|tee $@
 
+msvc: black lint msvc.yaml
+
 msvc.yaml: update-yaml.py
 	./update-yaml.py -vY $@
 
@@ -37,5 +39,5 @@ vulture: $(PYSCRIPTS)
 	$@ $^
 
 .DEFAULT: all
-.PHONY: all black lint pretty prerequisites vulture msvc.yaml
+.PHONY: all black lint pretty prerequisites vulture msvc.yaml msvc
 .NOTPARALLEL: all clean rebuild CLEAN REBUILD

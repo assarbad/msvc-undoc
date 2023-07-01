@@ -1,4 +1,5 @@
 black
 flake8
+jinja2
 vulture
 PyYAML
