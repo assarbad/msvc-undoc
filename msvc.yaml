@@ -50,7 +50,9 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
+        - https://stackoverflow.com/q/33790425
       appcontainer:
         documented: msdocs.link://appcontainer-windows-store-app
         purpose: Specifies whether the app must run within an appcontainer process
@@ -172,6 +174,7 @@ msvc:
         researched: false
         resources:
         - gc.link://link/options/b2.htm
+        - https://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
       base:
         documented: msdocs.link://base-base-address
         purpose: Sets a base address for the program.
@@ -189,6 +192,12 @@ msvc:
         researched: false
         resources:
         - gc.link://link/options/brepro.htm
+        - https://chromium.googlesource.com/chromium/src/build/config/+/refs/heads/main/win/BUILD.gn
+        - https://developercommunity.visualstudio.com/t/linker-invoked-with-brepro-and-map-options-produce/1193550
+        - https://lectem.github.io/msvc/reverse-engineering/build/2019/01/21/MSVC-hidden-flags.html
+        - https://nikhilism.com/post/2020/windows-deterministic-builds/
+        - https://skanthak.homepage.t-online.de/nomsvcrt.html
+        - https://stackoverflow.com/q/75891687
       cetcompat:
         documented: msdocs.link://cetcompat
         purpose: Marks the binary as CET Shadow Stack compatible.
@@ -224,12 +233,15 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://bearwindows.zcm.com.au/msvc.htm
+        - https://github.com/rust-lang/cc-rs/issues/552
       clrnetcore:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://stackoverflow.com/q/69287988
       clrrvaentry:
         documented: null
         purpose: null
@@ -239,13 +251,16 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://github.com/ENikS/Boost-MSBuild/blob/master/linkflags.xml
+        - https://github.com/halmd-org/cmake-cuda/blob/master/Source/cmVS12LinkFlagTable.h
       clrsupportlasterror:
         documented: msdocs.link://clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls
         purpose: Preserves the last error code of functions that are called through
           the P/Invoke mechanism.
         researched: false
-        resources: []
+        resources:
+        - https://bearwindows.zcm.com.au/msvc.htm
       clrsupportlasterrordll:
         documented: null
         purpose: null
@@ -290,11 +305,14 @@ msvc:
         researched: false
         resources:
         - gc.link://link/options/d2.htm
+        - https://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
+        - https://lectem.github.io/msvc/reverse-engineering/build/2019/01/21/MSVC-hidden-flags.html
       db:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://www.geoffchappell.com/studies/msvc/link/index.htm
       debug:
         documented: msdocs.link://debug-generate-debug-info
         purpose: Creates debugging information.
@@ -357,6 +375,7 @@ msvc:
         researched: false
         resources:
         - gc.link://link/options/disallowlib.htm
+        - https://stackoverflow.com/q/761394
       discardtrack:
         documented: null
         purpose: null
@@ -372,7 +391,8 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://github.com/dotnet/wpf/blob/main/eng/WpfArcadeSdk/tools/Wpf.Cpp.props
       driver:
         documented: msdocs.link://driver-windows-nt-kernel-mode-driver
         purpose: Creates a kernel mode driver.
@@ -394,7 +414,11 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://devblogs.microsoft.com/cppblog/c-edit-and-continue-in-visual-studio-2015-update-3/
+        - https://github.com/MicrosoftDocs/visualstudio-docs/blob/main/docs/debugger/supported-code-changes-cpp.md
+        - https://learn.microsoft.com/cpp/error-messages/tool-errors/linker-tools-warning-lnk4075
+        - https://stackoverflow.com/q/36893621
       emitasx64image:
         documented: null
         purpose: null
@@ -409,17 +433,29 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://davidesnotes.com/articles/1/
+        - https://developercommunity.visualstudio.com/t/msbuild-c-linker-additionaloptions-issue/1332294
+        - https://github.com/mcountryman/min-sized-rust-windows/blob/master/build.rs
+        - https://malware.news/t/add-admin-tiny-exe-to-add-administrative-account/40453
+        - https://stackoverflow.com/q/45538668
+        - https://www.codeproject.com/Articles/5317556/Creating-Your-Very-Own-x64-PE-Packer-Protector-fro
+        - https://xavibel.com/2023/01/18/shellcode-windows-x86-create-administrator-user-dynamic-peb-edt/
       emittoolversioninfo:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://developercommunity.visualstudio.com/t/add-linker-option-to-strip-rich-stamp-from-exe-hea/740443
+        - https://github.com/tringi/atomlist/blob/master/AtomList.vcxproj
+        - https://news.ycombinator.com/item?id=32922732
+        - https://stackoverflow.com/q/75870910
       emitvolatilemetadata:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://github.com/ScienceDiscoverer/npp_msvc_ide/blob/main/ccargs.cpp
       enclave:
         documented: null
         purpose: null
@@ -452,12 +488,16 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://bugs.chromium.org/p/chromium/issues/detail?id=126502
+        - https://stackoverflow.com/q/1742568
       experimental:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://developercommunity.visualstudio.com/t/support-experimentaldeterministic-for-ccli-compila/1347675
+        - https://github.com/bazelbuild/bazel/issues/9466
       export:
         documented: msdocs.link://export-exports-a-function
         purpose: Exports a function.
@@ -473,19 +513,26 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://github.com/rust-lang/cc-rs/issues/552
       fastfail:
         documented: null
+        notes: officially documented for `cl.exe`, but has no dedicated page
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://bugs.chromium.org/p/chromium/issues/detail?id=597549
+        - https://github.com/MicrosoftDocs/cpp-docs/issues/1079
+        - https://reviews.llvm.org/D64352
       fastgenprofile:
         documented: null
+        notes: actually documented
         purpose: null
         researched: false
         resources: []
       fe:
         documented: null
+        notes: related to cl.exe option `/Fe`?
         purpose: null
         researched: false
         resources:
@@ -523,6 +570,7 @@ msvc:
         - gc.link://link/options/fullbuild.htm
       funcoverride:
         documented: null
+        notes: related to ARM assembelr option? https://learn.microsoft.com/cpp/assembler/arm/arm-assembler-command-line-reference
         purpose: null
         researched: false
         resources: []
@@ -553,6 +601,7 @@ msvc:
         resources: []
       genprofile:
         documented: null
+        notes: actually documented
         purpose: null
         researched: false
         resources: []
@@ -565,7 +614,9 @@ msvc:
         documented: null
         purpose: null
         researched: false
-        resources: []
+        resources:
+        - https://mixxx.discourse.group/t/issues-building-mixxx-with-visual-studio-community-2015/16179
+        - https://reviews.llvm.org/D58132
       heap:
         documented: msdocs.link://heap-set-heap-size
         purpose: Sets the size of the heap, in bytes.

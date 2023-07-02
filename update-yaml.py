@@ -196,8 +196,6 @@ def process_link_cmd(linkdata: dict, metadata: dict) -> dict:
             del newvalues["msdocs-moniker"]
         newvalues["researched"] = newvalues["researched"] if "researched" in newvalues else False
         geoffchappellcom_url = get_switch_uri_geoffchappellcom(realname)
-        if geoffchappellcom_url:
-            newvalues["resources"] = [geoffchappellcom_url]
         newvalues = add_msdocs_references(newvalues, realname)
         if "resources" in newvalues:
             assert isinstance(newvalues["resources"], (list, set, tuple)), "expected a list, set or tuple here"
@@ -211,6 +209,8 @@ def process_link_cmd(linkdata: dict, metadata: dict) -> dict:
         resources = set(newvalues["resources"])
         if None in resources:
             resources.remove(None)
+        if geoffchappellcom_url:
+            resources.add(geoffchappellcom_url)
         newvalues["resources"] = sorted(resources)
         newcmdln[switch] = newvalues
     linkdata["cmdline"] = newcmdln
