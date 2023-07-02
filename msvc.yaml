@@ -539,9 +539,11 @@ msvc:
         resources:
         - https://github.com/MicrosoftDocs/cpp-docs/issues/1079
       fastgenprofile:
-        documented: null
+        documented: msdocs.link://genprofile-fastgenprofile-generate-profiling-instrumented-build
         notes: actually documented
-        purpose: null
+        purpose: Both of these options specify generation of a *`.pgd`* file by the
+          linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE
+          use different default parameters.
         researched: false
         resources: []
       fe:
@@ -614,9 +616,11 @@ msvc:
         researched: false
         resources: []
       genprofile:
-        documented: null
+        documented: msdocs.link://genprofile-fastgenprofile-generate-profiling-instrumented-build
         notes: actually documented
-        purpose: null
+        purpose: Both of these options specify generation of a *`.pgd`* file by the
+          linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE
+          use different default parameters.
         researched: false
         resources: []
       guard:

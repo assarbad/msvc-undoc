@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.3"
+__version__ = "0.3.1"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -64,21 +64,27 @@ def read_link_msdocs(fname: Path) -> dict:
     docs = {}
     with suppress(FileNotFoundError):
         with open(fname, "r") as docfile:
-            reobj = re.compile(r"^\|\s+?\[`(/[^`]+)`\]\(([^\)]+)\)\s+?\|\s+(.+?)\s+?\|$")
+            reobj = re.compile(r"^\|\s+?\[`(/.+)`\]\(([^\)]+)\)\s+?\|\s+(.+?)\s+?\|$")
             lines = [line.strip() for line in docfile.readlines()]
             for line in lines:
                 match = reobj.search(line)
                 if match:
-                    realname = match.group(1).lower()
+                    realnames = match.group(1).lower()
                     markdown = match.group(2).strip()
                     purpose = match.group(3).strip()
                     parts = markdown.rpartition(".")
                     if parts[2] in {"md"}:
                         markdown = parts[0]
-                    assert realname not in docs, f"{realname} already in docs dict!"
-                    docs[realname] = {}
-                    docs[realname]["markdown"] = markdown
-                    docs[realname]["purpose"] = purpose
+                    if r"`" in realnames or "," in realnames:
+                        realnames = realnames.replace("`", "").replace(" ", "")
+                        realnames = realnames.split(",")
+                    else:
+                        realnames = [realnames]
+                    for realname in realnames:
+                        assert realname not in docs, f"{realname} already in docs dict!"
+                        docs[realname] = {}
+                        docs[realname]["markdown"] = markdown
+                        docs[realname]["purpose"] = purpose
         assert docs, "docs dict appears to be empty?! ... that's rather unexpected"
     return docs
 
@@ -90,6 +96,7 @@ def get_linkexe_switch_traits_msdocs(realname: str) -> dict:
         The returned hash is either the following, or an empty hash:
             {"markdown": "<a moniker>", "purpose": "<purpose as per msdocs>" }
     """
+    # TODO: move that as configurable item into the YAML file
     fname = Path(__file__).absolute().parent / "cpp-docs/docs/build/reference/linker-options.md"
     docs = read_link_msdocs(fname)
     if not docs:
@@ -104,8 +111,10 @@ def read_uri_geoffchappellcom() -> dict:
 
         Returns a hash keyed on the real name of the link.exe switch
     """
+    # TODO: move that as configurable item into the YAML file
     parentdir = Path(__file__).absolute().parent / "msvc"
     parentdir = parentdir.resolve()
+    # TODO: move that as configurable item into the YAML file
     linkdir = parentdir / "link"
     switchre = re.compile(r'<span\s+?class="switch">(/[^<]+?)</span>')
     arefre = re.compile(r'<a\s+?href="([^"]+?)">(/[^<]+?)</a>')
