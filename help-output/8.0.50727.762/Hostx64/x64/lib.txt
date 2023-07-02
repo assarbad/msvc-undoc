@@ -1,0 +1,27 @@
+Microsoft (R) Library Manager Version 8.00.50727.762
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+usage: LIB [options] [files]
+
+   options:
+
+      /DEF[:filename]
+      /ERRORREPORT:{NONE|PROMPT|QUEUE|SEND}
+      /EXPORT:symbol
+      /EXTRACT:membername
+      /INCLUDE:symbol
+      /LIBPATH:dir
+      /LIST[:filename]
+      /LTCG
+      /MACHINE:{ARM|EBC|IA64|MIPS|MIPS16|MIPSFPU|MIPSFPU16|
+                SH4|THUMB|X64|X86}
+      /NAME:filename
+      /NODEFAULTLIB[:library]
+      /NOLOGO
+      /OUT:filename
+      /REMOVE:membername
+      /SUBSYSTEM:{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|
+                  EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|
+                  NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+      /VERBOSE
+      /WX[:NO]

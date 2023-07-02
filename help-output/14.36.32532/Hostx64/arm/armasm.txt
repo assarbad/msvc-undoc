@@ -1,0 +1,10 @@
+Microsoft (R) ARM Macro Assembler Version 14.36.32534.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+error A2029: unknown command-line argument or argument value /?
+
+
+ Usage:      armasm [<options>] sourcefile objectfile
+             armasm [<options>] -o objectfile sourcefile
+             armasm -h              for help
+

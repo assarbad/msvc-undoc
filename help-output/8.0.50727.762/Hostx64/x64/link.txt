@@ -1,0 +1,81 @@
+Microsoft (R) Incremental Linker Version 8.00.50727.762
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ usage: LINK [options] [files] [@commandfile]
+
+   options:
+
+      /ALIGN:#
+      /ALLOWBIND[:NO]
+      /ALLOWISOLATION[:NO]
+      /ASSEMBLYDEBUG[:DISABLE]
+      /ASSEMBLYLINKRESOURCE:filename
+      /ASSEMBLYMODULE:filename
+      /ASSEMBLYRESOURCE:filename[,[name][,PRIVATE]]
+      /BASE:{address[,size]|@filename,key}
+      /CLRIMAGETYPE:{IJW|PURE|SAFE}
+      /CLRSUPPORTLASTERROR[:{NO|SYSTEMDLL}]
+      /CLRTHREADATTRIBUTE:{STA|MTA|NONE}
+      /CLRUNMANAGEDCODECHECK[:NO]
+      /DEBUG
+      /DEF:filename
+      /DEFAULTLIB:library
+      /DELAY:{NOBIND|UNLOAD}
+      /DELAYLOAD:dll
+      /DELAYSIGN[:NO]
+      /DLL
+      /DRIVER[:{UPONLY|WDM}]
+      /ENTRY:symbol
+      /ERRORREPORT:{NONE|PROMPT|QUEUE|SEND}
+      /EXPORT:symbol
+      /FIXED[:NO]
+      /FORCE[:{MULTIPLE|UNRESOLVED}]
+      /FUNCTIONPADMIN[:size]
+      /HEAP:reserve[,commit]
+      /IDLOUT:filename
+      /IGNOREIDL
+      /IMPLIB:filename
+      /INCLUDE:symbol
+      /INCREMENTAL[:NO]
+      /KEYCONTAINER:name
+      /KEYFILE:filename
+      /LARGEADDRESSAWARE[:NO]
+      /LIBPATH:dir
+      /LTCG[:{NOSTATUS|PGINSTRUMENT|PGOPTIMIZE|PGUPDATE|STATUS}]
+      /MACHINE:{ARM|EBC|IA64|MIPS|MIPS16|MIPSFPU|MIPSFPU16|
+                SH4|THUMB|X64|X86}
+      /MANIFEST[:NO]
+      /MANIFESTDEPENDENCY:manifest dependency
+      /MANIFESTFILE:filename
+      /MAP[:filename]
+      /MAPINFO:{EXPORTS}
+      /MERGE:from=to
+      /MIDL:@commandfile
+      /NOASSEMBLY
+      /NODEFAULTLIB[:library]
+      /NOENTRY
+      /NOLOGO
+      /NXCOMPAT[:NO]
+      /OPT:{ICF[=iterations]|NOICF|NOREF|NOWIN98|REF|WIN98}
+      /ORDER:@filename
+      /OUT:filename
+      /PDB:filename
+      /PDBSTRIPPED:filename
+      /PGD:filename
+      /PROFILE
+      /RELEASE
+      /SAFESEH[:NO]
+      /SECTION:name,[[!]{DEKPRSW}][,ALIGN=#]
+      /STACK:reserve[,commit]
+      /STUB:filename
+      /SUBSYSTEM:{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|
+                  EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|
+                  NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+      /SWAPRUN:{CD|NET}
+      /TLBID:#
+      /TLBOUT:filename
+      /TSAWARE[:NO]
+      /VERBOSE[:{ICF|LIB|REF|SAFESEH}]
+      /VERSION:#[.#]
+      /WINDOWSCE:{CONVERT|EMULATION}
+      /WX[:NO]

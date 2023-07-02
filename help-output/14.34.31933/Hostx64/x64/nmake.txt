@@ -1,0 +1,25 @@
+Usage:  NMAKE @commandfile
+	NMAKE [options] [/f makefile] [/x stderrfile] [macrodefs] [targets]
+
+Options:
+
+/A Build all evaluated targets
+/B Build if time stamps are equal
+/C Suppress output messages
+/D Display build information
+/E Override env-var macros
+/ERRORREPORT:{NONE|PROMPT|QUEUE|SEND} Report errors to Microsoft
+/G Display !include filenames
+/HELP Display brief usage message
+/I Ignore exit codes from commands
+/K Build unrelated targets on error
+/N Display commands but do not execute
+/NOLOGO Suppress copyright message
+/P Display NMAKE information
+/Q Check time stamps but do not build
+/R Ignore predefined rules/macros
+/S Suppress executed-commands display
+/T Change time stamps but do not build
+/U Dump inline files
+/Y Disable batch-mode
+/W Display full command of any failed child process
