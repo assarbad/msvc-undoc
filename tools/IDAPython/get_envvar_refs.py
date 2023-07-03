@@ -14,6 +14,7 @@ env_interesting_funcs = {
     "putenv_s": {"reg": "rcx"},  # varname -> rcx
     "getenv_s": {"reg": "r9"},  # varname -> r9
     "getenv": {"reg": "rcx"},  # varname -> rcx
+    "dupenv_s": {"reg": "r8"},  # varname -> r8
     "GetEnvironmentStrings": {"reg": "rax"},  # <= rax
     "SetEnvironmentStrings": {"reg": "rcx"},  # varblock -> rcx
     "GetEnvironmentVariableA": {"reg": "rcx"},  # varname -> rcx
@@ -84,6 +85,7 @@ def main():
         for ref in idautils.XrefsTo(ea):
             refsbyea[ref.frm] = analyze_envvar_call(name, ref.frm)
         env_refs[key] = refsbyea
+    digdeeper = {}
     for (ea, name), byea_dict in env_refs.items():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
@@ -91,11 +93,15 @@ def main():
             if op2.strlit:
                 env_varnames.add(op2.strlit)
                 print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}"')
-            else:
+            else:  # those are candidates for a deeper search
+                digdeeper[insn_ea] = byea
                 print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=})")
     print(60 * "=")
     for varname in sorted(env_varnames):
         print(varname)
+    print(f"{len(digdeeper)=}")
+    for ea, byea in digdeeper.items():
+        print(f"{ea:#x} {byea}")
 
 
 if __name__ == "__main__":

@@ -67,9 +67,7 @@ def parse_options() -> argparse.Namespace:
     parser.add_argument("--nologo", action="store_const", dest="nologo", const=True, help="Don't show info about this script.")
     parser.add_argument("-Y", "--yaml", action="store", default=cfg.get("msvc.yaml", "path"), type=Path, help="YAML file to work with")
     parser.add_argument("-i", "--input", action="store", required=True, type=Path, help="Input Jinja2 template")
-    parser.add_argument(
-        "-d", "--outdir", "--output-directory", default=cfg.get("docs", "outdir"), action="store", type=Path, help="Input Jinja2 template"
-    )
+    parser.add_argument("-d", "--outdir", "--output-directory", default=cfg.get("docs", "outdir"), action="store", type=Path, help="Input Jinja2 template")
     parser.add_argument("-v", "--verbose", action="count", default=0, help="Turn up verbosity to see more details of what is going on.")
     return cfg, parser.parse_args()
 
