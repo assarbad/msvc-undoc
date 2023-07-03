@@ -1,7 +1,4 @@
 .venv/
-cpp-docs/
-link/
-msvc
-msvc/
+tools/mirrors/
 *.txt
 *.backup.*
