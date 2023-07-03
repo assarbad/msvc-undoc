@@ -1,0 +1,38 @@
+# The linker: `link.exe`
+
+## Switches for `link.exe`
+
+NB: the following list has not yet been checked and mostly contains findings from looking at `link.exe` in raw form. Some of the arguments to invididual command line switches certainly require more research and confirmation.
+
+Also note: not all findings will apply to older or newer versions of the toolchain.
+
+The undocumented or barely mentioned switches are in bold, [the documented ones][1] are not.
+
+| Command line switch                        | Description                                        |
+|--------------------------------------------|----------------------------------------------------|
+
+## Environment variables for `link.exe`
+
+| Environment variable               | Description                                        |
+|------------------------------------|----------------------------------------------------|
+
+Used (and populated) internally for `/pdbaltpath`:
+
+* `_EXT`
+* `_PDB`
+
+## Glossary (guessed)
+
+* POGO: Profile Guided Optimization
+* wrbrd, "warbird" ... some sort of (prototypical?) technology
+
+## Subjects of the study
+
+Subject of the study: MSVC 14.34.31933, x64 version, targeting x64 (this is expected to change over time)
+  * File Version: 14.34.31937.0
+  * Product Version: 14.34.31937.0
+  * File Description: Microsoft® Incremental Linker
+  * Original Filename: `LINK.EXE`
+
+
+[1]: https://learn.microsoft.com/cpp/build/reference/linker-options

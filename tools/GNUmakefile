@@ -1,4 +1,4 @@
-PYSCRIPTS:=update-yaml.py IDAPython/get_envvar_refs.py
+PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/get_envvar_refs.py
 all: linkexe_documented.txt black lint vulture msvc.yaml
 
 mirrors/cpp-docs/docs/build/reference/linker-options.md:
@@ -13,6 +13,13 @@ msvc: black lint ../msvc.yaml
 
 ../msvc.yaml: update-yaml.py
 	./update-yaml.py -vY $@
+
+../%: %.j2
+	./update-docs.py -vY ../msvc.yaml -i $< -d $(dir $@)
+
+../LINK.exe.md: ./update-yaml.py
+
+docs: ../LINK.exe.md
 
 clean:
 	rm -f linkexe_documented.txt
@@ -41,5 +48,5 @@ vulture: $(PYSCRIPTS)
 check: pretty lint vulture
 
 .DEFAULT: all
-.PHONY: all black check lint pretty prerequisites vulture msvc ../msvc.yaml
-.NOTPARALLEL: all clean rebuild CLEAN REBUILD
+.PHONY: all black check docs lint pretty prerequisites vulture msvc ../msvc.yaml
+.NOTPARALLEL: all clean docs rebuild CLEAN REBUILD

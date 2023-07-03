@@ -294,7 +294,7 @@ if __name__ == "__main__":
     global cfg
     cfg, args = parse_options()
     try:
-        sys.exit(main(**vars(args)))
+        sys.exit(main())
     except SystemExit:
         pass
     except ImportError:
