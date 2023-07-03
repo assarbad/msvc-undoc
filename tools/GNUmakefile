@@ -18,7 +18,7 @@ clean:
 	rm -f linkexe_documented.txt
 
 CLEAN: clean
-	rm -rf mirrors/cpp-docs msvc.backup.yaml
+	rm -rf mirrors/cpp-docs ../msvc.backup.yaml ../msvc.dryrun.yaml
 
 rebuild: clean all
 
@@ -38,6 +38,8 @@ black: $(PYSCRIPTS)
 vulture: $(PYSCRIPTS)
 	$@ $^
 
+check: pretty lint vulture
+
 .DEFAULT: all
-.PHONY: all black lint pretty prerequisites vulture msvc
+.PHONY: all black check lint pretty prerequisites vulture msvc ../msvc.yaml
 .NOTPARALLEL: all clean rebuild CLEAN REBUILD

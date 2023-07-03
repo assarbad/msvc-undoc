@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -31,28 +31,52 @@ eprint = partial(print, file=sys.stderr)
 
 # Checking for compatibility with Python version
 if not sys.version_info[:2] in __compatible__:
-    sys.exit(
-        "This script is only compatible with the following Python versions: %s." % (", ".join(["%d.%d" % (z[0], z[1]) for z in __compatible__]))
-    )  # pragma: no cover
+    sys.exit(f"This script is only compatible with the following Python versions: {', '.join([f'{z[0]}.{z[1]}' for z in __compatible__])}")  # pragma: no cover
 
 
-def parse_args() -> argparse.Namespace:
+def parse_options() -> argparse.Namespace:
     """\
         Initializes the argument parser and performs the parsing
     """
     from argparse import ArgumentParser
+    from configparser import ConfigParser
+    from textwrap import dedent
 
-    parser = ArgumentParser(description="Update YAML with command line switch descriptions")
+    thisdir = Path(__file__).absolute().parent
+    ininame = thisdir / "msvc-undoc.ini"
+    cfg = ConfigParser(defaults={"thisdir": thisdir}, delimiters=("=",))
+    cfg.read_string(
+        dedent(
+            f"""
+            [msvc.yaml]
+            path = {thisdir}/../msvc.yaml
+
+            [help-output]
+            path = {thisdir}/../help-output
+
+            [mirrors]
+            cpp-docs = {thisdir}/mirrors/cpp-docs
+            geoffchappell.com = {thisdir}/mirrors/msvc
+            """
+        ),
+        "<DEFAULTS>",
+    )
+
+    parser = ArgumentParser(description="Update YAML with command line switch descriptions", add_help=False)
+    # Only add the configuration file argument for starters
+    parser.add_argument("-c", "--config", "--ini", action="store", default=ininame, metavar="CFG", type=Path, help=f"The config file; defaults to {ininame}")
+    partial_args = parser.parse_known_args()[0]
+    cfg.read(partial_args.config)
+
+    # Remaining command line options
+    parser.add_argument("-h", "--help", action="help", help="Show this help message and exit")
     parser.add_argument("--nologo", action="store_const", dest="nologo", const=True, help="Don't show info about this script.")
     parser.add_argument("-n", "--dryrun", "--dry-run", action="store_true", help="Won't actually change the YAML file")
-    parser.add_argument("-Y", "--yaml", action="store", type=Path, help="YAML file to work with")
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="count",
-        default=0,
-        help="Turn up verbosity to see more details of what is going on. Use several v to increase the verbosity level, e.g. '-vvv'.",  # noqa: E501
-    )
+    parser.add_argument("-Y", "--yaml", action="store", default=cfg.get("msvc.yaml", "path"), type=Path, help="YAML file to work with")
+    parser.add_argument("--msvc", action="store", default=cfg.get("mirrors", "geoffchappell.com"), type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--cppdocs", "--cpp-docs", action="store", default=cfg.get("mirrors", "cpp-docs"), type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--helpoutput", "--help-output", action="store", default=cfg.get("help-output", "path"), type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("-v", "--verbose", action="count", default=0, help="Turn up verbosity to see more details of what is going on.")  # noqa: E501
     return parser.parse_args()
 
 
@@ -96,8 +120,7 @@ def get_linkexe_switch_traits_msdocs(realname: str) -> dict:
         The returned hash is either the following, or an empty hash:
             {"markdown": "<a moniker>", "purpose": "<purpose as per msdocs>" }
     """
-    # TODO: move that as configurable item into the YAML file
-    fname = Path(__file__).absolute().parent / "cpp-docs/docs/build/reference/linker-options.md"
+    fname = args.cppdocs / "docs/build/reference/linker-options.md"
     docs = read_link_msdocs(fname)
     if not docs:
         eprint(f"WARNING: '{realname}' failed to retrieve details from local cpp-docs clone. Respective info won't be updated!")
@@ -111,11 +134,7 @@ def read_uri_geoffchappellcom() -> dict:
 
         Returns a hash keyed on the real name of the link.exe switch
     """
-    # TODO: move that as configurable item into the YAML file
-    parentdir = Path(__file__).absolute().parent / "msvc"
-    parentdir = parentdir.resolve()
-    # TODO: move that as configurable item into the YAML file
-    linkdir = parentdir / "link"
+    linkdir = args.msvc / "link"  # e.g. via 'wget -mkEpnp ...'
     switchre = re.compile(r'<span\s+?class="switch">(/[^<]+?)</span>')
     arefre = re.compile(r'<a\s+?href="([^"]+?)">(/[^<]+?)</a>')
     lines = []
@@ -182,7 +201,7 @@ def add_msdocs_references(newvalues: dict, realname: str) -> dict:
     return newvalues
 
 
-def process_link_cmd(linkdata: dict, metadata: dict) -> dict:
+def process_link_cmd(linkdata: dict) -> dict:
     """\
         Takes as input the 'msvc.link' and 'meta' docs from the already existing msvc.yaml and enriches it
     """
@@ -245,11 +264,11 @@ def process_link_cmd(linkdata: dict, metadata: dict) -> dict:
     return linkdata
 
 
-def main(**kwargs) -> int:
+def main() -> int:
     """\
         Very simply the main entry point to this script
     """
-    inname = kwargs.get("yaml")
+    inname = args.yaml
     data = None
     with open(inname, "r") as yamlfile:
         data = yaml.safe_load(stream=yamlfile)
@@ -259,7 +278,7 @@ def main(**kwargs) -> int:
     linkcmd = process_link_cmd(data["msvc"]["link"], data)
     data["msvc"]["link"] = linkcmd
     outname = inname
-    if kwargs.get("dryrun", False):
+    if args.dryrun:
         outname = inname.with_suffix(f".dryrun{inname.suffix}")
         eprint(f"DRY RUN: writing into {str(outname)}")
     else:
@@ -275,7 +294,8 @@ def main(**kwargs) -> int:
 
 
 if __name__ == "__main__":
-    args = parse_args()
+    global args
+    args = parse_options()
     try:
         sys.exit(main(**vars(args)))
     except SystemExit:
