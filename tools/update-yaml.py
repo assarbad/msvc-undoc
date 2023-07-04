@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -151,7 +151,7 @@ def read_uri_geoffchappellcom() -> dict:
             uri = html.parent / m.group(1)
             key = m.group(2).lower().rpartition(":")[0] or m.group(2).lower()
             if key and (key not in switches or switches[key] is None):
-                switches[key] = f"gc.link://{uri.resolve().relative_to(linkdir)}"
+                switches[key] = f"gc.link://{uri.resolve().relative_to(linkdir.resolve())}"
     return {switch: uri for switch, uri in switches.items() if uri is not None}
 
 
@@ -175,8 +175,8 @@ def add_msdocs_references(newvalues: dict, realname: str) -> dict:
     if traits:
         assert "markdown" in traits, f"The 'markdown' key was missing from {traits=}"
         assert "purpose" in traits, f"The 'purpose' key was missing from {traits=}"
-        purpose = traits["purpose"] if "purpose" in traits else ""
-        moniker = traits["markdown"] if "markdown" in traits else ""
+        purpose = traits.get("purpose", None)
+        moniker = traits.get("markdown", None)
     if purpose:
         if "purpose" not in newvalues:
             newvalues["purpose"] = purpose
@@ -212,13 +212,14 @@ def process_link_cmd(linkdata: dict) -> dict:
         values = values or {}  # normalize into dict
         # Build new dict based on existing one
         newvalues = deepcopy(values or {})
-        realname = f"/{switch}" if "realname" not in newvalues else newvalues["realname"]
+        realname = newvalues.get("realname", f"/{switch}")
         both.add(realname)
-        if "realname" in newvalues and realname == newvalues["realname"]:
-            del newvalues["realname"]
+        if "realname" in newvalues:
+            if realname == f"/{switch}":
+                del newvalues["realname"]
         if "msdocs-moniker" in newvalues:
             del newvalues["msdocs-moniker"]
-        newvalues["researched"] = newvalues["researched"] if "researched" in newvalues else False
+        newvalues["researched"] = newvalues.get("researched", False)  # make sure this exists
         geoffchappellcom_url = get_switch_uri_geoffchappellcom(realname)
         newvalues = add_msdocs_references(newvalues, realname)
         if "resources" in newvalues:
@@ -268,10 +269,11 @@ def main() -> int:
     data = None
     with open(inname, "r") as yamlfile:
         data = yaml.safe_load(stream=yamlfile)
+    assert data is not None, f"Failed loading {inname.name}"
     assert "meta" in data, "Missing top-level element 'meta'"
     assert "msvc" in data, "Missing top-level element 'msvc'"
     assert "link" in data["msvc"], "Missing second-level element 'link' inside 'msvc'"
-    linkcmd = process_link_cmd(data["msvc"]["link"], data)
+    linkcmd = process_link_cmd(data["msvc"]["link"])
     data["msvc"]["link"] = linkcmd
     outname = inname
     if args.dryrun:
@@ -285,7 +287,6 @@ def main() -> int:
             os.rename(from_name, to_name)
     with open(outname, "w") as yamlout:
         yaml.safe_dump(data, stream=yamlout, explicit_start=True)
-    # https://matthewpburruss.com/post/yaml/
     return 0
 
 

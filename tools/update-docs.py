@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.1"
+__version__ = "0.2"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -15,19 +15,13 @@ __doc__ = """
     Small script to do update the documentation based on Jinja2 templates.
 """
 import argparse
-
-# import os
-# import re
+import re
 import sys
 import yaml
-
-# from contextlib import suppress
-# from copy import deepcopy
-from functools import partial
+from collections import namedtuple
+from functools import cache, partial
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
-
-# from pprint import pformat, pprint
 
 eprint = partial(print, file=sys.stderr)
 
@@ -72,6 +66,108 @@ def parse_options() -> argparse.Namespace:
     return cfg, parser.parse_args()
 
 
+CmdLineSwitch = namedtuple("CmdLineSwitch", ["name", "documented", "mentions", "purpose", "researched", "resources"])
+Binary = namedtuple("Binary", ["name", "hash", "host", "target", "toolchain", "version"])
+BinaryVersion = namedtuple("BinaryVersion", ["file", "product"])
+
+
+def populate_j2_linkvar(data: dict) -> dict:
+    switches = []
+    for key, value in data["msvc"]["link"]["cmdline"].items():
+        name = value.get("realname", f"/{key}")
+        switches.append(
+            CmdLineSwitch(
+                name,
+                value.get("documented", None),
+                value.get("mentions", []),
+                value.get("purpose", None),
+                value.get("researched", False),
+                value.get("resources", []),
+            )
+        )
+    binaries = []
+    for value in data["msvc"]["link"]["binaries"]:
+        for i in {"name", "host", "hash", "target", "toolchain", "version"}:
+            assert i in value, f"'{i}' not found in {value=}"
+        for i in {"file", "product"}:
+            assert i in value["version"], f"'{i}' not found in {value['version']=}"
+        binver = BinaryVersion(value["version"]["file"], value["version"]["product"])
+        binary = Binary(value["name"], value["host"], value["hash"], value["target"], value["toolchain"], binver)
+        binaries.append(binary)
+    assert len(binaries) == len(data["msvc"]["link"]["binaries"]), "it appears some items were lost on the way?!"
+    assert len(switches) == len(data["msvc"]["link"]["cmdline"]), "it appears some items were lost on the way?!"
+    switches = sorted(switches, key=lambda x: x.name)
+    return {"binaries": binaries, "cmdline": switches, "environment": []}
+
+
+def update_docs(template: Path, data: dict) -> int:
+    j2ldr = FileSystemLoader(searchpath=template.parent)
+    meta = data["meta"]
+    deferred_url_list = []
+    urlre = re.compile(r"(\w+?(?:\.\w+))?://(.+)")
+
+    @cache
+    def cache_meta(**kwargs):
+        gc_baseurl, gc_linkuri = kwargs.get("geoffchappell_baseurl"), kwargs.get("geoffchappell_linkuri")
+        ms_baseurl, ms_cpprefuri = kwargs.get("msdocs_baseurl"), kwargs.get("msdocs_cpprefuri")
+        assert gc_baseurl and gc_linkuri and ms_baseurl and ms_cpprefuri, "one of the kwargs was 'empty'"
+        return gc_baseurl, gc_linkuri, ms_baseurl, ms_cpprefuri
+
+    @cache
+    def resolve_url(url: str, **kwargs) -> str:
+        gc_baseurl, gc_linkuri, ms_baseurl, ms_cpprefuri = cache_meta(**kwargs)
+        match = urlre.fullmatch(url)
+        if match:
+            partone, parttwo = match.group(1), match.group(2)
+            if partone in {"msdocs.link"}:
+                return f"{ms_baseurl}/{ms_cpprefuri}/{parttwo}"
+            elif partone in {"gc.link"}:
+                return f"{gc_baseurl}/{gc_linkuri}/{parttwo}"
+            elif partone in {"https", "http"}:
+                return url
+        elif url.startswith("/"):  # assume this is over at learn.microsoft.com
+            return f"{ms_baseurl}/{url}"
+        eprint(f"{url}")
+        return None
+
+    def switchmdfmt(cmdline_switch: CmdLineSwitch) -> str:
+        if cmdline_switch.documented:
+            docsurl = resolve_url(cmdline_switch.documented, **meta)
+            return f"[`{cmdline_switch.name}`]({docsurl})"
+        return f"**`{cmdline_switch.name}`**"
+
+    def mdurl(url, text, deferred=True) -> str:
+        retval = None
+        if deferred:
+            idx = len(deferred_url_list)
+            retval = f"[{text}][{idx}]"
+            deferred_url_list.append(url)
+        else:
+            retval = f"[{text}]({url})"
+        return retval
+
+    def description(text, default="") -> str:
+        if not text:
+            return default
+        return text
+
+    j2env = Environment(loader=j2ldr)
+    j2env.filters["description"] = description
+    j2env.filters["mdurl"] = mdurl
+    j2env.filters["switchmdfmt"] = switchmdfmt
+    template_vars = {
+        "msdocs_entryurl": data["msvc"]["link"]["meta"]["msdocs_entryurl"],
+        "deferred_url_list": deferred_url_list,
+        "link": populate_j2_linkvar(data),
+        "meta": meta,
+    }
+
+    j2tmpl = j2env.get_template(str(template.name))
+    with open(template.with_suffix(""), "w") as outfile:
+        print(j2tmpl.render(**template_vars), file=outfile)
+    return 0
+
+
 def main() -> int:
     """\
         Very simply the main entry point to this script
@@ -83,13 +179,7 @@ def main() -> int:
     assert "meta" in data, "Missing top-level element 'meta'"
     assert "msvc" in data, "Missing top-level element 'msvc'"
     assert "link" in data["msvc"], "Missing second-level element 'link' inside 'msvc'"
-    j2tmpl = args.input.absolute()
-    j2ldr = FileSystemLoader(searchpath=j2tmpl.parent)
-    j2env = Environment(loader=j2ldr)
-    template = j2env.get_template(str(j2tmpl.name))
-    with open(args.input.absolute().with_suffix(""), "w") as outfile:
-        print(template.render(), file=outfile)
-    return 0
+    return update_docs(args.input.absolute(), data)
 
 
 if __name__ == "__main__":

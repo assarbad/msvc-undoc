@@ -1,7 +1,9 @@
 ---
 meta:
   geoffchappell_baseurl: https://www.geoffchappell.com/studies/msvc
-  msdocs_baseurl: https://learn.microsoft.com/cpp/build/reference
+  geoffchappell_linkuri: link
+  msdocs_baseurl: https://learn.microsoft.com
+  msdocs_cpprefuri: cpp/build/reference
 msvc:
   link:
     binaries:
@@ -167,6 +169,7 @@ msvc:
       at_responsefile:
         documented: null
         purpose: null
+        realname: '@'
         researched: false
         resources: []
       b2:
@@ -1369,6 +1372,7 @@ msvc:
       time_plus:
         documented: null
         purpose: null
+        realname: /time+
         researched: false
         resources: []
       tlbid:
