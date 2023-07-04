@@ -1,288 +1,285 @@
 # The linker: `link.exe`
 
-Subject of the study: MSVC 14.34.31933, x64 version, targeting x64 (this is expected to change over time)
-  * File Version: 14.34.31937.0
-  * Product Version: 14.34.31937.0
-  * File Description: Microsoft® Incremental Linker
-  * Original Filename: `LINK.EXE`
+## Command Line Switches for `link.exe`
 
-NB: the following list has not yet been checked and mostly contains findings from looking at `link.exe` in raw form. Some of the arguments to invididual command line switches certainly require more research and confirmation.
+NB: the following list has not yet been checked and mostly contains findings from looking at `link.exe` in raw form. Some of the arguments to individual command line switches certainly require more research and confirmation.
 
 Also note: not all findings will apply to older or newer versions of the toolchain.
 
-## Switches for `link.exe`
-
 The undocumented or barely mentioned switches are in bold, [the documented ones][1] are not.
 
-| Command line switch                        | Description                                        |
+| Command line switch                        | Purpose                                            |
 |--------------------------------------------|----------------------------------------------------|
-| `/align`                                   |                                                    |
-| `/allowbind`                               |                                                    |
-| **`/allowbadrvaforfirstsection`**          |                                                    |
-| **`/allowimagesizeover2gb`**               |                                                    |
-| `/allowisolation`                          | (:no)?                                             |
-| **`/allpdata`**                            |                                                    |
-| **`/alternatename`**                       | mentioned                                          |
-| `/appcontainer`                            | (:no)?                                             |
-| **`/arm64hazardexist`**                    |                                                    |
-| **`/arm64hazardfree`**                     |                                                    |
-| **`/arm64xaggressiverwdatafold`**          |                                                    |
-| **`/arm64xcrossresolve`**                  |                                                    |
-| **`/arm64xemulatorbuild`**                 |                                                    |
-| **`/arm64xfastforward`**                   |                                                    |
-| **`/arm64xfoldrwdata`**                    |                                                    |
-| **`/arm64xhack`**                          |                                                    |
-| **`/arm64xnewchameleonlibfmt`**            | (:no)?                                             |
-| **`/arm64xnomergeimports`**                |                                                    |
-| **`/arm64xnoreorderobjs`**                 |                                                    |
-| **`/arm64xsameaddress`**                   |                                                    |
-| **`/arm64xuselegacyffs`**                  | (:no)?                                             |
-| **`/armhazardexist`**                      |                                                    |
-| **`/armhazardfree`**                       |                                                    |
-| `/assemblydebug`                           | (:disable)?                                        |
-| `/assemblylinkresource`                    | (:private)                                         |
-| `/assemblymodule`                          |                                                    |
-| **`/assemblymodulemap`**                   |                                                    |
-| `/assemblyresource`                        | (:private)                                         |
-| **`/b2`**                                  |                                                    |
-| `/base`                                    | /base:@ (read from file?)                          |
-| **`/baserelocclustering`**                 | (:no)?                                             |
-| **`/brepro`**                              |                                                    |
-| `/cetcompat`                               | (:no)?                                             |
-| **`/cetcompatstrict`**                     | (:no)?                                             |
-| **`/cetdynamicapisinproc`**                | (:no)?                                             |
-| **`/cetipvalidationrelaxed`**              | (:no)?                                             |
-| `/cgthreads`                               | (warning CGTHREADS; LNK4271)                       |
-| `/clrimagetype`                            | ijw/pure/safe/safe32bitpreferred                   |
-| **`/clrloaderoptimization`**               | sd|md|mdh|none                                     |
-| **`/clrnetcore`**                          |                                                    |
-| **`/clrrvaentry`**                         | (:no)?                                             |
-| **`/clrsignhash`**                         | sha1/sha256/sha384/sha512                          |
-| **`/clrsupportlasterror`**                 | systemdll/no                                       |
-| **`/clrsupportlasterrordll`**              |                                                    |
-| `/clrthreadattribute`                      | sta/mta/none                                       |
-| `/clrunmanagedcodecheck`                   | (:no)?                                             |
-| **`/coffsecttopdbstrm`**                   |                                                    |
-| **`/crashondiag`**                         |                                                    |
-| **`/cvtres`**                              | folddups                                           |
-| **`/cxxmodulestrongownership`**            | (:no)?                                             |
-| **`/d2`**                                  |                                                    |
-| **`/db`**                                  |                                                    |
-| `/debug`                                   | forcefull/full/fastlink/mini/none/lazy/vc120/ctypes|
-| `/debugtype`                               | cv/fixup/pdata                                     |
-| `/def`                                     |                                                    |
-| **`/defarm64native`**                      |                                                    |
-| `/defaultlib`                              |                                                    |
-| `/delay`                                   | nobind/unload                                      |
-| `/delayload`                               |                                                    |
-| `/delaysign`                               | (:no)?                                             |
-| `/dependentloadflag`                       |                                                    |
-| **`/didatownsection`**                     |                                                    |
-| **`/disallowlib`**                         |                                                    |
-| **`/discardtrack`**                        |                                                    |
-| `/dll`                                     | system                                             |
-| **`/dllrename`**                           |                                                    |
-| `/driver`                                  | uonly/wdm                                          |
-| `/dynamicbase`                             | (:no)?                                             |
-| **`/dynamicvalue`**                        |                                                    |
-| **`/editandcontinue`**                     |                                                    |
-| **`/emitasx64image`**                      |                                                    |
-| **`/emitasx64imagewithaa64`**              |                                                    |
-| **`/emitpogophaseinfo`**                   |                                                    |
-| **`/emittoolversioninfo`**                 | (:no)?                                             |
-| **`/emitvolatilemetadata`**                | (:no)?                                             |
-| **`/enclave`**                             | (:no)?                                             |
-| **`/encpadsize`**                          |                                                    |
-| `/entry`                                   |                                                    |
-| `/errorreport`                             | none/prompt/queue/send/test/internal               |
-| **`/etm`**                                 |                                                    |
-| **`/expectedoutputsize`**                  |                                                    |
-| **`/experimental`**                        | deterministic/tlsDllInterface                      |
-| `/export`                                  |                                                    |
-| **`/exportarm64native`**                   |                                                    |
-| **`/exportpadmin`**                        |                                                    |
-| **`/fastfail`**                            | (:no)?                                             |
-| **`/fe`**                                  |                                                    |
-| `/filealign`                               |                                                    |
-| `/fixed`                                   |                                                    |
-| `/force`                                   | guardehcont/multiple/pgo/pgorepro/unresolved       |
-| **`/forcewinmdversion12`**                 |                                                    |
-| **`/fullbuild`**                           |                                                    |
-| **`/funcoverride`**                        | (:no)?                                             |
-| **`/funcoverridedisablefunc`**             |                                                    |
-| **`/funcoverrideemitcand`**                |                                                    |
-| **`/funcoverrideoncallsites`**             |                                                    |
-| `/functionpadmin`                          |                                                    |
-| **`/genpdbfromscratch`**                   | (:no)?                                             |
-| `/genprofile` / `/fastgenprofile`          | memmin/memmax/pgd/exact/noexact/path/nopath/trackeh/notrackeh/counter32/counter64|
-| `/guard`                                   | no/addrtakeniat/noaddrtakeniat/delayloadsignret/nodelayloadsignret/delayloadsignretnopunwind/nodelayloadsignretnopunwind/ehcont/noehcont/export/noexport/exportsuppress/noexportsuppress/exportsuppressinfo/noexportsuppressinfo/mixed/nomixed/cf/cfw/32bytealign/langexcpthandler/nolangexcpthandler/longjmp/nolongjmp/retpoline/noretpoline/xfg/noxfg/memcpy/nomemcpy|
-| **`/guardsym`**                            |                                                    |
-| `/heap`                                    |                                                    |
-| `/highentropyva`                           | (:no)?                                             |
-| **`/hotpatchcompatible`**                  | (:no)?                                             |
-| **`/hybriddefupgrade`**                    |                                                    |
-| **`/hybridexportthunks`**                  | (:no)?                                             |
-| **`/hybriduseguestmachine`**               | (:no)?                                             |
-| **`/icfsection`**                          |                                                    |
-| `/idlout`                                  |                                                    |
-| `/ignore`                                  |                                                    |
-| `/ignoreidl`                               |                                                    |
-| `/ilk`                                     |                                                    |
-| **`/iltcgwarningoff`**                     |                                                    |
-| `/implib`                                  |                                                    |
-| **`/impthunkalign`**                       |                                                    |
-| `/include`                                 |                                                    |
-| **`/includecoffsection`**                  |                                                    |
-| `/incremental`                             | yes/no/rebuild/stress/nostress                     |
-| `/inferasanlibs`                           | (:no)?                                             |
-| `/integritycheck`                          |                                                    |
-| **`/kernel`**                              |                                                    |
-| `/keycontainer`                            |                                                    |
-| `/keyfile`                                 |                                                    |
-| `/largeaddressaware`                       | (:no)?                                             |
-| **`/last`**                                |                                                    |
-| **`/layoutpagesize`**                      |                                                    |
-| `/libpath`                                 |                                                    |
-| `/linkrepro`                               |                                                    |
-| `/linkreprotarget`                         |                                                    |
-| `/logo`                                    |                                                    |
-| `/ltcg`                                    |                                                    |
-| **`/ltcgasmlist`**                         |                                                    |
-| **`/ltcgout`**                             |                                                    |
-| `/machine`                                 |                                                    |
-| `/manifest`                                | no/embed/id (resource ID?)                         |
-| `/manifestdependency`                      |                                                    |
-| `/manifestfile`                            |                                                    |
-| `/manifestinput`                           |                                                    |
-| `/manifestuac`                             | (:no)?                                             |
-| `/map`                                     |                                                    |
-| `/mapinfo`                                 | exports/pdata/tokens                               |
-| **`/maxilksize`**                          |                                                    |
-| `/merge`                                   |                                                    |
-| **`/midl`**                                | (:@rspfile)                                        |
-| **`/midlexe`**                             |                                                    |
-| **`/minpdbpathlen`**                       |                                                    |
-| **`/mt`**                                  |                                                    |
-| `/natvis`                                  |                                                    |
-| `/noassembly`                              |                                                    |
-| **`/nocoffgrpinfo`**                       |                                                    |
-| **`/nocomentry`**                          |                                                    |
-| **`/nodbgdirmerge`**                       |                                                    |
-| `/nodefaultlib` / **`/nod`**               | those seem to be synonymous                        |
-| `/noentry`                                 |                                                    |
-| **`/noexp`**                               |                                                    |
-| **`/nofunctionpadsection`**                |                                                    |
-| **`/noilinkcoffgrppad`**                   |                                                    |
-| **`/noimplib`**                            |                                                    |
-| **`/nolinkrepro`**                         |                                                    |
-| `/nologo`                                  |                                                    |
-| **`/noltcgoptref`**                        |                                                    |
-| **`/nomap`**                               |                                                    |
-| **`/noonfailrepro`**                       |                                                    |
-| **`/nooptdidat`**                          |                                                    |
-| **`/nooptcfg`**                            |                                                    |
-| **`/nooptgids`**                           |                                                    |
-| **`/nooptidata`**                          |                                                    |
-| **`/noopttls`**                            |                                                    |
-| **`/nooptrefbeforeltcg`**                  |                                                    |
-| **`/novcfeature`**                         |                                                    |
-| **`/noxdatamerge`**                        |                                                    |
-| `/nxcompat`                                | (:no)?                                             |
-| **`/objmap`**                              |                                                    |
-| **`/odr`**                                 |                                                    |
-| **`/odrignore`**                           | (/odrignore:@rspfile)                              |
-| **`/odrignoresamesize`**                   |                                                    |
-| `/opt`                                     | icf/stricticf/lbr/noicf/nolbr/noref/nostricticf/ref|
-| **`/opticfbytecomp`**                      |                                                    |
-| **`/onfailrepro`**                         |                                                    |
-| `/order`                                   | (/order:@rspfile) (:no)?                           |
-| **`/osversion`**                           |                                                    |
-| `/out`                                     |                                                    |
-| **`/pchmap`**                              |                                                    |
-| **`/pdbmap`**                              |                                                    |
-| **`/winmdmap`**                            |                                                    |
-| **`/pathmap`**                             | PDB-related                                        |
-| `/pdb`                                     |                                                    |
-| `/pdbaltpath`                              |                                                    |
-| **`/pdbcompress`**                         | (:no)?                                             |
-| **`/pdbdbgqsize`**                         |                                                    |
-| **`/pdbdbgst`**                            |                                                    |
-| **`/pdbdll`**                              |                                                    |
-| **`/pdbmodclosethreads`**                  |                                                    |
-| **`/pdbpagesize`** ==? **`/pagesize`**     |                                                    |
-| **`/pdbpath`**                             | sourcemap                                          |
-| **`/pdbrpc`**                              | (:no)?                                             |
-| `/pdbstripped`                             |                                                    |
-| **`/pdbthreads`**                          |                                                    |
-| **`/pdbtmcache`**                          | (:no)?                                             |
-| `/pgd`                                     |                                                    |
-| **`/pogonoshare`**                         |                                                    |
-| `/pogosafemode`                            |                                                    |
-| **`/prefetch`**                            |                                                    |
-| `/profile`                                 |                                                    |
-| **`/rc`**                                  |                                                    |
-| **`/re`**                                  |                                                    |
-| **`/reportnoncomdatguardfunc`**            |                                                    |
-| **`/retryonfileopenfailure`**              |                                                    |
-| **`/runbelow4gb`**                         | (:no)?                                             |
-| `/safeseh`                                 | (:no)?                                             |
-| **`/savebaserelocations`**                 |                                                    |
-| `/section`                                 |                                                    |
-| **`/sectionlayout`**                       |                                                    |
-| **`/simarm`**                              |                                                    |
-| **`/simarm64`**                            |                                                    |
-| **`/skipincrementalchecks`**               |                                                    |
-| `/sourcelink`                              |                                                    |
-| **`/sourcemap`**                           |                                                    |
-| **`/spdidstr`**                            |                                                    |
-| **`/spdin`**                               |                                                    |
-| **`/spdindex`**                            |                                                    |
-| **`/spdembed`**                            |                                                    |
-| **`/spgo`**                                |                                                    |
-| `/stack`                                   |                                                    |
-| **`/stricticfthunkalign`**                 |                                                    |
-| **`/striprtti`**                           | (:no)?                                             |
-| `/stub`                                    | (/stub:)                                           |
-| `/subsystem`                               |                                                    |
-| **`/subsystemversion`**                    |                                                    |
-| **`/swaprun`**                             | cd/net                                             |
-| **`/test`**                                |                                                    |
-| **`/throwingnew`**                         |                                                    |
-| `/time`                                    | (:no)?                                             |
-| **`/time+`**                               |                                                    |
-| `/tlbid`                                   |                                                    |
-| `/tlbout`                                  |                                                    |
-| **`/trimfile`**                            |                                                    |
-| `/tsaware`                                 | (:no)?                                             |
-| `/useprofile`                              |                                                    |
-| `/version`                                 |                                                    |
-| `/verbose`                                 | lib/ref/icf/safeseh/clr/unuseddelayload/unusedlibs/incr/telemetry|
-| **`/vulcannotrecognizenewdelaythunk`**     |                                                    |
-| **`/warnduplicatesections`**               |                                                    |
-| **`/wbrdcfg`**                             |                                                    |
-| **`/wbrddll`**                             |                                                    |
-| **`/wbrdlog`**                             |                                                    |
-| **`/wbrdreporterrors`**                    |                                                    |
-| **`/wbrdschema`**                          |                                                    |
-| **`/wbrdsummary`**                         |                                                    |
-| **`/wbrdtestencrypt`**                     |                                                    |
-| **`/weakorder`**                           |                                                    |
-| **`/win32version`**                        |                                                    |
-| `/winmd`                                   | no/only                                            |
-| `/winmddelaysign`                          | (:no)?                                             |
-| `/winmdfile`                               |                                                    |
-| `/winmdkeycontainer`                       |                                                    |
-| `/winmdkeyfile`                            |                                                    |
-| **`/winmdsignhash`**                       | sha1/sha256/sha384/sha512                          |
-| **`/winmdversion`**                        |                                                    |
-| **`/wholearchive`**                        |                                                    |
-| **`/wowa64`**                              | (:no)?                                             |
-| **`/wowa64lib`**                           |                                                    |
-| `/wx`                                      |                                                    |
-| **`/x86pdata`**                            | (:no)?                                             |
-| **`/xoff`**                                |                                                    |
-
-## Environment variables for `link.exe`
+| [`/align`](https://learn.microsoft.com/cpp/build/reference/align-section-alignment) | Specifies the alignment of each section. |
+| **`/allowbadrvaforfirstsection`** |  |
+| [`/allowbind`](https://learn.microsoft.com/cpp/build/reference/allowbind-prevent-dll-binding) | Specifies that a DLL can't be bound. |
+| **`/allowimagesizeover2gb`** |  |
+| [`/allowisolation`](https://learn.microsoft.com/cpp/build/reference/allowisolation-manifest-lookup) | Specifies behavior for manifest lookup. |
+| **`/allpdata`** |  |
+| **[`/alternatename`](https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024)** |  |
+| [`/appcontainer`](https://learn.microsoft.com/cpp/build/reference/appcontainer-windows-store-app) | Specifies whether the app must run within an appcontainer process environment. |
+| **`/arm64hazardexist`** |  |
+| **`/arm64hazardfree`** |  |
+| **`/arm64xaggressiverwdatafold`** |  |
+| **`/arm64xcrossresolve`** |  |
+| **`/arm64xemulatorbuild`** |  |
+| **`/arm64xfastforward`** |  |
+| **`/arm64xfoldrwdata`** |  |
+| **`/arm64xhack`** |  |
+| **`/arm64xnewchameleonlibfmt`** |  |
+| **`/arm64xnomergeimports`** |  |
+| **`/arm64xnoreorderobjs`** |  |
+| **`/arm64xsameaddress`** |  |
+| **`/arm64xuselegacyffs`** |  |
+| **`/armhazardexist`** |  |
+| **`/armhazardfree`** |  |
+| [`/assemblydebug`](https://learn.microsoft.com/cpp/build/reference/assemblydebug-add-debuggableattribute) | Adds the <xref:System.Diagnostics.DebuggableAttribute> to a managed image. |
+| [`/assemblylinkresource`](https://learn.microsoft.com/cpp/build/reference/assemblylinkresource-link-to-dotnet-framework-resource) | Creates a link to a managed resource. |
+| [`/assemblymodule`](https://learn.microsoft.com/cpp/build/reference/assemblymodule-add-a-msil-module-to-the-assembly) | Specifies that a Microsoft intermediate language (MSIL) module should be imported into the assembly. |
+| **`/assemblymodulemap`** |  |
+| [`/assemblyresource`](https://learn.microsoft.com/cpp/build/reference/assemblyresource-embed-a-managed-resource) | Embeds a managed resource file in an assembly. |
+| **[`/b2`](https://www.geoffchappell.com/studies/msvc/link/link/options/b2.htm)** |  |
+| [`/base`](https://learn.microsoft.com/cpp/build/reference/base-base-address) | Sets a base address for the program. |
+| **`/baserelocclustering`** |  |
+| **[`/brepro`](https://www.geoffchappell.com/studies/msvc/link/link/options/brepro.htm)** |  |
+| [`/cetcompat`](https://learn.microsoft.com/cpp/build/reference/cetcompat) | Marks the binary as CET Shadow Stack compatible. |
+| **`/cetcompatstrict`** |  |
+| **`/cetdynamicapisinproc`** |  |
+| **`/cetipvalidationrelaxed`** |  |
+| [`/cgthreads`](https://learn.microsoft.com/cpp/build/reference/cgthreads-compiler-threads) | Sets number of cl.exe threads to use for optimization and code generation when link-time code generation is specified. |
+| [`/clrimagetype`](https://learn.microsoft.com/cpp/build/reference/clrimagetype-specify-type-of-clr-image) | Sets the type (IJW, pure, or safe) of a CLR image. |
+| **`/clrloaderoptimization`** |  |
+| **`/clrnetcore`** |  |
+| **`/clrrvaentry`** |  |
+| **`/clrsignhash`** |  |
+| [`/clrsupportlasterror`](https://learn.microsoft.com/cpp/build/reference/clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls) | Preserves the last error code of functions that are called through the P/Invoke mechanism. |
+| **`/clrsupportlasterrordll`** |  |
+| [`/clrthreadattribute`](https://learn.microsoft.com/cpp/build/reference/clrthreadattribute-set-clr-thread-attribute) | Specifies the threading attribute to apply to the entry point of your CLR program. |
+| [`/clrunmanagedcodecheck`](https://learn.microsoft.com/cpp/build/reference/clrunmanagedcodecheck-add-suppressunmanagedcodesecurityattribute) | Specifies whether the linker will apply the `SuppressUnmanagedCodeSecurity` attribute to linker-generated P/Invoke stubs that call from managed code into native DLLs. |
+| **`/coffsecttopdbstrm`** |  |
+| **`/crashondiag`** |  |
+| **`/cvtres`** |  |
+| **`/cxxmodulestrongownership`** |  |
+| **[`/d2`](https://www.geoffchappell.com/studies/msvc/link/link/options/d2.htm)** |  |
+| **[`/db`](gc.msvc://link/index.htm)** |  |
+| [`/debug`](https://learn.microsoft.com/cpp/build/reference/debug-generate-debug-info) | Creates debugging information. |
+| [`/debugtype`](https://learn.microsoft.com/cpp/build/reference/debugtype-debug-info-options) | Specifies which data to include in debugging information. |
+| [`/def`](https://learn.microsoft.com/cpp/build/reference/def-specify-module-definition-file) | Passes a module-definition (.def) file to the linker. |
+| **`/defarm64native`** |  |
+| [`/defaultlib`](https://learn.microsoft.com/cpp/build/reference/defaultlib-specify-default-library) | Searches the specified library when external references are resolved. |
+| [`/delay`](https://learn.microsoft.com/cpp/build/reference/delay-delay-load-import-settings) | Controls the delayed loading of DLLs. |
+| [`/delayload`](https://learn.microsoft.com/cpp/build/reference/delayload-delay-load-import) | Causes the delayed loading of the specified DLL. |
+| [`/delaysign`](https://learn.microsoft.com/cpp/build/reference/delaysign-partially-sign-an-assembly) | Partially signs an assembly. |
+| [`/dependentloadflag`](https://learn.microsoft.com/cpp/build/reference/dependentloadflag) | Sets default flags on dependent DLL loads. |
+| **`/didatownsection`** |  |
+| **[`/disallowlib`](https://www.geoffchappell.com/studies/msvc/link/link/options/disallowlib.htm)** |  |
+| **`/discardtrack`** |  |
+| [`/dll`](https://learn.microsoft.com/cpp/build/reference/dll-build-a-dll) | Builds a DLL. |
+| **`/dllrename`** |  |
+| [`/driver`](https://learn.microsoft.com/cpp/build/reference/driver-windows-nt-kernel-mode-driver) | Creates a kernel mode driver. |
+| [`/dynamicbase`](https://learn.microsoft.com/cpp/build/reference/dynamicbase-use-address-space-layout-randomization) | Specifies whether to generate an executable image that's rebased at load time by using the address space layout randomization (ASLR) feature. |
+| **`/dynamicvalue`** |  |
+| **[`/editandcontinue`](https://devblogs.microsoft.com/cppblog/c-edit-and-continue-in-visual-studio-2015-update-3/)** |  |
+| **`/emitasx64image`** |  |
+| **`/emitasx64imagewithaa64`** |  |
+| **`/emitpogophaseinfo`** |  |
+| **`/emittoolversioninfo`** |  |
+| **`/emitvolatilemetadata`** |  |
+| **`/enclave`** |  |
+| **[`/encpadsize`](https://www.geoffchappell.com/studies/msvc/link/link/options/encpadsize.htm)** |  |
+| [`/entry`](https://learn.microsoft.com/cpp/build/reference/entry-entry-point-symbol) | Sets the starting address. |
+| [`/errorreport`](https://learn.microsoft.com/cpp/build/reference/errorreport-report-internal-linker-errors) | Deprecated. Error reporting is controlled by [Windows Error Reporting (WER)](/windows/win32/wer/windows-error-reporting) settings. |
+| **`/etm`** |  |
+| **`/expectedoutputsize`** |  |
+| **`/experimental`** |  |
+| [`/export`](https://learn.microsoft.com/cpp/build/reference/export-exports-a-function) | Exports a function. |
+| **`/exportarm64native`** |  |
+| **`/exportpadmin`** |  |
+| **`/fastfail`** |  |
+| [`/fastgenprofile`](https://learn.microsoft.com/cpp/build/reference/genprofile-fastgenprofile-generate-profiling-instrumented-build) | Both of these options specify generation of a *`.pgd`* file by the linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE use different default parameters. |
+| **[`/fe`](https://www.geoffchappell.com/studies/msvc/link/link/options/fe.htm)** |  |
+| [`/filealign`](https://learn.microsoft.com/cpp/build/reference/filealign) | Aligns sections within the output file on multiples of a specified value. |
+| [`/fixed`](https://learn.microsoft.com/cpp/build/reference/fixed-fixed-base-address) | Creates a program that can be loaded only at its preferred base address. |
+| [`/force`](https://learn.microsoft.com/cpp/build/reference/force-force-file-output) | Forces a link to complete even with unresolved symbols or symbols defined more than once. |
+| **`/forcewinmdversion12`** |  |
+| **[`/fullbuild`](https://www.geoffchappell.com/studies/msvc/link/link/options/fullbuild.htm)** |  |
+| **`/funcoverride`** |  |
+| **`/funcoverridedisablefunc`** |  |
+| **`/funcoverrideemitcand`** |  |
+| **`/funcoverrideoncallsites`** |  |
+| [`/functionpadmin`](https://learn.microsoft.com/cpp/build/reference/functionpadmin-create-hotpatchable-image) | Creates an image that can be hot patched. |
+| **`/genpdbfromscratch`** |  |
+| [`/genprofile`](https://learn.microsoft.com/cpp/build/reference/genprofile-fastgenprofile-generate-profiling-instrumented-build) | Both of these options specify generation of a *`.pgd`* file by the linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE use different default parameters. |
+| [`/guard`](https://learn.microsoft.com/cpp/build/reference/guard-enable-guard-checks) | Enables Control Flow Guard protection. |
+| **`/guardsym`** |  |
+| [`/heap`](https://learn.microsoft.com/cpp/build/reference/heap-set-heap-size) | Sets the size of the heap, in bytes. |
+| [`/highentropyva`](https://learn.microsoft.com/cpp/build/reference/highentropyva-support-64-bit-aslr) | Specifies support for high-entropy 64-bit address space layout randomization (ASLR). |
+| **`/hotpatchcompatible`** |  |
+| **`/hybriddefupgrade`** |  |
+| **`/hybridexportthunks`** |  |
+| **`/hybriduseguestmachine`** |  |
+| **`/icfsection`** |  |
+| [`/idlout`](https://learn.microsoft.com/cpp/build/reference/idlout-name-midl-output-files) | Specifies the name of the *`.idl`* file and other MIDL output files. |
+| [`/ignore`](https://learn.microsoft.com/cpp/build/reference/ignore-ignore-specific-warnings) | Suppresses output of specified linker warnings. |
+| [`/ignoreidl`](https://learn.microsoft.com/cpp/build/reference/ignoreidl-don-t-process-attributes-into-midl) | Prevents the processing of attribute information into an *`.idl`* file. |
+| [`/ilk`](https://learn.microsoft.com/cpp/build/reference/ilk-name-incremental-database-file) | Overrides the default incremental database file name. |
+| **`/iltcgwarningoff`** |  |
+| [`/implib`](https://learn.microsoft.com/cpp/build/reference/implib-name-import-library) | Overrides the default import library name. |
+| **`/impthunkalign`** |  |
+| [`/include`](https://learn.microsoft.com/cpp/build/reference/include-force-symbol-references) | Forces symbol references. |
+| **`/includecoffsection`** |  |
+| [`/incremental`](https://learn.microsoft.com/cpp/build/reference/incremental-link-incrementally) | Controls incremental linking. |
+| [`/inferasanlibs`](https://learn.microsoft.com/cpp/build/reference/inferasanlibs) | Uses inferred sanitizer libraries. |
+| [`/integritycheck`](https://learn.microsoft.com/cpp/build/reference/integritycheck-require-signature-check) | Specifies that the module requires a signature check at load time. |
+| **`/kernel`** |  |
+| [`/keycontainer`](https://learn.microsoft.com/cpp/build/reference/keycontainer-specify-a-key-container-to-sign-an-assembly) | Specifies a key container to sign an assembly. |
+| [`/keyfile`](https://learn.microsoft.com/cpp/build/reference/keyfile-specify-key-or-key-pair-to-sign-an-assembly) | Specifies a key or key pair to sign an assembly. |
+| [`/largeaddressaware`](https://learn.microsoft.com/cpp/build/reference/largeaddressaware-handle-large-addresses) | Tells the compiler that the application supports addresses larger than 2 gigabytes |
+| **[`/last`](https://www.geoffchappell.com/studies/msvc/link/link/options/last.htm)** |  |
+| **`/layoutpagesize`** |  |
+| [`/libpath`](https://learn.microsoft.com/cpp/build/reference/libpath-additional-libpath) | Specifies a path to search before the environmental library path. |
+| [`/linkrepro`](https://learn.microsoft.com/cpp/build/reference/linkrepro) | Specifies a path to generate link repro artifacts in. |
+| [`/linkreprotarget`](https://learn.microsoft.com/cpp/build/reference/linkreprotarget) | Generates a link repro only when producing the specified target.<sup>16.1</sup> |
+| **`/logo`** |  |
+| [`/ltcg`](https://learn.microsoft.com/cpp/build/reference/ltcg-link-time-code-generation) | Specifies link-time code generation. |
+| **`/ltcgasmlist`** |  |
+| **`/ltcgout`** |  |
+| [`/machine`](https://learn.microsoft.com/cpp/build/reference/machine-specify-target-platform) | Specifies the target platform. |
+| [`/manifest`](https://learn.microsoft.com/cpp/build/reference/manifest-create-side-by-side-assembly-manifest) | Creates a side-by-side manifest file and optionally embeds it in the binary. |
+| [`/manifestdependency`](https://learn.microsoft.com/cpp/build/reference/manifestdependency-specify-manifest-dependencies) | Specifies a \<dependentAssembly> section in the manifest file. |
+| [`/manifestfile`](https://learn.microsoft.com/cpp/build/reference/manifestfile-name-manifest-file) | Changes the default name of the manifest file. |
+| [`/manifestinput`](https://learn.microsoft.com/cpp/build/reference/manifestinput-specify-manifest-input) | Specifies a manifest input file for the linker to process and embed in the binary. You can use this option multiple times to specify more than one manifest input file. |
+| [`/manifestuac`](https://learn.microsoft.com/cpp/build/reference/manifestuac-embeds-uac-information-in-manifest) | Specifies whether User Account Control (UAC) information is embedded in the program manifest. |
+| [`/map`](https://learn.microsoft.com/cpp/build/reference/map-generate-mapfile) | Creates a mapfile. |
+| [`/mapinfo`](https://learn.microsoft.com/cpp/build/reference/mapinfo-include-information-in-mapfile) | Includes the specified information in the mapfile. |
+| **`/maxilksize`** |  |
+| [`/merge`](https://learn.microsoft.com/cpp/build/reference/merge-combine-sections) | Combines sections. |
+| [`/midl`](https://learn.microsoft.com/cpp/build/reference/midl-specify-midl-command-line-options) | Specifies MIDL command-line options. |
+| **`/midlexe`** |  |
+| **`/minpdbpathlen`** |  |
+| **`/mt`** |  |
+| [`/natvis`](https://learn.microsoft.com/cpp/build/reference/natvis-add-natvis-to-pdb) | Adds debugger visualizers from a Natvis file to the program database (PDB). |
+| [`/noassembly`](https://learn.microsoft.com/cpp/build/reference/noassembly-create-a-msil-module) | Suppresses the creation of a .NET Framework assembly. |
+| **`/nocoffgrpinfo`** |  |
+| **`/nocomentry`** |  |
+| **[`/nod`](https://www.geoffchappell.com/studies/msvc/link/link/options/nod.htm)** |  |
+| **`/nodbgdirmerge`** |  |
+| [`/nodefaultlib`](https://learn.microsoft.com/cpp/build/reference/nodefaultlib-ignore-libraries) | Ignores all (or the specified) default libraries when external references are resolved. |
+| [`/noentry`](https://learn.microsoft.com/cpp/build/reference/noentry-no-entry-point) | Creates a resource-only DLL. |
+| **`/noexp`** |  |
+| **`/nofunctionpadsection`** |  |
+| **`/noilinkcoffgrppad`** |  |
+| **`/noimplib`** |  |
+| **`/nolinkrepro`** |  |
+| [`/nologo`](https://learn.microsoft.com/cpp/build/reference/nologo-suppress-startup-banner-linker) | Suppresses the startup banner. |
+| **`/noltcgoptref`** |  |
+| **`/nomap`** |  |
+| **`/noonfailrepro`** |  |
+| **`/nooptcfg`** |  |
+| **`/nooptdidat`** |  |
+| **`/nooptgids`** |  |
+| **[`/nooptidata`](https://www.geoffchappell.com/studies/msvc/link/link/options/nooptidata.htm)** |  |
+| **`/nooptrefbeforeltcg`** |  |
+| **`/noopttls`** |  |
+| **`/novcfeature`** |  |
+| **`/noxdatamerge`** |  |
+| [`/nxcompat`](https://learn.microsoft.com/cpp/build/reference/nxcompat-compatible-with-data-execution-prevention) | Marks an executable as verified to be compatible with the Windows Data Execution Prevention feature. |
+| **`/objmap`** |  |
+| **`/odr`** |  |
+| **`/odrignore`** |  |
+| **`/odrignoresamesize`** |  |
+| **`/onfailrepro`** |  |
+| [`/opt`](https://learn.microsoft.com/cpp/build/reference/opt-optimizations) | Controls LINK optimizations. |
+| **`/opticfbytecomp`** |  |
+| [`/order`](https://learn.microsoft.com/cpp/build/reference/order-put-functions-in-order) | Places COMDATs into the image in a predetermined order. |
+| **[`/osversion`](https://www.geoffchappell.com/studies/msvc/link/link/options/osversion.htm)** |  |
+| [`/out`](https://learn.microsoft.com/cpp/build/reference/out-output-file-name) | Specifies the output file name. |
+| **`/pagesize`** |  |
+| **`/pathmap`** |  |
+| **[`/pchmap`](https://www.geoffchappell.com/studies/msvc/link/link/options/pchmap.htm)** |  |
+| [`/pdb`](https://learn.microsoft.com/cpp/build/reference/pdb-use-program-database) | Creates a PDB file. |
+| [`/pdbaltpath`](https://learn.microsoft.com/cpp/build/reference/pdbaltpath-use-alternate-pdb-path) | Uses an alternate location to save a PDB file. |
+| **[`/pdbcompress`](https://www.geoffchappell.com/studies/msvc/link/link/options/pdbcompress.htm)** |  |
+| **`/pdbdbgqsize`** |  |
+| **`/pdbdbgst`** |  |
+| **`/pdbdll`** |  |
+| **`/pdbmap`** |  |
+| **`/pdbmodclosethreads`** |  |
+| **`/pdbpagesize`** |  |
+| **[`/pdbpath`](https://www.geoffchappell.com/studies/msvc/link/link/options/pdbpath.htm)** |  |
+| **`/pdbrpc`** |  |
+| [`/pdbstripped`](https://learn.microsoft.com/cpp/build/reference/pdbstripped-strip-private-symbols) | Creates a PDB file that has no private symbols. |
+| **`/pdbthreads`** |  |
+| **`/pdbtmcache`** |  |
+| [`/pgd`](https://learn.microsoft.com/cpp/build/reference/pgd-specify-database-for-profile-guided-optimizations) | Specifies a *`.pgd`* file for profile-guided optimizations. |
+| **`/pogonoshare`** |  |
+| [`/pogosafemode`](https://learn.microsoft.com/cpp/build/reference/pogosafemode-linker-option) | **Obsolete** Creates a thread-safe PGO instrumented build. |
+| **`/prefetch`** |  |
+| [`/profile`](https://learn.microsoft.com/cpp/build/reference/profile-performance-tools-profiler) | Produces an output file that can be used with the Performance Tools profiler. |
+| **`/rc`** |  |
+| **[`/re`](https://www.geoffchappell.com/studies/msvc/link/link/options/re.htm)** |  |
+| [`/release`](https://learn.microsoft.com/cpp/build/reference/release-set-the-checksum) | Sets the Checksum in the *`.exe`* header. |
+| **`/reportnoncomdatguardfunc`** |  |
+| **`/retryonfileopenfailure`** |  |
+| **`/runbelow4gb`** |  |
+| [`/safeseh`](https://learn.microsoft.com/cpp/build/reference/safeseh-image-has-safe-exception-handlers) | Specifies that the image will contain a table of safe exception handlers. |
+| **`/savebaserelocations`** |  |
+| [`/section`](https://learn.microsoft.com/cpp/build/reference/section-specify-section-attributes) | Overrides the attributes of a section. |
+| **`/sectionlayout`** |  |
+| **`/simarm`** |  |
+| **`/simarm64`** |  |
+| **`/skipincrementalchecks`** |  |
+| [`/sourcelink`](https://learn.microsoft.com/cpp/build/reference/sourcelink) | Specifies a SourceLink file to add to the PDB. |
+| **[`/sourcemap`](https://www.geoffchappell.com/studies/msvc/link/link/options/sourcemap.htm)** |  |
+| **`/spdembed`** |  |
+| **`/spdidstr`** |  |
+| **`/spdin`** |  |
+| **`/spdindex`** |  |
+| **`/spgo`** |  |
+| [`/stack`](https://learn.microsoft.com/cpp/build/reference/stack-stack-allocations) | Sets the size of the stack in bytes. |
+| **`/stricticfthunkalign`** |  |
+| **`/striprtti`** |  |
+| [`/stub`](https://learn.microsoft.com/cpp/build/reference/stub-ms-dos-stub-file-name) | Attaches an MS-DOS stub program to a Win32 program. |
+| [`/subsystem`](https://learn.microsoft.com/cpp/build/reference/subsystem-specify-subsystem) | Tells the operating system how to run the *`.exe`* file. |
+| **`/subsystemversion`** |  |
+| [`/swaprun`](https://learn.microsoft.com/cpp/build/reference/swaprun-load-linker-output-to-swap-file) | Tells the operating system to copy the linker output to a swap file before it's run. |
+| **[`/test`](https://www.geoffchappell.com/studies/msvc/link/link/options/test.htm)** |  |
+| **`/throwingnew`** |  |
+| [`/time`](https://learn.microsoft.com/cpp/build/reference/time-linker-time-information) | Output linker pass timing information. |
+| **`/time+`** |  |
+| [`/tlbid`](https://learn.microsoft.com/cpp/build/reference/tlbid-specify-resource-id-for-typelib) | Specifies the resource ID of the linker-generated type library. |
+| [`/tlbout`](https://learn.microsoft.com/cpp/build/reference/tlbout-name-dot-tlb-file) | Specifies the name of the *`.tlb`* file and other MIDL output files. |
+| **`/trimfile`** |  |
+| [`/tsaware`](https://learn.microsoft.com/cpp/build/reference/tsaware-create-terminal-server-aware-application) | Creates an application that is designed specifically to run under Terminal Server. |
+| [`/useprofile`](https://learn.microsoft.com/cpp/build/reference/useprofile) | Uses profile-guided optimization training data to create an optimized image. |
+| [`/verbose`](https://learn.microsoft.com/cpp/build/reference/verbose-print-progress-messages) | Prints linker progress messages. |
+| [`/version`](https://learn.microsoft.com/cpp/build/reference/version-version-information) | Assigns a version number. |
+| **`/vulcannotrecognizenewdelaythunk`** |  |
+| **`/warnduplicatesections`** |  |
+| **`/wbrdcfg`** |  |
+| **`/wbrddll`** |  |
+| **`/wbrdlog`** |  |
+| **`/wbrdreporterrors`** |  |
+| **`/wbrdschema`** |  |
+| **`/wbrdsummary`** |  |
+| **`/wbrdtestencrypt`** |  |
+| **`/weakorder`** |  |
+| [`/wholearchive`](https://learn.microsoft.com/cpp/build/reference/wholearchive-include-all-library-object-files) | Includes every object file from specified static libraries. |
+| **`/win32version`** |  |
+| [`/winmd`](https://learn.microsoft.com/cpp/build/reference/winmd-generate-windows-metadata) | Enables generation of a Windows Runtime Metadata file. |
+| [`/winmddelaysign`](https://learn.microsoft.com/cpp/build/reference/winmddelaysign-partially-sign-a-winmd) | Partially signs a Windows Runtime Metadata (*`.winmd`*) file by placing the public key in the winmd file. |
+| [`/winmdfile`](https://learn.microsoft.com/cpp/build/reference/winmdfile-specify-winmd-file) | Specifies the file name for the Windows Runtime Metadata (winmd) output file that's generated by the [`/WINMD`](winmd-generate-windows-metadata.md) linker option. |
+| [`/winmdkeycontainer`](https://learn.microsoft.com/cpp/build/reference/winmdkeycontainer-specify-key-container) | Specifies a key container to sign a Windows Metadata file. |
+| [`/winmdkeyfile`](https://learn.microsoft.com/cpp/build/reference/winmdkeyfile-specify-winmd-key-file) | Specifies a key or key pair to sign a Windows Runtime Metadata file. |
+| **`/winmdmap`** |  |
+| **`/winmdsignhash`** |  |
+| **`/winmdversion`** |  |
+| **`/wowa64`** |  |
+| **`/wowa64lib`** |  |
+| [`/wx`](https://learn.microsoft.com/cpp/build/reference/wx-treat-linker-warnings-as-errors) | Treats linker warnings as errors. |
+| **`/x86pdata`** |  |
+| **[`/xoff`](https://www.geoffchappell.com/studies/msvc/link/link/options/xoff.htm)** |  |
+| **`@`** |  |## Environment variables for `link.exe`
 
 | Environment variable               | Description                                        |
 |------------------------------------|----------------------------------------------------|
@@ -314,5 +311,17 @@ Used (and populated) internally for `/pdbaltpath`:
 ## Glossary (guessed)
 
 * POGO: Profile Guided Optimization
+* wrbrd, "warbird" ... some sort of (prototypical?) technology
+
+## Subjects of the study
+
+These are subject to change, eventually.
+- `link.exe` (14.34.31933)
+  - SHA256: `38f375b084e796c6be3ae724641136897770fbc4858e578724f7956c41c48fce`
+  - Host/Target: `x86-64` / `x86-64`
+  - Version:
+    - File: 14.34.31937.0
+    - Product: 14.34.31937.0
+
 
 [1]: https://learn.microsoft.com/cpp/build/reference/linker-options

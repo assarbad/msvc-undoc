@@ -91,8 +91,10 @@ def populate_j2_linkvar(data: dict) -> dict:
             assert i in value, f"'{i}' not found in {value=}"
         for i in {"file", "product"}:
             assert i in value["version"], f"'{i}' not found in {value['version']=}"
+        # BinaryVersion = namedtuple("BinaryVersion", ["file", "product"])
         binver = BinaryVersion(value["version"]["file"], value["version"]["product"])
-        binary = Binary(value["name"], value["host"], value["hash"], value["target"], value["toolchain"], binver)
+        # Binary = namedtuple("Binary", ["name", "hash", "host", "target", "toolchain", "version"])
+        binary = Binary(value["name"], value["hash"], value["host"], value["target"], value["toolchain"], binver)
         binaries.append(binary)
     assert len(binaries) == len(data["msvc"]["link"]["binaries"]), "it appears some items were lost on the way?!"
     assert len(switches) == len(data["msvc"]["link"]["cmdline"]), "it appears some items were lost on the way?!"
@@ -127,13 +129,29 @@ def update_docs(template: Path, data: dict) -> int:
                 return url
         elif url.startswith("/"):  # assume this is over at learn.microsoft.com
             return f"{ms_baseurl}/{url}"
-        eprint(f"{url}")
-        return None
+        # assert False, f"URL '{url}' is invalid!"
+        return url
 
     def switchmdfmt(cmdline_switch: CmdLineSwitch) -> str:
         if cmdline_switch.documented:
             docsurl = resolve_url(cmdline_switch.documented, **meta)
-            return f"[`{cmdline_switch.name}`]({docsurl})"
+            if docsurl:
+                return f"[`{cmdline_switch.name}`]({docsurl})"
+            else:
+                return f"`{cmdline_switch.name}`"
+        elif cmdline_switch.resources:
+            gclink = [res for res in cmdline_switch.resources if res.startswith("gc")]
+            mslink = [res for res in cmdline_switch.resources if "microsoft.com/" in res]
+            tocheck = None
+            if len(gclink) == 1:
+                tocheck = gclink[0]
+            elif mslink:
+                tocheck = mslink[0]
+            if tocheck:
+                docsurl = resolve_url(tocheck, **meta)
+                # eprint(f"{cmdline_switch.name=} -> {docsurl}")
+                if docsurl:
+                    return f"**[`{cmdline_switch.name}`]({docsurl})**"
         return f"**`{cmdline_switch.name}`**"
 
     def mdurl(url, text, deferred=True) -> str:
@@ -149,6 +167,8 @@ def update_docs(template: Path, data: dict) -> int:
     def description(text, default="") -> str:
         if not text:
             return default
+        # <xref:System.Diagnostics.DebuggableAttribute> -> https://learn.microsoft.com/dotnet/api/system.diagnostics.debuggableattribute
+        # [link text](url) -> absolute URL
         return text
 
     j2env = Environment(loader=j2ldr)

@@ -18,6 +18,25 @@ The undocumented or barely mentioned switches are in bold, [the documented ones]
 
 | Environment variable               | Description                                        |
 |------------------------------------|----------------------------------------------------|
+| `_CVTCIL_`                         |                                                    |
+| `_LIB_`                            |                                                    |
+| `_LINK_`                           | used after the command line (and `LINK`)           |
+| `_PRELIB_`                         |                                                    |
+| `_PUSHTHUNKOBJ_`                   |                                                    |
+| `EnterpriseWDK`                    |                                                    |
+| `LOG_BUILD_COMMANDLINES`           | file name to log command lines into                |
+| `LINK`                             | used before command line                           |
+| `LINK_DB`                          | .ilk file name?                                    |
+| `LINK_REPRO`                       | directory for link repro? can be used instead of `/linkrepro`|
+| `LINK_REPRO_NAME`                  |                                                    |
+| `SPGO_SPD_IDSTR`                   |                                                    |
+| `MSVCETW_PARENT_CONTEXT_THREAD_ID` |                                                    |
+| `PRINT_HRESULT_ON_FAIL`            | `1` (or even non-empty?)                           |
+| `VSLANG`                           | the LANGID (e.g. 1033/0x409 for US-English)        |
+| `VS_UNICODE_OUTPUT`                | some "port" (pipe?), used by Visual Studio IDE, used to detect running in the IDE|
+| `VSTEL_SolutionSessionID`          | some GUID; adhoc generated?                        |
+| `VSTEL_CurrentSolutionBuildID`     | an (unsigned?) integer (PID/TID?)                  |
+| `VSTEL_ProjectID`                  | a GUID; does it correspond to project GUID?        |
 
 Used (and populated) internally for `/pdbaltpath`:
 
@@ -31,11 +50,16 @@ Used (and populated) internally for `/pdbaltpath`:
 
 ## Subjects of the study
 
-Subject of the study: MSVC 14.34.31933, x64 version, targeting x64 (this is expected to change over time)
-  * File Version: 14.34.31937.0
-  * Product Version: 14.34.31937.0
-  * File Description: Microsoft® Incremental Linker
-  * Original Filename: `LINK.EXE`
+These are subject to change, eventually.
+
+{%- for binary in link.binaries %}
+- `{{binary.name}}` ({{binary.toolchain}})
+  - SHA256: `{{binary.hash}}`
+  - Host/Target: `{{binary.host}}` / `{{binary.target}}`
+  - Version:
+    - File: {{binary.version.file}}
+    - Product: {{binary.version.product}}
+{%- endfor %}
 
 
 [1]: {{msdocs_entryurl}}
