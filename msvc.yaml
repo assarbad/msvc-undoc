@@ -17,38 +17,87 @@ msvc:
         product: 14.34.31937.0
     cmdline:
       align:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :#
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://align-section-alignment
         purpose: Specifies the alignment of each section.
         researched: false
         resources:
         - gc.link://link/options/align.htm
       allowbadrvaforfirstsection:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       allowbind:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://allowbind-prevent-dll-binding
         purpose: Specifies that a DLL can't be bound.
         researched: false
         resources:
         - gc.link://link/options/allowbind.htm
       allowimagesizeover2gb:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       allowisolation:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://allowisolation-manifest-lookup
         purpose: Specifies behavior for manifest lookup.
         researched: false
         resources: []
       allpdata:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       alternatename:
+        args: {}
         documented: null
         mentions:
         - https://stackoverflow.com/q/33790425
@@ -57,98 +106,172 @@ msvc:
         resources:
         - https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
       appcontainer:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://appcontainer-windows-store-app
         purpose: Specifies whether the app must run within an appcontainer process
           environment.
         researched: false
         resources: []
       arm64hazardexist:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64hazardfree:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xaggressiverwdatafold:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xcrossresolve:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xemulatorbuild:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xfastforward:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xfoldrwdata:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xhack:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xnewchameleonlibfmt:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xnomergeimports:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xnoreorderobjs:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xsameaddress:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       arm64xuselegacyffs:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       armhazardexist:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       armhazardfree:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       assemblydebug:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:DISABLE]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://assemblydebug-add-debuggableattribute
         purpose: Adds the <xref:System.Diagnostics.DebuggableAttribute> to a managed
           image.
         researched: false
         resources: []
       assemblylinkresource:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://assemblylinkresource-link-to-dotnet-framework-resource
         purpose: Creates a link to a managed resource.
         researched: false
         resources: []
       assemblymodule:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://assemblymodule-add-a-msil-module-to-the-assembly
         purpose: Specifies that a Microsoft intermediate language (MSIL) module should
           be imported into the assembly.
@@ -156,23 +279,41 @@ msvc:
         resources:
         - gc.link://link/options/assemblymodule.htm
       assemblymodulemap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       assemblyresource:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename[,[name][,PRIVATE]]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://assemblyresource-embed-a-managed-resource
         purpose: Embeds a managed resource file in an assembly.
         researched: false
         resources:
         - gc.link://link/options/assemblyresource.htm
       at_responsefile:
+        args: {}
         documented: null
         purpose: null
         realname: '@'
         researched: false
         resources: []
       b2:
+        args: {}
         documented: null
         purpose: null
         researched: false
@@ -180,17 +321,34 @@ msvc:
         - gc.link://link/options/b2.htm
         - https://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
       base:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{address[,size]|@filename,key}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://base-base-address
         purpose: Sets a base address for the program.
         researched: false
         resources:
         - gc.link://link/options/base.htm
       baserelocclustering:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       brepro:
+        args: {}
         documented: null
         mentions:
         - https://lectem.github.io/msvc/reverse-engineering/build/2019/01/21/MSVC-hidden-flags.html
@@ -204,37 +362,72 @@ msvc:
         - https://developercommunity.visualstudio.com/t/linker-invoked-with-brepro-and-map-options-produce/1193550
         - https://nikhilism.com/post/2020/windows-deterministic-builds/
       cetcompat:
+        args: {}
         documented: msdocs.link://cetcompat
         purpose: Marks the binary as CET Shadow Stack compatible.
         researched: false
         resources: []
       cetcompatstrict:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       cetdynamicapisinproc:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       cetipvalidationrelaxed:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       cgthreads:
+        args: {}
         documented: msdocs.link://cgthreads-compiler-threads
         purpose: Sets number of cl.exe threads to use for optimization and code generation
           when link-time code generation is specified.
         researched: false
         resources: []
       clrimagetype:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{IJW|PURE|SAFE|SAFE32BITPREFERRED}
+          - :{IJW|PURE|SAFE}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://clrimagetype-specify-type-of-clr-image
         purpose: Sets the type (IJW, pure, or safe) of a CLR image.
         researched: false
         resources: []
       clrloaderoptimization:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{MD|MDH|NONE|SD}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         mentions:
         - https://bearwindows.zcm.com.au/msvc.htm
@@ -243,17 +436,20 @@ msvc:
         researched: false
         resources: []
       clrnetcore:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - https://stackoverflow.com/q/69287988
       clrrvaentry:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       clrsignhash:
+        args: {}
         documented: null
         mentions:
         - https://github.com/ENikS/Boost-MSBuild/blob/master/linkflags.xml
@@ -262,6 +458,21 @@ msvc:
         researched: false
         resources: []
       clrsupportlasterror:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{NO|SYSTEMDLL}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://clrsupportlasterror-preserve-last-error-code-for-pinvoke-calls
         mentions:
         - https://bearwindows.zcm.com.au/msvc.htm
@@ -270,17 +481,49 @@ msvc:
         researched: false
         resources: []
       clrsupportlasterrordll:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       clrthreadattribute:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{MTA|NONE|STA}
+          - :{STA|MTA|NONE}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://clrthreadattribute-set-clr-thread-attribute
         purpose: Specifies the threading attribute to apply to the entry point of
           your CLR program.
         researched: false
         resources: []
       clrunmanagedcodecheck:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://clrunmanagedcodecheck-add-suppressunmanagedcodesecurityattribute
         purpose: Specifies whether the linker will apply the `SuppressUnmanagedCodeSecurity`
           attribute to linker-generated P/Invoke stubs that call from managed code
@@ -288,26 +531,31 @@ msvc:
         researched: false
         resources: []
       coffsecttopdbstrm:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       crashondiag:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       cvtres:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       cxxmodulestrongownership:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       d2:
+        args: {}
         documented: null
         mentions:
         - https://lectem.github.io/msvc/reverse-engineering/build/2019/01/21/MSVC-hidden-flags.html
@@ -317,68 +565,178 @@ msvc:
         - gc.link://link/options/d2.htm
         - https://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
       db:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.msvc://link/index.htm
       debug:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          - '[:{FASTLINK|FULL|NONE}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://debug-generate-debug-info
         purpose: Creates debugging information.
         researched: false
         resources:
         - gc.link://link/options/debug.htm
       debugtype:
+        args: {}
         documented: msdocs.link://debugtype-debug-info-options
         purpose: Specifies which data to include in debugging information.
         researched: false
         resources:
         - gc.link://link/options/debugtype.htm
       def:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://def-specify-module-definition-file
         purpose: Passes a module-definition (.def) file to the linker.
         researched: false
         resources:
         - gc.link://link/options/def.htm
       defarm64native:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       defaultlib:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :library
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://defaultlib-specify-default-library
         purpose: Searches the specified library when external references are resolved.
         researched: false
         resources:
         - gc.link://link/options/defaultlib.htm
       delay:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{NOBIND|UNLOAD}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://delay-delay-load-import-settings
         purpose: Controls the delayed loading of DLLs.
         researched: false
         resources:
         - gc.link://link/options/delay.htm
       delayload:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :dll
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://delayload-delay-load-import
         purpose: Causes the delayed loading of the specified DLL.
         researched: false
         resources:
         - gc.link://link/options/delayload.htm
       delaysign:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://delaysign-partially-sign-an-assembly
         purpose: Partially signs an assembly.
         researched: false
         resources: []
       dependentloadflag:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :flag
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://dependentloadflag
         purpose: Sets default flags on dependent DLL loads.
         researched: false
         resources: []
       didatownsection:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       disallowlib:
+        args: {}
         documented: null
         purpose: null
         researched: false
@@ -386,17 +744,34 @@ msvc:
         - gc.link://link/options/disallowlib.htm
         - https://stackoverflow.com/q/761394
       discardtrack:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       dll:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://dll-build-a-dll
         purpose: Builds a DLL.
         researched: false
         resources:
         - gc.link://link/options/dll.htm
       dllrename:
+        args: {}
         documented: null
         mentions:
         - https://github.com/dotnet/wpf/blob/main/eng/WpfArcadeSdk/tools/Wpf.Cpp.props
@@ -404,23 +779,54 @@ msvc:
         researched: false
         resources: []
       driver:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{UPONLY|WDM}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://driver-windows-nt-kernel-mode-driver
         purpose: Creates a kernel mode driver.
         researched: false
         resources:
         - gc.link://link/options/driver.htm
       dynamicbase:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://dynamicbase-use-address-space-layout-randomization
         purpose: Specifies whether to generate an executable image that's rebased
           at load time by using the address space layout randomization (ASLR) feature.
         researched: false
         resources: []
       dynamicvalue:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       editandcontinue:
+        args: {}
         documented: null
         mentions:
         - https://stackoverflow.com/q/36893621
@@ -431,16 +837,19 @@ msvc:
         - https://github.com/MicrosoftDocs/visualstudio-docs/blob/main/docs/debugger/supported-code-changes-cpp.md
         - https://learn.microsoft.com/cpp/error-messages/tool-errors/linker-tools-warning-lnk4075
       emitasx64image:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       emitasx64imagewithaa64:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       emitpogophaseinfo:
+        args: {}
         documented: null
         mentions:
         - https://davidesnotes.com/articles/1/
@@ -454,6 +863,7 @@ msvc:
         researched: false
         resources: []
       emittoolversioninfo:
+        args: {}
         documented: null
         mentions:
         - https://developercommunity.visualstudio.com/t/add-linker-option-to-strip-rich-stamp-from-exe-hea/740443
@@ -464,6 +874,20 @@ msvc:
         researched: false
         resources: []
       emitvolatilemetadata:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         mentions:
         - https://github.com/ScienceDiscoverer/npp_msvc_ide/blob/main/ccargs.cpp
@@ -471,34 +895,68 @@ msvc:
         researched: false
         resources: []
       enclave:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       encpadsize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/encpadsize.htm
       entry:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :symbol
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://entry-entry-point-symbol
         purpose: Sets the starting address.
         researched: false
         resources:
         - gc.link://link/options/entry.htm
       errorreport:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{NONE|PROMPT|QUEUE|SEND}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://errorreport-report-internal-linker-errors
         purpose: Deprecated. Error reporting is controlled by [Windows Error Reporting
           (WER)](/windows/win32/wer/windows-error-reporting) settings.
         researched: false
         resources: []
       etm:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       expectedoutputsize:
+        args: {}
         documented: null
         mentions:
         - https://bugs.chromium.org/p/chromium/issues/detail?id=126502
@@ -507,6 +965,7 @@ msvc:
         researched: false
         resources: []
       experimental:
+        args: {}
         documented: null
         mentions:
         - https://developercommunity.visualstudio.com/t/support-experimentaldeterministic-for-ccli-compila/1347675
@@ -515,23 +974,67 @@ msvc:
         researched: false
         resources: []
       export:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :symbol
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://export-exports-a-function
         purpose: Exports a function.
         researched: false
         resources:
         - gc.link://link/options/export.htm
       exportarm64native:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       exportpadmin:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:size]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         purpose: null
         researched: false
         resources:
         - https://github.com/rust-lang/cc-rs/issues/552
       fastfail:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         mentions:
         - https://bugs.chromium.org/p/chromium/issues/detail?id=597549
@@ -542,14 +1045,29 @@ msvc:
         resources:
         - https://github.com/MicrosoftDocs/cpp-docs/issues/1079
       fastgenprofile:
+        alias: /genprofile
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://genprofile-fastgenprofile-generate-profiling-instrumented-build
-        notes: actually documented
         purpose: Both of these options specify generation of a *`.pgd`* file by the
           linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE
           use different default parameters.
         researched: false
         resources: []
       fe:
+        args: {}
         documented: null
         notes: related to cl.exe option `/Fe`?
         purpose: null
@@ -557,6 +1075,20 @@ msvc:
         resources:
         - gc.link://link/options/fe.htm
       filealign:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :#
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://filealign
         purpose: Aligns sections within the output file on multiples of a specified
           value.
@@ -564,12 +1096,42 @@ msvc:
         resources:
         - gc.link://link/options/filealign.htm
       fixed:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://fixed-fixed-base-address
         purpose: Creates a program that can be loaded only at its preferred base address.
         researched: false
         resources:
         - gc.link://link/options/fixed.htm
       force:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{MULTIPLE|UNRESOLVED}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://force-force-file-output
         purpose: Forces a link to complete even with unresolved symbols or symbols
           defined more than once.
@@ -577,61 +1139,112 @@ msvc:
         resources:
         - gc.link://link/options/force.htm
       forcewinmdversion12:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       fullbuild:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/fullbuild.htm
       funcoverride:
+        args: {}
         documented: null
         notes: related to ARM assembelr option? https://learn.microsoft.com/cpp/assembler/arm/arm-assembler-command-line-reference
         purpose: null
         researched: false
         resources: []
       funcoverridedisablefunc:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       funcoverrideemitcand:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       funcoverrideoncallsites:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       functionpadmin:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:size]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://functionpadmin-create-hotpatchable-image
         purpose: Creates an image that can be hot patched.
         researched: false
         resources: []
       genpdbfromscratch:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       genprofile:
+        alias: /fastgenprofile
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://genprofile-fastgenprofile-generate-profiling-instrumented-build
-        notes: actually documented
         purpose: Both of these options specify generation of a *`.pgd`* file by the
           linker to support profile-guided optimization (PGO). /GENPROFILE and /FASTGENPROFILE
           use different default parameters.
         researched: false
         resources: []
       guard:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{CF|NO}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://guard-enable-guard-checks
         purpose: Enables Control Flow Guard protection.
         researched: false
         resources: []
       guardsym:
+        args: {}
         documented: null
         mentions:
         - https://mixxx.discourse.group/t/issues-building-mixxx-with-visual-studio-community-2015/16179
@@ -640,42 +1253,91 @@ msvc:
         researched: false
         resources: []
       heap:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :reserve[,commit]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://heap-set-heap-size
         purpose: Sets the size of the heap, in bytes.
         researched: false
         resources: []
       highentropyva:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://highentropyva-support-64-bit-aslr
         purpose: Specifies support for high-entropy 64-bit address space layout randomization
           (ASLR).
         researched: false
         resources: []
       hotpatchcompatible:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       hybriddefupgrade:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       hybridexportthunks:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       hybriduseguestmachine:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       icfsection:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       idlout:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://idlout-name-midl-output-files
         purpose: Specifies the name of the *`.idl`* file and other MIDL output files.
         researched: false
@@ -683,12 +1345,41 @@ msvc:
         - gc.link://link/options/idlout.htm
         - https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/Native/Tools/Link/Link.dsc
       ignore:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :#
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://ignore-ignore-specific-warnings
         purpose: Suppresses output of specified linker warnings.
         researched: false
         resources:
         - gc.link://link/options/ignore.htm
       ignoreidl:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://ignoreidl-don-t-process-attributes-into-midl
         mentions:
         - https://bearwindows.zcm.com.au/msvc.htm
@@ -699,69 +1390,205 @@ msvc:
         - gc.link://link/options/ignoreidl.htm
         - https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/Native/Tools/Link/Link.dsc
       ilk:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://ilk-name-incremental-database-file
         purpose: Overrides the default incremental database file name.
         researched: false
         resources: []
       iltcgwarningoff:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       implib:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://implib-name-import-library
         purpose: Overrides the default import library name.
         researched: false
         resources:
         - gc.link://link/options/implib.htm
       impthunkalign:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       include:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :symbol
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://include-force-symbol-references
         purpose: Forces symbol references.
         researched: false
         resources:
         - gc.link://link/options/include.htm
       includecoffsection:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       incremental:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://incremental-link-incrementally
         purpose: Controls incremental linking.
         researched: false
         resources:
         - gc.link://link/options/incremental.htm
       inferasanlibs:
+        args: {}
         documented: msdocs.link://inferasanlibs
         purpose: Uses inferred sanitizer libraries.
         researched: false
         resources: []
       integritycheck:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://integritycheck-require-signature-check
         purpose: Specifies that the module requires a signature check at load time.
         researched: false
         resources: []
       kernel:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         purpose: null
         researched: false
         resources: []
       keycontainer:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :name
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://keycontainer-specify-a-key-container-to-sign-an-assembly
         purpose: Specifies a key container to sign an assembly.
         researched: false
         resources: []
       keyfile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://keyfile-specify-key-or-key-pair-to-sign-an-assembly
         purpose: Specifies a key or key pair to sign an assembly.
         researched: false
         resources: []
       largeaddressaware:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://largeaddressaware-handle-large-addresses
         purpose: Tells the compiler that the application supports addresses larger
           than 2 gigabytes
@@ -769,49 +1596,126 @@ msvc:
         resources:
         - gc.link://link/options/largeaddressaware.htm
       last:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/last.htm
       layoutpagesize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       libpath:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :dir
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://libpath-additional-libpath
         purpose: Specifies a path to search before the environmental library path.
         researched: false
         resources: []
       linkrepro:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :dir
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://linkrepro
         purpose: Specifies a path to generate link repro artifacts in.
         researched: false
         resources:
         - gc.link://link/options/linkrepro.htm
       linkreprotarget:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://linkreprotarget
         purpose: Generates a link repro only when producing the specified target.<sup>16.1</sup>
         researched: false
         resources: []
       logo:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       ltcg:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{INCREMENTAL|NOSTATUS|OFF|STATUS|}]'
+          - '[:{NOSTATUS|PGINSTRUMENT|PGOPTIMIZE|PGUPDATE|STATUS}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://ltcg-link-time-code-generation
         purpose: Specifies link-time code generation.
         researched: false
         resources:
         - gc.link://link/options/ltcg.htm
       ltcgasmlist:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       ltcgout:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         mentions:
         - https://developercommunity.visualstudio.com/t/static-library-objects-produced-from-asm-files-are/1365050
@@ -819,28 +1723,105 @@ msvc:
         researched: false
         resources: []
       machine:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{ARM|ARM64|ARM64EC|ARM64X|EBC|X64|X86}
+          - :{ARM|ARM64|ARM64X|EBC|X64|X86}
+          - :{ARM|EBC|IA64|MIPS|MIPS16|MIPSFPU|MIPSFPU16|
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://machine-specify-target-platform
         purpose: Specifies the target platform.
         researched: false
         resources:
         - gc.link://link/options/machine.htm
       manifest:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          - '[:{EMBED[,ID=#]|NO}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://manifest-create-side-by-side-assembly-manifest
         purpose: Creates a side-by-side manifest file and optionally embeds it in
           the binary.
         researched: false
         resources: []
       manifestdependency:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :manifest dependency
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://manifestdependency-specify-manifest-dependencies
         purpose: Specifies a \<dependentAssembly> section in the manifest file.
         researched: false
         resources: []
       manifestfile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://manifestfile-name-manifest-file
         purpose: Changes the default name of the manifest file.
         researched: false
         resources: []
       manifestinput:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://manifestinput-specify-manifest-input
         purpose: Specifies a manifest input file for the linker to process and embed
           in the binary. You can use this option multiple times to specify more than
@@ -848,89 +1829,216 @@ msvc:
         researched: false
         resources: []
       manifestuac:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{NO|UAC fragment}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://manifestuac-embeds-uac-information-in-manifest
         purpose: Specifies whether User Account Control (UAC) information is embedded
           in the program manifest.
         researched: false
         resources: []
       map:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:filename]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://map-generate-mapfile
         purpose: Creates a mapfile.
         researched: false
         resources:
         - gc.link://link/options/options/map.htm
       mapinfo:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{EXPORTS|PDATA}
+          - :{EXPORTS}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://mapinfo-include-information-in-mapfile
         purpose: Includes the specified information in the mapfile.
         researched: false
         resources:
         - gc.link://link/options/mapinfo.htm
       maxilksize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       merge:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :from=to
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://merge-combine-sections
         purpose: Combines sections.
         researched: false
         resources:
         - gc.link://link/options/merge.htm
       midl:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :@commandfile
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://midl-specify-midl-command-line-options
         purpose: Specifies MIDL command-line options.
         researched: false
         resources:
         - gc.link://link/options/midl.htm
       midlexe:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       minpdbpathlen:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       mt:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       natvis:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://natvis-add-natvis-to-pdb
         purpose: Adds debugger visualizers from a Natvis file to the program database
           (PDB).
         researched: false
         resources: []
       noassembly:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://noassembly-create-a-msil-module
         purpose: Suppresses the creation of a .NET Framework assembly.
         researched: false
         resources:
         - gc.link://link/options/noassembly.htm
       nocoffgrpinfo:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nocomentry:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nod:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/nod.htm
       nodbgdirmerge:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nodefaultlib:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:library]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://nodefaultlib-ignore-libraries
         purpose: Ignores all (or the specified) default libraries when external references
           are resolved.
@@ -938,271 +2046,483 @@ msvc:
         resources:
         - gc.link://link/options/nod.htm
       noentry:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://noentry-no-entry-point
         purpose: Creates a resource-only DLL.
         researched: false
         resources:
         - gc.link://link/options/noentry.htm
       noexp:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
         documented: null
         purpose: null
         researched: false
         resources: []
       nofunctionpadsection:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       noilinkcoffgrppad:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       noimplib:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: null
         purpose: null
         researched: false
         resources: []
       nolinkrepro:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nologo:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://nologo-suppress-startup-banner-linker
         purpose: Suppresses the startup banner.
         researched: false
         resources:
         - gc.link://link/options/nologo.htm
       noltcgoptref:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nomap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       noonfailrepro:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nooptcfg:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nooptdidat:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nooptgids:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nooptidata:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/nooptidata.htm
       nooptrefbeforeltcg:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       noopttls:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       novcfeature:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       noxdatamerge:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       nxcompat:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://nxcompat-compatible-with-data-execution-prevention
         purpose: Marks an executable as verified to be compatible with the Windows
           Data Execution Prevention feature.
         researched: false
         resources: []
       objmap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       odr:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       odrignore:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       odrignoresamesize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       onfailrepro:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       opt:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{ICF[=iterations]|LBR|NOICF|NOLBR|NOREF|REF}
+          - :{ICF[=iterations]|NOICF|NOREF|NOWIN98|REF|WIN98}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://opt-optimizations
         purpose: Controls LINK optimizations.
         researched: false
         resources:
         - gc.link://link/options/opt.htm
       opticfbytecomp:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       order:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :@filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://order-put-functions-in-order
         purpose: Places COMDATs into the image in a predetermined order.
         researched: false
         resources:
         - gc.link://link/options/order.htm
       osversion:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/osversion.htm
       out:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://out-output-file-name
         purpose: Specifies the output file name.
         researched: false
         resources:
         - gc.link://link/options/out.htm
       pagesize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pathmap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pchmap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/pchmap.htm
       pdb:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://pdb-use-program-database
         purpose: Creates a PDB file.
         researched: false
         resources:
         - gc.link://link/options/pdb.htm
       pdbaltpath:
+        args: {}
         documented: msdocs.link://pdbaltpath-use-alternate-pdb-path
         purpose: Uses an alternate location to save a PDB file.
         researched: false
         resources:
         - gc.link://link/options/pdbaltpath.htm
       pdbcompress:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/pdbcompress.htm
       pdbdbgqsize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbdbgst:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbdll:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbmap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbmodclosethreads:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbpagesize:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbpath:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/pdbpath.htm
       pdbrpc:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbstripped:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          - '[:filename]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://pdbstripped-strip-private-symbols
         purpose: Creates a PDB file that has no private symbols.
         researched: false
         resources:
         - gc.link://link/options/pdbstripped.htm
       pdbthreads:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pdbtmcache:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pgd:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - x64
+          versions:
+          - 8.0.50727.762
         documented: msdocs.link://pgd-specify-database-for-profile-guided-optimizations
         purpose: Specifies a *`.pgd`* file for profile-guided optimizations.
         researched: false
         resources:
         - gc.link://link/options/pgd.htm
       pogonoshare:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       pogosafemode:
+        args: {}
         documented: msdocs.link://pogosafemode-linker-option
         purpose: '**Obsolete** Creates a thread-safe PGO instrumented build.'
         researched: false
         resources: []
       prefetch:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       profile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://profile-performance-tools-profiler
         purpose: Produces an output file that can be used with the Performance Tools
           profiler.
@@ -1210,142 +2530,280 @@ msvc:
         resources:
         - gc.link://link/options/profile.htm
       rc:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       re:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/re.htm
       release:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://release-set-the-checksum
         purpose: Sets the Checksum in the *`.exe`* header.
         researched: false
         resources:
         - gc.link://link/options/release.htm
       reportnoncomdatguardfunc:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       retryonfileopenfailure:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       runbelow4gb:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       safeseh:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://safeseh-image-has-safe-exception-handlers
         purpose: Specifies that the image will contain a table of safe exception handlers.
         researched: false
         resources: []
       savebaserelocations:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       section:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :name,[[!]{DEKPRSW}][,ALIGN=#]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://section-specify-section-attributes
         purpose: Overrides the attributes of a section.
         researched: false
         resources:
         - gc.link://link/options/section.htm
       sectionlayout:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       simarm:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       simarm64:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       skipincrementalchecks:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       sourcelink:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://sourcelink
         purpose: Specifies a SourceLink file to add to the PDB.
         researched: false
         resources: []
       sourcemap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/sourcemap.htm
       spdembed:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       spdidstr:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       spdin:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       spdindex:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       spgo:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       stack:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :reserve[,commit]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://stack-stack-allocations
         purpose: Sets the size of the stack in bytes.
         researched: false
         resources: []
       stricticfthunkalign:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       striprtti:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       stub:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://stub-ms-dos-stub-file-name
         purpose: Attaches an MS-DOS stub program to a Win32 program.
         researched: false
         resources:
         - gc.link://link/options/stub.htm
       subsystem:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://subsystem-specify-subsystem
         purpose: Tells the operating system how to run the *`.exe`* file.
         researched: false
         resources:
         - gc.link://link/options/subsystem.htm
       subsystemversion:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       swaprun:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :{CD|NET}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://swaprun-load-linker-output-to-swap-file
         purpose: Tells the operating system to copy the linker output to a swap file
           before it's run.
@@ -1353,46 +2811,109 @@ msvc:
         resources:
         - gc.link://link/options/swaprun.htm
       test:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources:
         - gc.link://link/options/test.htm
       throwingnew:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       time:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - ''
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://time-linker-time-information
         purpose: Output linker pass timing information.
         researched: false
         resources:
         - gc.link://link/options/time.htm
       time_plus:
+        args: {}
         documented: null
         purpose: null
         realname: /time+
         researched: false
         resources: []
       tlbid:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :#
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://tlbid-specify-resource-id-for-typelib
         purpose: Specifies the resource ID of the linker-generated type library.
         researched: false
         resources:
         - gc.link://link/options/tlbid.htm
       tlbout:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://tlbout-name-dot-tlb-file
         purpose: Specifies the name of the *`.tlb`* file and other MIDL output files.
         researched: false
         resources:
         - gc.link://link/options/tlbout.htm
       trimfile:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       tsaware:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://tsaware-create-terminal-server-aware-application
         purpose: Creates an application that is designed specifically to run under
           Terminal Server.
@@ -1400,95 +2921,207 @@ msvc:
         resources:
         - gc.link://link/options/tsaware.htm
       useprofile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{AGGRESSIVE|PGD=filename}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://useprofile
         purpose: Uses profile-guided optimization training data to create an optimized
           image.
         researched: false
         resources: []
       verbose:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{CLR|ICF|INCR|LIB|REF|SAFESEH|UNUSEDDELAYLOAD|UNUSEDLIBS}]'
+          - '[:{ICF|LIB|REF|SAFESEH}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://verbose-print-progress-messages
         purpose: Prints linker progress messages.
         researched: false
         resources:
         - gc.link://link/options/verbose.htm
       version:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :#[.#]
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://version-version-information
         purpose: Assigns a version number.
         researched: false
         resources:
         - gc.link://link/options/version.htm
       vulcannotrecognizenewdelaythunk:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       warnduplicatesections:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdcfg:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrddll:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdlog:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdreporterrors:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdschema:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdsummary:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wbrdtestencrypt:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       weakorder:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wholearchive:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:library]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://wholearchive-include-all-library-object-files
         purpose: Includes every object file from specified static libraries.
         researched: false
         resources: []
       win32version:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       winmd:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:{NO|ONLY}]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://winmd-generate-windows-metadata
         purpose: Enables generation of a Windows Runtime Metadata file.
         researched: false
         resources: []
       winmddelaysign:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://winmddelaysign-partially-sign-a-winmd
         purpose: Partially signs a Windows Runtime Metadata (*`.winmd`*) file by placing
           the public key in the winmd file.
         researched: false
         resources: []
       winmdfile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://winmdfile-specify-winmd-file
         purpose: Specifies the file name for the Windows Runtime Metadata (winmd)
           output file that's generated by the [`/WINMD`](winmd-generate-windows-metadata.md)
@@ -1496,52 +3129,103 @@ msvc:
         researched: false
         resources: []
       winmdkeycontainer:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :name
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://winmdkeycontainer-specify-key-container
         purpose: Specifies a key container to sign a Windows Metadata file.
         researched: false
         resources: []
       winmdkeyfile:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - :filename
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
         documented: msdocs.link://winmdkeyfile-specify-winmd-key-file
         purpose: Specifies a key or key pair to sign a Windows Runtime Metadata file.
         researched: false
         resources: []
       winmdmap:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       winmdsignhash:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       winmdversion:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wowa64:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wowa64lib:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       wx:
+        args:
+          hosts:
+          - Hostx64
+          raw_arg_list:
+          - '[:NO]'
+          - '[:nnnn[,nnnn...]]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
+          - 14.29.30133
+          - 8.0.50727.762
         documented: msdocs.link://wx-treat-linker-warnings-as-errors
         purpose: Treats linker warnings as errors.
         researched: false
         resources:
         - gc.link://link/options/wx.htm
       x86pdata:
+        args: {}
         documented: null
         purpose: null
         researched: false
         resources: []
       xoff:
+        args: {}
         documented: null
         purpose: null
         researched: false

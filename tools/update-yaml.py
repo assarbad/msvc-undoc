@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -23,6 +23,7 @@ import yaml
 from contextlib import suppress
 from copy import deepcopy
 from functools import cache, partial
+from hashlib import sha256
 from pathlib import Path
 from pprint import pformat, pprint  # noqa: F401
 from typing import Optional
@@ -197,6 +198,123 @@ def add_msdocs_references(newvalues: dict, realname: str) -> dict:
     return newvalues
 
 
+@cache
+def read_link_helpoutput(hlpoutdir: Path) -> dict:
+    lines_from_digest = {}  # digest -> lines
+    version_from_digest = {}  # digest -> key
+    digest_from_version = {}  # key -> digest
+    option_startre = re.compile(r"^\s*?options:", re.IGNORECASE)
+    emptyline_re = re.compile(r"^\s*$")
+    # Start by reading all of the files into a dict of lists
+    for txtfile in hlpoutdir.rglob("link.txt"):
+        relpath = txtfile.relative_to(hlpoutdir)
+        with open(txtfile, "r") as hlpfile:
+            lines = hlpfile.readlines()
+            # Let's only consider the information which isn't cluttered by version numbers and stuff
+            ctr = 0
+            for line in lines:
+                m = option_startre.match(line)
+                ctr += 1
+                if m:
+                    break
+            # ... and filter out empty lines
+            lines = [line.rstrip() for line in lines[ctr:] if not emptyline_re.match(line.strip())]
+            # Now compute a digest, so we can identify identical help content
+            digest = sha256("\n".join(lines).encode("utf-8")).hexdigest()
+            if digest not in lines_from_digest:
+                lines_from_digest[digest] = lines
+            key = relpath.parts[:3]
+            if digest not in version_from_digest:
+                version_from_digest[digest] = set()
+            version_from_digest[digest].add(key)
+            assert key not in digest_from_version, f"this should never happen: {key} must not already be in the dict"
+            digest_from_version[key] = digest
+    # Show counts just for convenience
+    eprint(f"link.exe: {len(lines_from_digest)} distinct help outputs, {len(digest_from_version)} versions")
+    # The dict which we'll return
+    raw_switches = {}
+    switchre = re.compile(r"^\s*?(/\w+)((?::[^\[\{].+|\[.+|:.+)?)$")
+    switch_argsre = re.compile(r"^\s*?([^\s/].+[\]\|])$")
+    # Go through distinct help outputs and assemble the information
+    for digest, versions in version_from_digest.items():
+        assert digest in lines_from_digest, f"{digest=} not in lines_from_digest"
+        assert digest in version_from_digest, f"{digest=} not in version_from_digest"
+        assert versions, f"unexpectedly empty versions set for {digest=}"
+        prevmatch = None
+        verset = set([v[0] for v in versions])
+        hstset = set([v[1] for v in versions])
+        tgtset = set([v[2] for v in versions])
+        for line in lines_from_digest[digest]:
+            m = switchre.match(line)
+            if m:
+                prevmatch = None  # definitely not a continuation
+                (switch, args) = m.groups()
+                if args.endswith("|"):
+                    prevmatch = m.groups()
+                    continue
+            elif prevmatch:  # we really only expect continuation lines here
+                # eprint(f"Continuing: {prevmatch}")
+                m = switch_argsre.match(line)
+                if m:
+                    args = m.group(1)
+                    prevmatch = (
+                        prevmatch[0],
+                        prevmatch[1] + args,
+                    )
+                    if args.endswith("|"):
+                        continue  # ... continued continuation line ... sweet
+                (switch, args) = prevmatch
+            else:
+                assert False, f"NO MATCH FOR: '{line}'"
+            assert switch.isupper(), f"unexpectedly we found '{switch}' to not be all uppercase"
+            switch = switch.lower()  # corresponds to the realname
+            argset = set([args])
+            if switch in raw_switches:
+                entry = raw_switches[switch]
+                raw_switches[switch] = (
+                    entry[0].union(verset),
+                    entry[1].union(hstset),
+                    entry[2].union(tgtset),
+                    entry[3].union(argset),
+                )
+            else:
+                raw_switches[switch] = (
+                    verset,
+                    hstset,
+                    tgtset,
+                    argset,
+                )
+    # Create the representation that can be consumed by our YAML
+    switches = {}
+    for key, entry in raw_switches.items():
+        assert len(entry) == 4, "expected a tuple of four sets!"
+        verlist = sorted(entry[0], key=lambda x: tuple(map(int, x.split("."))), reverse=True)
+        hstlist = sorted(entry[1])
+        tgtlist = sorted(entry[2])
+        arglist = sorted(entry[3])
+        switches[key] = {"raw_arg_list": arglist, "versions": verlist, "hosts": hstlist, "targets": tgtlist}
+    return switches
+
+
+@cache
+def get_linkexe_help_output(realname: str) -> dict:
+    """\
+        Attempts to find a link.exe switch by its real name and locate it in help output
+    """
+    switches = read_link_helpoutput(args.helpoutput)
+    assert switches, "expected _something_ to come back from parsing help output"
+    return switches[realname] if realname in switches else {}
+
+
+def add_help_output(newvalues: dict, realname: str) -> dict:
+    """\
+        Enriches the passed dict by the data gleaned from the help output
+    """
+    switch = get_linkexe_help_output(realname)
+    newvalues["args"] = switch  # currently we simply overwrite any pre-existing data
+    return newvalues
+
+
 def process_link_cmd(linkdata: dict) -> dict:
     """\
         Takes as input the 'msvc.link' and 'meta' docs from the already existing msvc.yaml and enriches it
@@ -222,6 +340,7 @@ def process_link_cmd(linkdata: dict) -> dict:
         newvalues["researched"] = newvalues.get("researched", False)  # make sure this exists
         geoffchappellcom_url = get_switch_uri_geoffchappellcom(realname)
         newvalues = add_msdocs_references(newvalues, realname)
+        newvalues = add_help_output(newvalues, realname)
         if "resources" in newvalues:
             assert isinstance(newvalues["resources"], (list, set, tuple)), "expected a list, set or tuple here"
             if geoffchappellcom_url and geoffchappellcom_url not in newvalues["resources"]:

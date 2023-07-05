@@ -84,6 +84,7 @@ def populate_j2_linkvar(data: dict) -> dict:
                 value.get("researched", False),
                 value.get("resources", []),
             )
+            # notes, args
         )
     binaries = []
     for value in data["msvc"]["link"]["binaries"]:
