@@ -5,6 +5,26 @@ meta:
   msdocs_baseurl: https://learn.microsoft.com
   msdocs_cpprefuri: cpp/build/reference
 msvc:
+  cl:
+    cmdline:
+      bt:
+        mentions:
+        - https://github.com/Phyronnaz/UECompileTimesVisualizer
+        realname: /Bt
+        resources:
+        - https://developercommunity.visualstudio.com/t/c-compiler-extremely-slow-since-158/377398
+      d1reportTime:
+        mentions:
+        - https://github.com/Phyronnaz/UECompileTimesVisualizer
+        resources:
+        - https://aras-p.info/blog/2019/01/21/Another-cool-MSVC-flag-d1reportTime/
+        - https://developercommunity.visualstudio.com/t/c-compiler-extremely-slow-since-158/377398
+      d2cgsummary:
+        mentions:
+        - https://github.com/Phyronnaz/UECompileTimesVisualizer
+        - https://devblogs.microsoft.com/cppblog/visual-studio-2017-throughput-improvements-and-advice/
+        resources:
+        - https://aras-p.info/blog/2017/10/23/Best-unknown-MSVC-flag-d2cgsummary/
   link:
     binaries:
     - hash: 38f375b084e796c6be3ae724641136897770fbc4858e578724f7956c41c48fce
@@ -308,7 +328,8 @@ msvc:
       at_responsefile:
         args: {}
         documented: null
-        purpose: null
+        purpose: Specify a command (or response) file with one command line option
+          per line
         realname: '@'
         researched: false
         resources: []
@@ -559,6 +580,7 @@ msvc:
         documented: null
         mentions:
         - https://lectem.github.io/msvc/reverse-engineering/build/2019/01/21/MSVC-hidden-flags.html
+        notes: '''/d2:-cgsummary'' corresponds to passing ''/d2cgsummary'' to cl.exe'
         purpose: null
         researched: false
         resources:
@@ -2846,6 +2868,8 @@ msvc:
       time_plus:
         args: {}
         documented: null
+        mentions:
+        - https://devblogs.microsoft.com/cppblog/visual-studio-2017-throughput-improvements-and-advice/
         purpose: null
         realname: /time+
         researched: false

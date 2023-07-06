@@ -25,6 +25,10 @@
   * GPLv3-licensed [project to read the values from binaries][9] created with MSVC (can be suppressed via `/emittoolversioninfo:no` to the `link.exe`)
 * [The mysterious 'Rich' header][10] ([archived][11])
   * [Article by Daniel Pistelli][12]
+* Performance-related resources
+  * [Visual Studio 2017 Throughput Improvements and Advice][13]
+  * [Best unknown MSVC flag: d2cgsummary][14]
+  * [Another cool MSVC flag: /d1reportTime][15]
 
 # Useful tips
 
@@ -62,3 +66,6 @@ The following `Directory.Build.props` provides a simple example of how to use th
 [10]: http://bytepointer.com/articles/the_microsoft_rich_header.htm
 [11]: https://web.archive.org/web/20230000000000*/http://bytepointer.com/articles/the_microsoft_rich_header.htm
 [12]: https://ntcore.com/files/richsign.htm
+[13]: https://devblogs.microsoft.com/cppblog/visual-studio-2017-throughput-improvements-and-advice/
+[14]: https://aras-p.info/blog/2017/10/23/Best-unknown-MSVC-flag-d2cgsummary/
+[15]: https://aras-p.info/blog/2019/01/21/Another-cool-MSVC-flag-d1reportTime/
