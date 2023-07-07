@@ -75,10 +75,7 @@ def main():
     env_varnames = set()
     print(60 * "=")
     for ea, name in env_funcs:
-        key = (
-            ea,
-            name,
-        )
+        key = (ea, name,)  # fmt: skip
         if key in env_refs:
             continue
         refsbyea = {}

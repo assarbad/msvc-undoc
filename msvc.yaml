@@ -38,10 +38,9 @@ msvc:
     cmdline:
       align:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :#
+          raw_args: :#
           targets:
           - arm
           - arm64
@@ -65,10 +64,9 @@ msvc:
         resources: []
       allowbind:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -92,10 +90,9 @@ msvc:
         resources: []
       allowisolation:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -127,10 +124,9 @@ msvc:
         - https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
       appcontainer:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -237,10 +233,9 @@ msvc:
         resources: []
       assemblydebug:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:DISABLE]'
+          raw_args: '[:DISABLE]'
           targets:
           - arm
           - arm64
@@ -258,10 +253,9 @@ msvc:
         resources: []
       assemblylinkresource:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -278,10 +272,9 @@ msvc:
         resources: []
       assemblymodule:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -306,10 +299,9 @@ msvc:
         resources: []
       assemblyresource:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename[,[name][,PRIVATE]]
+          raw_args: :filename[,[name][,PRIVATE]]
           targets:
           - arm
           - arm64
@@ -343,10 +335,9 @@ msvc:
         - https://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
       base:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{address[,size]|@filename,key}
+          raw_args: :{address[,size]|@filename,key}
           targets:
           - arm
           - arm64
@@ -415,11 +406,9 @@ msvc:
         resources: []
       clrimagetype:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{IJW|PURE|SAFE|SAFE32BITPREFERRED}
-          - :{IJW|PURE|SAFE}
+          raw_args: :{IJW|PURE|SAFE|SAFE32BITPREFERRED}
           targets:
           - arm
           - arm64
@@ -429,6 +418,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: :{IJW|PURE|SAFE}
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://clrimagetype-specify-type-of-clr-image
         purpose: Sets the type (IJW, pure, or safe) of a CLR image.
@@ -436,10 +431,9 @@ msvc:
         resources: []
       clrloaderoptimization:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{MD|MDH|NONE|SD}
+          raw_args: :{MD|MDH|NONE|SD}
           targets:
           - arm
           - arm64
@@ -480,10 +474,9 @@ msvc:
         resources: []
       clrsupportlasterror:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{NO|SYSTEMDLL}]'
+          raw_args: '[:{NO|SYSTEMDLL}]'
           targets:
           - arm
           - arm64
@@ -509,11 +502,9 @@ msvc:
         resources: []
       clrthreadattribute:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{MTA|NONE|STA}
-          - :{STA|MTA|NONE}
+          raw_args: :{MTA|NONE|STA}
           targets:
           - arm
           - arm64
@@ -523,6 +514,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: :{STA|MTA|NONE}
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://clrthreadattribute-set-clr-thread-attribute
         purpose: Specifies the threading attribute to apply to the entry point of
@@ -531,10 +528,9 @@ msvc:
         resources: []
       clrunmanagedcodecheck:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -595,11 +591,16 @@ msvc:
         - gc.msvc://link/index.htm
       debug:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
-          - '[:{FASTLINK|FULL|NONE}]'
+          raw_args: ''
+          targets:
+          - x64
+          versions:
+          - 8.0.50727.762
+        - hosts:
+          - Hostx64
+          raw_args: '[:{FASTLINK|FULL|NONE}]'
           targets:
           - arm
           - arm64
@@ -609,7 +610,6 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
-          - 8.0.50727.762
         documented: msdocs.link://debug-generate-debug-info
         purpose: Creates debugging information.
         researched: false
@@ -624,10 +624,9 @@ msvc:
         - gc.link://link/options/debugtype.htm
       def:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -651,10 +650,9 @@ msvc:
         resources: []
       defaultlib:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :library
+          raw_args: :library
           targets:
           - arm
           - arm64
@@ -672,10 +670,9 @@ msvc:
         - gc.link://link/options/defaultlib.htm
       delay:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{NOBIND|UNLOAD}
+          raw_args: :{NOBIND|UNLOAD}
           targets:
           - arm
           - arm64
@@ -693,10 +690,9 @@ msvc:
         - gc.link://link/options/delay.htm
       delayload:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :dll
+          raw_args: :dll
           targets:
           - arm
           - arm64
@@ -714,10 +710,9 @@ msvc:
         - gc.link://link/options/delayload.htm
       delaysign:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -734,10 +729,9 @@ msvc:
         resources: []
       dependentloadflag:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :flag
+          raw_args: :flag
           targets:
           - arm
           - arm64
@@ -773,10 +767,9 @@ msvc:
         resources: []
       dll:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -802,10 +795,9 @@ msvc:
         resources: []
       driver:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{UPONLY|WDM}]'
+          raw_args: '[:{UPONLY|WDM}]'
           targets:
           - arm
           - arm64
@@ -823,10 +815,9 @@ msvc:
         - gc.link://link/options/driver.htm
       dynamicbase:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -897,10 +888,9 @@ msvc:
         resources: []
       emitvolatilemetadata:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -931,10 +921,9 @@ msvc:
         - gc.link://link/options/encpadsize.htm
       entry:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :symbol
+          raw_args: :symbol
           targets:
           - arm
           - arm64
@@ -952,10 +941,9 @@ msvc:
         - gc.link://link/options/entry.htm
       errorreport:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{NONE|PROMPT|QUEUE|SEND}
+          raw_args: :{NONE|PROMPT|QUEUE|SEND}
           targets:
           - arm
           - arm64
@@ -997,10 +985,9 @@ msvc:
         resources: []
       export:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :symbol
+          raw_args: :symbol
           targets:
           - arm
           - arm64
@@ -1024,10 +1011,9 @@ msvc:
         resources: []
       exportpadmin:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:size]'
+          raw_args: '[:size]'
           targets:
           - arm
           - arm64
@@ -1044,10 +1030,9 @@ msvc:
         - https://github.com/rust-lang/cc-rs/issues/552
       fastfail:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -1069,10 +1054,9 @@ msvc:
       fastgenprofile:
         alias: /genprofile
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
+          raw_args: '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
           targets:
           - arm
           - arm64
@@ -1098,10 +1082,9 @@ msvc:
         - gc.link://link/options/fe.htm
       filealign:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :#
+          raw_args: :#
           targets:
           - arm
           - arm64
@@ -1119,10 +1102,9 @@ msvc:
         - gc.link://link/options/filealign.htm
       fixed:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -1140,10 +1122,9 @@ msvc:
         - gc.link://link/options/fixed.htm
       force:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{MULTIPLE|UNRESOLVED}]'
+          raw_args: '[:{MULTIPLE|UNRESOLVED}]'
           targets:
           - arm
           - arm64
@@ -1200,10 +1181,9 @@ msvc:
         resources: []
       functionpadmin:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:size]'
+          raw_args: '[:size]'
           targets:
           - arm
           - arm64
@@ -1227,10 +1207,9 @@ msvc:
       genprofile:
         alias: /fastgenprofile
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
+          raw_args: '[:{COUNTER32|COUNTER64|EXACT|MEMMAX=#|MEMMIN=#|NOEXACT|NOPATH|NOTRACKEH|PATH|PGD=filename|TRACKEH}]'
           targets:
           - arm
           - arm64
@@ -1248,10 +1227,9 @@ msvc:
         resources: []
       guard:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{CF|NO}
+          raw_args: :{CF|NO}
           targets:
           - arm
           - arm64
@@ -1276,10 +1254,9 @@ msvc:
         resources: []
       heap:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :reserve[,commit]
+          raw_args: :reserve[,commit]
           targets:
           - arm
           - arm64
@@ -1296,10 +1273,9 @@ msvc:
         resources: []
       highentropyva:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -1346,10 +1322,9 @@ msvc:
         resources: []
       idlout:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1368,10 +1343,9 @@ msvc:
         - https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/Native/Tools/Link/Link.dsc
       ignore:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :#
+          raw_args: :#
           targets:
           - arm
           - arm64
@@ -1388,10 +1362,9 @@ msvc:
         - gc.link://link/options/ignore.htm
       ignoreidl:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -1413,10 +1386,9 @@ msvc:
         - https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/Native/Tools/Link/Link.dsc
       ilk:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1438,10 +1410,9 @@ msvc:
         resources: []
       implib:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1465,10 +1436,9 @@ msvc:
         resources: []
       include:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :symbol
+          raw_args: :symbol
           targets:
           - arm
           - arm64
@@ -1492,10 +1462,9 @@ msvc:
         resources: []
       incremental:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -1519,10 +1488,9 @@ msvc:
         resources: []
       integritycheck:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -1538,10 +1506,9 @@ msvc:
         resources: []
       kernel:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -1557,10 +1524,9 @@ msvc:
         resources: []
       keycontainer:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :name
+          raw_args: :name
           targets:
           - arm
           - arm64
@@ -1577,10 +1543,9 @@ msvc:
         resources: []
       keyfile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1597,10 +1562,9 @@ msvc:
         resources: []
       largeaddressaware:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -1632,10 +1596,9 @@ msvc:
         resources: []
       libpath:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :dir
+          raw_args: :dir
           targets:
           - arm
           - arm64
@@ -1652,10 +1615,9 @@ msvc:
         resources: []
       linkrepro:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :dir
+          raw_args: :dir
           targets:
           - arm
           - arm64
@@ -1672,10 +1634,9 @@ msvc:
         - gc.link://link/options/linkrepro.htm
       linkreprotarget:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1697,11 +1658,9 @@ msvc:
         resources: []
       ltcg:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{INCREMENTAL|NOSTATUS|OFF|STATUS|}]'
-          - '[:{NOSTATUS|PGINSTRUMENT|PGOPTIMIZE|PGUPDATE|STATUS}]'
+          raw_args: '[:{INCREMENTAL|NOSTATUS|OFF|STATUS|}]'
           targets:
           - arm
           - arm64
@@ -1711,6 +1670,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: '[:{NOSTATUS|PGINSTRUMENT|PGOPTIMIZE|PGUPDATE|STATUS}]'
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://ltcg-link-time-code-generation
         purpose: Specifies link-time code generation.
@@ -1725,10 +1690,9 @@ msvc:
         resources: []
       ltcgout:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1746,12 +1710,9 @@ msvc:
         resources: []
       machine:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{ARM|ARM64|ARM64EC|ARM64X|EBC|X64|X86}
-          - :{ARM|ARM64|ARM64X|EBC|X64|X86}
-          - :{ARM|EBC|IA64|MIPS|MIPS16|MIPSFPU|MIPSFPU16|
+          raw_args: :{ARM|ARM64|ARM64EC|ARM64X|EBC|X64|X86}
           targets:
           - arm
           - arm64
@@ -1760,7 +1721,22 @@ msvc:
           versions:
           - 14.36.32532
           - 14.34.31933
+        - hosts:
+          - Hostx64
+          raw_args: :{ARM|ARM64|ARM64X|EBC|X64|X86}
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: :{ARM|EBC|IA64|MIPS|MIPS16|MIPSFPU|MIPSFPU16|
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://machine-specify-target-platform
         purpose: Specifies the target platform.
@@ -1769,11 +1745,16 @@ msvc:
         - gc.link://link/options/machine.htm
       manifest:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
-          - '[:{EMBED[,ID=#]|NO}]'
+          raw_args: '[:NO]'
+          targets:
+          - x64
+          versions:
+          - 8.0.50727.762
+        - hosts:
+          - Hostx64
+          raw_args: '[:{EMBED[,ID=#]|NO}]'
           targets:
           - arm
           - arm64
@@ -1783,7 +1764,6 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
-          - 8.0.50727.762
         documented: msdocs.link://manifest-create-side-by-side-assembly-manifest
         purpose: Creates a side-by-side manifest file and optionally embeds it in
           the binary.
@@ -1791,10 +1771,9 @@ msvc:
         resources: []
       manifestdependency:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :manifest dependency
+          raw_args: :manifest dependency
           targets:
           - arm
           - arm64
@@ -1811,10 +1790,9 @@ msvc:
         resources: []
       manifestfile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1831,10 +1809,9 @@ msvc:
         resources: []
       manifestinput:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -1852,10 +1829,9 @@ msvc:
         resources: []
       manifestuac:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{NO|UAC fragment}]'
+          raw_args: '[:{NO|UAC fragment}]'
           targets:
           - arm
           - arm64
@@ -1872,10 +1848,9 @@ msvc:
         resources: []
       map:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:filename]'
+          raw_args: '[:filename]'
           targets:
           - arm
           - arm64
@@ -1893,11 +1868,9 @@ msvc:
         - gc.link://link/options/options/map.htm
       mapinfo:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{EXPORTS|PDATA}
-          - :{EXPORTS}
+          raw_args: :{EXPORTS|PDATA}
           targets:
           - arm
           - arm64
@@ -1907,6 +1880,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: :{EXPORTS}
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://mapinfo-include-information-in-mapfile
         purpose: Includes the specified information in the mapfile.
@@ -1921,10 +1900,9 @@ msvc:
         resources: []
       merge:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :from=to
+          raw_args: :from=to
           targets:
           - arm
           - arm64
@@ -1942,10 +1920,9 @@ msvc:
         - gc.link://link/options/merge.htm
       midl:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :@commandfile
+          raw_args: :@commandfile
           targets:
           - arm
           - arm64
@@ -1981,10 +1958,9 @@ msvc:
         resources: []
       natvis:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2001,10 +1977,9 @@ msvc:
         resources: []
       noassembly:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2047,10 +2022,9 @@ msvc:
         resources: []
       nodefaultlib:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:library]'
+          raw_args: '[:library]'
           targets:
           - arm
           - arm64
@@ -2069,10 +2043,9 @@ msvc:
         - gc.link://link/options/nod.htm
       noentry:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2090,10 +2063,9 @@ msvc:
         - gc.link://link/options/noentry.htm
       noexp:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2120,10 +2092,9 @@ msvc:
         resources: []
       noimplib:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2145,10 +2116,9 @@ msvc:
         resources: []
       nologo:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2233,10 +2203,9 @@ msvc:
         resources: []
       nxcompat:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -2284,11 +2253,9 @@ msvc:
         resources: []
       opt:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{ICF[=iterations]|LBR|NOICF|NOLBR|NOREF|REF}
-          - :{ICF[=iterations]|NOICF|NOREF|NOWIN98|REF|WIN98}
+          raw_args: :{ICF[=iterations]|LBR|NOICF|NOLBR|NOREF|REF}
           targets:
           - arm
           - arm64
@@ -2298,6 +2265,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: :{ICF[=iterations]|NOICF|NOREF|NOWIN98|REF|WIN98}
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://opt-optimizations
         purpose: Controls LINK optimizations.
@@ -2312,10 +2285,9 @@ msvc:
         resources: []
       order:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :@filename
+          raw_args: :@filename
           targets:
           - arm
           - arm64
@@ -2340,10 +2312,9 @@ msvc:
         - gc.link://link/options/osversion.htm
       out:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2380,10 +2351,9 @@ msvc:
         - gc.link://link/options/pchmap.htm
       pdb:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2464,11 +2434,16 @@ msvc:
         resources: []
       pdbstripped:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
-          - '[:filename]'
+          raw_args: :filename
+          targets:
+          - x64
+          versions:
+          - 8.0.50727.762
+        - hosts:
+          - Hostx64
+          raw_args: '[:filename]'
           targets:
           - arm
           - arm64
@@ -2478,7 +2453,6 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
-          - 8.0.50727.762
         documented: msdocs.link://pdbstripped-strip-private-symbols
         purpose: Creates a PDB file that has no private symbols.
         researched: false
@@ -2498,10 +2472,9 @@ msvc:
         resources: []
       pgd:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - x64
           versions:
@@ -2531,10 +2504,9 @@ msvc:
         resources: []
       profile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2566,10 +2538,9 @@ msvc:
         - gc.link://link/options/re.htm
       release:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2605,10 +2576,9 @@ msvc:
         resources: []
       safeseh:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -2631,10 +2601,9 @@ msvc:
         resources: []
       section:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :name,[[!]{DEKPRSW}][,ALIGN=#]
+          raw_args: :name,[[!]{DEKPRSW}][,ALIGN=#]
           targets:
           - arm
           - arm64
@@ -2676,10 +2645,9 @@ msvc:
         resources: []
       sourcelink:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2732,10 +2700,9 @@ msvc:
         resources: []
       stack:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :reserve[,commit]
+          raw_args: :reserve[,commit]
           targets:
           - arm
           - arm64
@@ -2764,10 +2731,9 @@ msvc:
         resources: []
       stub:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2785,10 +2751,9 @@ msvc:
         - gc.link://link/options/stub.htm
       subsystem:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+          raw_args: :{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
           targets:
           - arm
           - arm64
@@ -2812,10 +2777,9 @@ msvc:
         resources: []
       swaprun:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :{CD|NET}
+          raw_args: :{CD|NET}
           targets:
           - arm
           - arm64
@@ -2847,10 +2811,9 @@ msvc:
         resources: []
       time:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - ''
+          raw_args: ''
           targets:
           - arm
           - arm64
@@ -2876,10 +2839,9 @@ msvc:
         resources: []
       tlbid:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :#
+          raw_args: :#
           targets:
           - arm
           - arm64
@@ -2897,10 +2859,9 @@ msvc:
         - gc.link://link/options/tlbid.htm
       tlbout:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -2924,10 +2885,9 @@ msvc:
         resources: []
       tsaware:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -2946,10 +2906,9 @@ msvc:
         - gc.link://link/options/tsaware.htm
       useprofile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{AGGRESSIVE|PGD=filename}]'
+          raw_args: '[:{AGGRESSIVE|PGD=filename}]'
           targets:
           - arm
           - arm64
@@ -2966,11 +2925,9 @@ msvc:
         resources: []
       verbose:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{CLR|ICF|INCR|LIB|REF|SAFESEH|UNUSEDDELAYLOAD|UNUSEDLIBS}]'
-          - '[:{ICF|LIB|REF|SAFESEH}]'
+          raw_args: '[:{CLR|ICF|INCR|LIB|REF|SAFESEH|UNUSEDDELAYLOAD|UNUSEDLIBS}]'
           targets:
           - arm
           - arm64
@@ -2980,6 +2937,12 @@ msvc:
           - 14.36.32532
           - 14.34.31933
           - 14.29.30133
+        - hosts:
+          - Hostx64
+          raw_args: '[:{ICF|LIB|REF|SAFESEH}]'
+          targets:
+          - x64
+          versions:
           - 8.0.50727.762
         documented: msdocs.link://verbose-print-progress-messages
         purpose: Prints linker progress messages.
@@ -2988,10 +2951,9 @@ msvc:
         - gc.link://link/options/verbose.htm
       version:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :#[.#]
+          raw_args: :#[.#]
           targets:
           - arm
           - arm64
@@ -3069,10 +3031,9 @@ msvc:
         resources: []
       wholearchive:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:library]'
+          raw_args: '[:library]'
           targets:
           - arm
           - arm64
@@ -3094,10 +3055,9 @@ msvc:
         resources: []
       winmd:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:{NO|ONLY}]'
+          raw_args: '[:{NO|ONLY}]'
           targets:
           - arm
           - arm64
@@ -3113,10 +3073,9 @@ msvc:
         resources: []
       winmddelaysign:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -3133,10 +3092,9 @@ msvc:
         resources: []
       winmdfile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -3154,10 +3112,9 @@ msvc:
         resources: []
       winmdkeycontainer:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :name
+          raw_args: :name
           targets:
           - arm
           - arm64
@@ -3173,10 +3130,9 @@ msvc:
         resources: []
       winmdkeyfile:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - :filename
+          raw_args: :filename
           targets:
           - arm
           - arm64
@@ -3222,11 +3178,9 @@ msvc:
         resources: []
       wx:
         args:
-          hosts:
+        - hosts:
           - Hostx64
-          raw_arg_list:
-          - '[:NO]'
-          - '[:nnnn[,nnnn...]]'
+          raw_args: '[:NO]'
           targets:
           - arm
           - arm64
@@ -3237,6 +3191,17 @@ msvc:
           - 14.34.31933
           - 14.29.30133
           - 8.0.50727.762
+        - hosts:
+          - Hostx64
+          raw_args: '[:nnnn[,nnnn...]]'
+          targets:
+          - arm
+          - arm64
+          - x64
+          - x86
+          versions:
+          - 14.36.32532
+          - 14.34.31933
         documented: msdocs.link://wx-treat-linker-warnings-as-errors
         purpose: Treats linker warnings as errors.
         researched: false

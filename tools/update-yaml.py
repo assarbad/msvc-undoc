@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.3.4"
+__version__ = "0.3.5"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -257,42 +257,44 @@ def read_link_helpoutput(hlpoutdir: Path) -> dict:
                 m = switch_argsre.match(line)
                 if m:
                     args = m.group(1)
-                    prevmatch = (
-                        prevmatch[0],
-                        prevmatch[1] + args,
-                    )
+                    prevmatch = (prevmatch[0], prevmatch[1] + args,)  # fmt: skip
                     if args.endswith("|"):
                         continue  # ... continued continuation line ... sweet
                 (switch, args) = prevmatch
             else:
                 assert False, f"NO MATCH FOR: '{line}'"
             assert switch.isupper(), f"unexpectedly we found '{switch}' to not be all uppercase"
-            switch = switch.lower()  # corresponds to the realname
-            argset = set([args])
-            if switch in raw_switches:
-                entry = raw_switches[switch]
-                raw_switches[switch] = (
-                    entry[0].union(verset),
-                    entry[1].union(hstset),
-                    entry[2].union(tgtset),
-                    entry[3].union(argset),
-                )
-            else:
-                raw_switches[switch] = (
-                    verset,
-                    hstset,
-                    tgtset,
-                    argset,
-                )
-    # Create the representation that can be consumed by our YAML
+            newkey = (switch.lower(), args)  # [0] corresponds to the realname
+            if newkey in raw_switches:
+                entry = raw_switches[newkey]
+                raw_switches[newkey] = (entry[0].union(verset), entry[1].union(hstset), entry[2].union(tgtset),)  # fmt: skip
+            else:  # Create the representation that can be consumed by our YAML
+                raw_switches[newkey] = (verset, hstset, tgtset,)  # fmt: skip
     switches = {}
-    for key, entry in raw_switches.items():
-        assert len(entry) == 4, "expected a tuple of four sets!"
+    for (switch, args), entry in raw_switches.items():
+        assert len(entry) == 3, "expected a tuple of three sets!"
         verlist = sorted(entry[0], key=lambda x: tuple(map(int, x.split("."))), reverse=True)
         hstlist = sorted(entry[1])
         tgtlist = sorted(entry[2])
-        arglist = sorted(entry[3])
-        switches[key] = {"raw_arg_list": arglist, "versions": verlist, "hosts": hstlist, "targets": tgtlist}
+        if switch in switches:
+            print(f"Existing entry for {switch}")
+            oldentries = [x for x in switches[switch] if x["raw_args"] == args]
+            if oldentries:  # fit the new
+                assert len(oldentries) == 1, f"more than a single list item matches {args} in {oldentries}"
+                oldentry = oldentries[0]
+                switches[switch].remove(oldentry)  # if this throws, so be it ... something is wrong
+                # We need the unions ...
+                verlist = sorted(entry[0].union(set(oldentry["versions"])), key=lambda x: tuple(map(int, x.split("."))), reverse=True)
+                hstlist = sorted(entry[1].union(set(oldentry["hosts"])))
+                tgtlist = sorted(entry[2].union(set(oldentry["targets"])))
+                newentry = {"raw_args": args, "versions": verlist, "hosts": hstlist, "targets": tgtlist}
+            else:  # simply append new item
+                newentry = {"raw_args": args, "versions": verlist, "hosts": hstlist, "targets": tgtlist}
+            switches[switch].append(newentry)
+            switches[switch].sort(key=lambda x: x["raw_args"])
+        else:  # first and, so far, only item in the list
+            print(f"New entry for {switch}")
+            switches[switch] = [{"raw_args": args, "versions": verlist, "hosts": hstlist, "targets": tgtlist}]
     return switches
 
 
