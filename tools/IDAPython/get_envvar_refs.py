@@ -90,20 +90,23 @@ def main():
     for (ea, name), byea_dict in env_refs.items():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
+            if byea is None:
+                print(f"No info for state leading up to call of {name} at {insn_ea:#x}")
+                continue
+            if byea.insn_ea is None:
+                print(f"No instruction EA for : {byea}")
+                continue
             op2 = get_op_details(byea.insn_ea, 1)
-            inside_refname = get_refname(byea.insn_ea, demangle=False)
             if op2.strlit:
                 env_varnames.add(op2.strlit)
                 print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}" {byea.refname:>55}')
+                # TODO: set comment on the address of the literal, set mark and color!
             else:  # those are candidates for a deeper search
                 digdeeper[insn_ea] = byea
                 print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=}) {byea.refname:>55}")
     print(60 * "=")
-    for varname in sorted(env_varnames):
-        print(varname)
     interesting_func_eas = {}
     for ea, byea in digdeeper.items():
-        print(f"{ea:#x} {byea}")
         if byea.xreffunc.start_ea not in interesting_func_eas:
             interesting_func_eas[byea.xreffunc.start_ea] = []
             interesting_func_eas[byea.xreffunc.start_ea].append(byea)
@@ -111,11 +114,18 @@ def main():
             interesting_func_eas[byea.xreffunc.start_ea].append(byea)
     print(f"{len(interesting_func_eas)} functions look interesting")
     for ea, byea_list in interesting_func_eas.items():
-        calls = set([i for i in idautils.FuncItems(ea) for x in idautils.XrefsFrom(i) if x.type in {idaapi.fl_CF, idaapi.fl_CN}])  # idaapi.fl_CN
-        print(f"{ea:#x} is HIGHLY interesting {len(calls)}")
-        for call in calls:
-            print(f"{call:#x}")
+        calls = set([i for i in idautils.FuncItems(ea) for x in idautils.XrefsFrom(i) if x.type in {idaapi.fl_CF, idaapi.fl_CN}])
+        impcalls = [c for c in calls if any(name in idc.generate_disasm_line(c, 0) for name in env_interesting_funcs)]
+        print(f"{ea:#x} aka {get_refname(ea)} is interesting, {len(impcalls)} imports called:")
+        for call in impcalls:
+            disasm = idc.generate_disasm_line(call, 0)
+            print(f"{call:#x} -> {disasm}")
+            # TODO: set mark and color! ... possibly function comment
+    print(60 * "=")
+    for varname in sorted(env_varnames):
+        print(varname)
 
 
 if __name__ == "__main__":
     main()
+# idaapi.refresh_idaview_anyway()
