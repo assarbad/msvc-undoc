@@ -5,7 +5,70 @@ meta:
   msdocs_baseurl: https://learn.microsoft.com
   msdocs_cpprefuri: cpp/build/reference
 msvc:
+  c1:
+    binaries:
+    - hash: f0325a89d04036887db6b0602700aeeb25a691103a6509d3a3186c3695220506
+      host: x86-64
+      name: c1.dll
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 19.36.32534.0
+        product: 14.36.32534.0
+    environment:
+      MSC_CMD_FLAGS: {}
+      PATH: {}
+      PRINT_HRESULT_ON_FAIL: {}
+      SARIF_OUTPUT_PIPE: {}
+      VSLANG: {}
+      VS_UNICODE_OUTPUT: {}
+      _CL_DEBUGBREAK: {}
+  c1xx:
+    binaries:
+    - hash: a6679ae3ba9ffbdfbf773d2eae14d6149d7a49e0344a2869b7ca37008919cb5c
+      host: x86-64
+      name: c1xx.dll
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 19.36.32534.0
+        product: 14.36.32534.0
+    environment:
+      MSC_CMD_FLAGS: {}
+      PATH: {}
+      PRINT_HRESULT_ON_FAIL: {}
+      SARIF_OUTPUT_PIPE: {}
+      VSLANG: {}
+      VS_UNICODE_OUTPUT: {}
+      _CL_DEBUGBREAK: {}
+  c2:
+    binaries:
+    - hash: 3c819acf293253a3b8c53dc6fc2a5e0f1e96f26f9505b33349a85dd8e5fa3e73
+      host: x86-64
+      name: c2.dll
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 19.36.32534.0
+        product: 14.36.32534.0
+    environment:
+      PATH: {}
+      PGU_LOG: {}
+      PGU_LOGNAME: {}
+      TMP: {}
+      TMP_PGD: {}
+      VSLANG: {}
+      VS_UNICODE_OUTPUT: {}
   cl:
+    binaries:
+    - hash: 6d189ca6f60a477395900cfecba6a4b7910955417249529401d7e44c58a6734c
+      host: x86-64
+      name: cl.exe
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 19.36.32534.0
+        product: 14.36.32534.0
     cmdline:
       bt:
         mentions:
@@ -25,6 +88,35 @@ msvc:
         - https://devblogs.microsoft.com/cppblog/visual-studio-2017-throughput-improvements-and-advice/
         resources:
         - https://aras-p.info/blog/2017/10/23/Best-unknown-MSVC-flag-d2cgsummary/
+    environment:
+      CL: {}
+      CL_EDGE_RUN_SNIFFS: {}
+      ENC_CL: {}
+      ENC_CMD: {}
+      ENC_CWD: {}
+      ENC_PDB: {}
+      ENC_SRC: {}
+      EXTERNAL_INCLUDE: {}
+      IFCPATH: {}
+      INCLUDE: {}
+      LIB: {}
+      LIBPATH: {}
+      LINK: {}
+      LOG_BUILD_COMMANDLINES: {}
+      MPCL_MUTEX_HANDLE: {}
+      MPCL_READ_PIPE_HANDLE: {}
+      MPCL_SERVER_373011: {}
+      MPCL_SERVER_ID: {}
+      MPCL_WRITE_PIPE_HANDLE: {}
+      MSVCETW_PARENT_CONTEXT_THREAD_ID: {}
+      PATH: {}
+      PRINT_HRESULT_ON_FAIL: {}
+      TMP: {}
+      VSLANG: {}
+      VS_UNICODE_OUTPUT: {}
+      _CL_: {}
+      _CL_DEBUGBREAK: {}
+      _CL_NOWILDCARD: {}
   link:
     binaries:
     - hash: 38f375b084e796c6be3ae724641136897770fbc4858e578724f7956c41c48fce
@@ -35,6 +127,14 @@ msvc:
       version:
         file: 14.34.31937.0
         product: 14.34.31937.0
+    - hash: 3b0e8472ab78036f3cdaf67b392aee631228ce1dc6131e486d0041f6191c6a9e
+      host: x86-64
+      name: link.exe
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 14.36.32534.0
+        product: 14.36.32534.0
     cmdline:
       align:
         args:
@@ -3242,17 +3342,37 @@ msvc:
         resources:
         - gc.link://link/options/xoff.htm
     environment:
+      LINK: {}
       LINK_REPRO: {}
       LINK_REPRO_NAME: {}
       LOG_BUILD_COMMANDLINES: {}
       MSVCETW_PARENT_CONTEXT_THREAD_ID: {}
       PATH: {}
       PRINT_HRESULT_ON_FAIL: {}
+      SPGO_SPD_IDSTR: {}
       VSLANG: {}
       VS_UNICODE_OUTPUT: {}
+      _CVTCIL_: {}
       _EXT: {}
       _LIB_: {}
+      _LINK_: {}
       _PDB: {}
       _PRELIB_: {}
+      _PUSHTHUNKOBJ_: {}
     meta:
       msdocs_entryurl: https://learn.microsoft.com/cpp/build/reference/linker-options
+  ml64:
+    binaries:
+    - hash: d6ed1fbdb09b57571c6dd2cbb9f1389beafab7d3df11c5734f85c326704cf137
+      host: x86-64
+      name: ml64.exe
+      target: x86-64
+      toolchain: 14.36.32532
+      version:
+        file: 14.36.32534.0
+        product: 14.36.32534.0
+    environment:
+      INCLUDE: {}
+      ML: {}
+      _ML_: {}
+      _ML_CMDFLAGS: {}
