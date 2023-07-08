@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.2"
+__version__ = "0.2.1"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -66,7 +66,8 @@ def parse_options() -> argparse.Namespace:
     return cfg, parser.parse_args()
 
 
-CmdLineSwitch = namedtuple("CmdLineSwitch", ["name", "documented", "mentions", "purpose", "researched", "resources"])
+CmdLineSwitch = namedtuple("CmdLineSwitch", ["name", "documented", "mentions", "purpose", "researched", "resources", "notes"])
+CmdLineSwitchArgs = namedtuple("CmdLineSwitchArgs", ["value"])
 Binary = namedtuple("Binary", ["name", "hash", "host", "target", "toolchain", "version"])
 BinaryVersion = namedtuple("BinaryVersion", ["file", "product"])
 
@@ -83,6 +84,7 @@ def populate_j2_linkvar(data: dict) -> dict:
                 value.get("purpose", None),
                 value.get("researched", False),
                 value.get("resources", []),
+                value.get("notes", None),
             )
             # notes, args
         )

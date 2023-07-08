@@ -2984,42 +2984,63 @@ msvc:
       wbrdcfg:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrddll:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrdlog:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrdreporterrors:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrdschema:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrdsummary:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []
       wbrdtestencrypt:
         args: {}
         documented: null
+        mentions:
+        - https://github.com/KiFilterFiberContext/warbird-obfuscator
+        - https://github.com/KiFilterFiberContext/microsoft-warbird/
         purpose: null
         researched: false
         resources: []

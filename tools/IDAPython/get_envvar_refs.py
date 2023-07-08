@@ -38,10 +38,14 @@ def reverse_walk_envvar_insns(callee: str, ea: int, xreffunc, refname: str) -> E
                 return EnvVarRef(callee, ea, xreffunc, fea, insn, length, disasm, regname, op1, refname)
 
 
-def analyze_envvar_call(callee: str, ea: int) -> Optional[EnvVarRef]:
+def get_refname(ea: int, demangle: bool = True) -> str:
     refname = idc.get_func_name(ea)
     dmngld_refname = idc.demangle_name(refname, idc.get_inf_attr(idc.INF_SHORT_DN))
-    refname = dmngld_refname if dmngld_refname else refname
+    return dmngld_refname if dmngld_refname else refname
+
+
+def analyze_envvar_call(callee: str, ea: int) -> Optional[EnvVarRef]:
+    refname = get_refname(ea)
     xreffunc = ida_funcs.get_func(ea)
     if xreffunc:
         return reverse_walk_envvar_insns(callee, ea, xreffunc, refname)
@@ -87,18 +91,30 @@ def main():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
             op2 = get_op_details(byea.insn_ea, 1)
+            inside_refname = get_refname(byea.insn_ea, demangle=False)
             if op2.strlit:
                 env_varnames.add(op2.strlit)
-                print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}"')
+                print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}" {byea.refname:>55}')
             else:  # those are candidates for a deeper search
                 digdeeper[insn_ea] = byea
-                print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=})")
+                print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=}) {byea.refname:>55}")
     print(60 * "=")
     for varname in sorted(env_varnames):
         print(varname)
-    print(f"{len(digdeeper)=}")
+    interesting_func_eas = {}
     for ea, byea in digdeeper.items():
         print(f"{ea:#x} {byea}")
+        if byea.xreffunc.start_ea not in interesting_func_eas:
+            interesting_func_eas[byea.xreffunc.start_ea] = []
+            interesting_func_eas[byea.xreffunc.start_ea].append(byea)
+        else:
+            interesting_func_eas[byea.xreffunc.start_ea].append(byea)
+    print(f"{len(interesting_func_eas)} functions look interesting")
+    for ea, byea_list in interesting_func_eas.items():
+        calls = set([i for i in idautils.FuncItems(ea) for x in idautils.XrefsFrom(i) if x.type in {idaapi.fl_CF, idaapi.fl_CN}])  # idaapi.fl_CN
+        print(f"{ea:#x} is HIGHLY interesting {len(calls)}")
+        for call in calls:
+            print(f"{call:#x}")
 
 
 if __name__ == "__main__":
