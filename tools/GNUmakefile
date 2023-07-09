@@ -1,28 +1,49 @@
 PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/get_envvar_refs.py
+UPDDOCS:=./update-docs.py
+UPDYAML:=./update-yaml.py
+ifneq ($(PIPENV_ACTIVE),1) # use the shell wrapper scripts instead, which prepare and enter the venv
+UPDDOCS:=$(patsubst %.py,%,$(UPDDOCS))
+UPDYAML:=$(patsubst %.py,%,$(UPDYAML))
+endif
 all: linkexe_documented.txt black lint vulture msvc.yaml
 
-mirrors/cpp-docs/docs/build/reference/linker-options.md:
-	git -C mirrors clone https://github.com/MicrosoftDocs/cpp-docs.git
+mirrors:
+	test -d $@ || mkdir $@
 
-linkexe_documented.txt: mirrors/cpp-docs/docs/build/reference/linker-options.md
-	git -C mirror/cpp-docs clean -dfx
-	git -C mirror/cpp-docs reset --hard
-	rg  '\| \[`(/[^`]+)' -or '$$1' mirror/cpp-docs/docs/build/reference/linker-options.md |cut -d : -f 2|tr 'A-Z' 'a-z'|sort -u|tee $@
+mirrors/www.geoffchappell.com/studies/msvc: mirrors
+	cd $< && wget --mirror --convert-links --adjust-extension --page-requisites --exclude-directories=studies/windows,studies/msvc/libraries/atl --no-parent https://www.geoffchappell.com/studies/msvc
 
-msvc: black lint ../msvc.yaml
+mirrors/cpp-docs: mirrors
+	test -d "$@" || git -C "$(dir $@)" clone https://github.com/MicrosoftDocs/cpp-docs.git
+	git -C mirrors/cpp-docs clean -dfx
+	git -C mirrors/cpp-docs reset --hard
 
-../msvc.yaml: update-yaml.py
-	./update-yaml.py -vY $@
+mirrors/cpp-docs/docs/build/reference/linker-options.md mirrors/cpp-docs/docs/build/reference/compiler-options-listed-alphabetically.md: mirrors/cpp-docs
+
+linkexe_documented.txt: mirrors/cpp-docs/docs/build/reference/linker-options.md mirrors/cpp-docs
+	rg  '\| \[`(/[^`]+)' -or '$$1' mirrors/cpp-docs/docs/build/reference/linker-options.md |cut -d : -f 2|tr 'A-Z' 'a-z'|sort -u|tee $@
+
+clexe_documented.txt: mirrors/cpp-docs/docs/build/reference/linker-options.md mirrors/cpp-docs
+	rg  '\| \[`(/[^`]+)' -or '$$1' mirrors/cpp-docs/docs/build/reference/compiler-options-listed-alphabetically.md |cut -d : -f 2|tr 'A-Z' 'a-z'|sort -u|tee $@
+
+documented: linkexe_documented.txt clexe_documented.txt mirrors/www.geoffchappell.com/studies/msvc
+
+msvc: black lint yaml
+
+yaml: ../msvc.yaml
+
+../msvc.yaml: update-yaml.py documented
+	$(UPDYAML) -vY $@
 
 ../%: %.j2
-	./update-docs.py -vY ../msvc.yaml -i $< -d $(dir $@)
+	$(UPDDOCS) -vY ../msvc.yaml -i $< -d $(dir $@)
 
 ../LINK.exe.md: ./update-yaml.py
 
 docs: ../LINK.exe.md
 
 clean:
-	rm -f linkexe_documented.txt
+	rm -f clexe_documented.txt linkexe_documented.txt
 
 CLEAN: clean
 	rm -rf mirrors/cpp-docs ../msvc.backup.yaml ../msvc.dryrun.yaml
@@ -48,5 +69,5 @@ vulture: $(PYSCRIPTS)
 check: pretty lint vulture
 
 .DEFAULT: all
-.PHONY: all black check docs lint pretty prerequisites vulture msvc ../msvc.yaml
-.NOTPARALLEL: all clean docs rebuild CLEAN REBUILD
+.PHONY: all black check docs documented lint pretty prerequisites vulture msvc yaml mirrors/cpp-docs
+.NOTPARALLEL: all clean docs documented rebuild CLEAN REBUILD

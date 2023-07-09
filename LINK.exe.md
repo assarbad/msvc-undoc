@@ -279,7 +279,9 @@ The undocumented or barely mentioned switches are in bold, [the documented ones]
 | [`/wx`](https://learn.microsoft.com/cpp/build/reference/wx-treat-linker-warnings-as-errors) | Treats linker warnings as errors. |
 | **`/x86pdata`** |  |
 | **[`/xoff`](https://www.geoffchappell.com/studies/msvc/link/link/options/xoff.htm)** |  |
-| **`@`** |  |## Environment variables for `link.exe`
+| **`@`** | Specify a command (or response) file with one command line option per line |
+
+## Environment variables for `link.exe`
 
 | Environment variable               | Description                                        |
 |------------------------------------|----------------------------------------------------|
@@ -310,8 +312,9 @@ Used (and populated) internally for `/pdbaltpath`:
 
 ## Glossary (guessed)
 
+* ICF: identical COMDAT folding
 * POGO: Profile Guided Optimization
-* wrbrd, "warbird" ... some sort of (prototypical?) technology
+* WarBird (also wrbrd/wbrd) ... some sort of [obfuscation technology][2] (also [here][3], [here][4] and [here][5])
 
 ## Subjects of the study
 
@@ -322,6 +325,16 @@ These are subject to change, eventually.
   - Version:
     - File: 14.34.31937.0
     - Product: 14.34.31937.0
+- `link.exe` (14.36.32532)
+  - SHA256: `3b0e8472ab78036f3cdaf67b392aee631228ce1dc6131e486d0041f6191c6a9e`
+  - Host/Target: `x86-64` / `x86-64`
+  - Version:
+    - File: 14.36.32534.0
+    - Product: 14.36.32534.0
 
 
 [1]: https://learn.microsoft.com/cpp/build/reference/linker-options
+[2]: https://github.com/KiFilterFiberContext/warbird-obfuscator
+[3]: https://www.youtube.com/watch?v=gu_i6LYuePg
+[4]: https://github.com/airbus-seclab/warbirdvm
+[5]: https://github.com/KiFilterFiberContext/microsoft-warbird/

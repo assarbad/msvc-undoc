@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -152,7 +152,8 @@ def update_docs(template: Path, data: dict) -> int:
                 tocheck = mslink[0]
             if tocheck:
                 docsurl = resolve_url(tocheck, **meta)
-                # eprint(f"{cmdline_switch.name=} -> {docsurl}")
+                if args.verbose > 2:
+                    eprint(f"{cmdline_switch.name=} -> {docsurl}")
                 if docsurl:
                     return f"**[`{cmdline_switch.name}`]({docsurl})**"
         return f"**`{cmdline_switch.name}`**"
@@ -186,7 +187,11 @@ def update_docs(template: Path, data: dict) -> int:
     }
 
     j2tmpl = j2env.get_template(str(template.name))
-    with open(template.with_suffix(""), "w") as outfile:
+    outpath = template.with_suffix("")
+    outpath = args.outdir / outpath.name
+    if args.verbose:
+        eprint(f"{outpath=}")
+    with open(outpath, "w") as outfile:
         print(j2tmpl.render(**template_vars), file=outfile)
     return 0
 

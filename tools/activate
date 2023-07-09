@@ -10,7 +10,7 @@ hash -r
 ( set -x; pipx install pipenv )
 hash -r
 if [[ ! -f "Pipfile.lock" ]]; then
-	pipenv lock
+	( set -x; pipenv lock )
 fi
 ( set -x; pipenv sync )
 hash -r
