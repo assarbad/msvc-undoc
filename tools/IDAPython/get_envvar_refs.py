@@ -87,6 +87,7 @@ def main():
             refsbyea[ref.frm] = analyze_envvar_call(name, ref.frm)
         env_refs[key] = refsbyea
     digdeeper = {}
+    slotidx = 1023
     for (ea, name), byea_dict in env_refs.items():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
@@ -100,10 +101,18 @@ def main():
             if op2.strlit:
                 env_varnames.add(op2.strlit)
                 print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}" {byea.refname:>55}')
-                # TODO: set comment on the address of the literal, set mark and color!
+                idc.set_name(op2.value, f"szEnvVar_{op2.strlit}")
+                cmt = f"Environment variable: '{op2.strlit}'"
+                idc.set_cmt(byea.insn_ea, cmt, 0)
+                idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0xB1CEFB)  # "apricot"
+                ida_idc.mark_position(op2.value, 1, 0, 0, slotidx, cmt)
+                slotidx -= 1
+                # TODO: set color?
             else:  # those are candidates for a deeper search
                 digdeeper[insn_ea] = byea
                 print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=}) {byea.refname:>55}")
+                idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0x35E1FF)  # "banana"
+                idc.set_color(ea, idc.CIC_ITEM, 0x30E1F0)  # "dandelion"
     print(60 * "=")
     interesting_func_eas = {}
     for ea, byea in digdeeper.items():
@@ -116,11 +125,16 @@ def main():
     for ea, byea_list in interesting_func_eas.items():
         calls = set([i for i in idautils.FuncItems(ea) for x in idautils.XrefsFrom(i) if x.type in {idaapi.fl_CF, idaapi.fl_CN}])
         impcalls = [c for c in calls if any(name in idc.generate_disasm_line(c, 0) for name in env_interesting_funcs)]
-        print(f"{ea:#x} aka {get_refname(ea)} is interesting, {len(impcalls)} imports called:")
-        for call in impcalls:
-            disasm = idc.generate_disasm_line(call, 0)
-            print(f"{call:#x} -> {disasm}")
-            # TODO: set mark and color! ... possibly function comment
+        if impcalls:
+            idc.set_color(ea, idc.CIC_FUNC, 0xD6EAF0)  # "eggshell"
+            refname = get_refname(ea)
+            cmt = f"Env. var. processing func.: '{refname}'"
+            ida_idc.mark_position(ea, 1, 0, 0, slotidx, cmt)
+            slotidx -= 1
+            print(f"{ea:#x} aka {refname} is interesting, {len(impcalls)} imports called:")
+            for call in impcalls:
+                disasm = idc.generate_disasm_line(call, 0)
+                print(f"{call:#x} -> {disasm}")
     print(60 * "=")
     for varname in sorted(env_varnames):
         print(varname)
