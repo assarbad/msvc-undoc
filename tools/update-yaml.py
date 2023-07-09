@@ -43,7 +43,7 @@ path = %(thisdir)s/../help-output
 
 [mirrors]
 cpp-docs = %(thisdir)s/mirrors/cpp-docs
-geoffchappell.com = %(thisdir)s/mirrors/msvc
+geoffchappell.com = %(thisdir)s/mirrors/www.geoffchappell.com/studies/msvc
 """
 
 

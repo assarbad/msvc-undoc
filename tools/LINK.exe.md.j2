@@ -11,7 +11,7 @@ The undocumented or barely mentioned switches are in bold, [the documented ones]
 | Command line switch                        | Purpose                                            |
 |--------------------------------------------|----------------------------------------------------|
 {%- for switch in link.cmdline %}
-| {{switch|switchmdfmt}} | {{switch.purpose|description}} |
+| {{switch|switchmdfmt}} | {{switch|purpose}} |
 {%- endfor %}
 
 ## Environment variables for `link.exe`

@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 __compatible__ = ((3, 11),)
 __doc__ = """
 =============
@@ -112,15 +112,15 @@ def update_docs(template: Path, data: dict) -> int:
     urlre = re.compile(r"(\w+?(?:\.\w+))?://(.+)")
 
     @cache
-    def cache_meta(**kwargs):
-        gc_baseurl, gc_linkuri = kwargs.get("geoffchappell_baseurl"), kwargs.get("geoffchappell_linkuri")
-        ms_baseurl, ms_cpprefuri = kwargs.get("msdocs_baseurl"), kwargs.get("msdocs_cpprefuri")
-        assert gc_baseurl and gc_linkuri and ms_baseurl and ms_cpprefuri, "one of the kwargs was 'empty'"
+    def cache_meta(**meta):
+        gc_baseurl, gc_linkuri = meta.get("geoffchappell_baseurl"), meta.get("geoffchappell_linkuri")
+        ms_baseurl, ms_cpprefuri = meta.get("msdocs_baseurl"), meta.get("msdocs_cpprefuri")
+        assert gc_baseurl and gc_linkuri and ms_baseurl and ms_cpprefuri, "one of the meta arguments was 'empty'"
         return gc_baseurl, gc_linkuri, ms_baseurl, ms_cpprefuri
 
     @cache
-    def resolve_url(url: str, **kwargs) -> str:
-        gc_baseurl, gc_linkuri, ms_baseurl, ms_cpprefuri = cache_meta(**kwargs)
+    def resolve_url(url: str, **meta) -> str:
+        gc_baseurl, gc_linkuri, ms_baseurl, ms_cpprefuri = cache_meta(**meta)
         match = urlre.fullmatch(url)
         if match:
             partone, parttwo = match.group(1), match.group(2)
@@ -135,13 +135,10 @@ def update_docs(template: Path, data: dict) -> int:
         # assert False, f"URL '{url}' is invalid!"
         return url
 
-    def switchmdfmt(cmdline_switch: CmdLineSwitch) -> str:
+    def get_doc_or_res_url(cmdline_switch: CmdLineSwitch, **meta) -> str:
+        docsurl = None
         if cmdline_switch.documented:
             docsurl = resolve_url(cmdline_switch.documented, **meta)
-            if docsurl:
-                return f"[`{cmdline_switch.name}`]({docsurl})"
-            else:
-                return f"`{cmdline_switch.name}`"
         elif cmdline_switch.resources:
             gclink = [res for res in cmdline_switch.resources if res.startswith("gc")]
             mslink = [res for res in cmdline_switch.resources if "microsoft.com/" in res]
@@ -152,12 +149,20 @@ def update_docs(template: Path, data: dict) -> int:
                 tocheck = mslink[0]
             if tocheck:
                 docsurl = resolve_url(tocheck, **meta)
-                if args.verbose > 2:
-                    eprint(f"{cmdline_switch.name=} -> {docsurl}")
-                if docsurl:
-                    return f"**[`{cmdline_switch.name}`]({docsurl})**"
+        return docsurl if docsurl else ""
+
+    def switchmdfmt(cmdline_switch: CmdLineSwitch) -> str:
+        docsurl = get_doc_or_res_url(cmdline_switch, **meta)
+        if cmdline_switch.documented:
+            docsurl = resolve_url(cmdline_switch.documented, **meta)
+            return f"[`{cmdline_switch.name}`]({docsurl})" if docsurl else f"`{cmdline_switch.name}`"
+        elif docsurl:
+            if args.verbose > 2:
+                eprint(f"{cmdline_switch.name=} -> {docsurl} (from resources)")
+            return f"**[`{cmdline_switch.name}`]({docsurl})**"
         return f"**`{cmdline_switch.name}`**"
 
+    @cache
     def mdurl(url, text, deferred=True) -> str:
         retval = None
         if deferred:
@@ -168,15 +173,54 @@ def update_docs(template: Path, data: dict) -> int:
             retval = f"[{text}]({url})"
         return retval
 
-    def description(text, default="") -> str:
+    mdlinkre = re.compile(r"\[(?P<text>[^\]]+)\]\((?P<url>[^\)]+)\)", re.IGNORECASE)
+    xrefre = re.compile("<xref:(?P<xrefname>[^>]+?)>", re.IGNORECASE)
+    possible_switchre = re.compile("^`(/[^`/]+?)`$", re.IGNORECASE)
+
+    def description(text, default="", context=None) -> str:
         if not text:
             return default
-        # <xref:System.Diagnostics.DebuggableAttribute> -> https://learn.microsoft.com/dotnet/api/system.diagnostics.debuggableattribute
-        # [link text](url) -> absolute URL
+        _, _, ms_baseurl, _ = cache_meta(**meta)
+
+        def replace_relative_mdurls(matchobj):
+            linktext = matchobj.group("text")
+            assert linktext, f"linktext not set for {matchobj}"
+            linkurl = matchobj.group("url")
+            assert linkurl, f"linkurl not set for {matchobj}"
+            if args.verbose:
+                eprint(f"Found: '{matchobj.group(0)}'")
+            m = possible_switchre.match(linktext)
+            if m:
+                if args.verbose:
+                    eprint(f"Lowercasing found switch: '{linktext}' -> '{linktext.lower()}'")
+                linktext = linktext.lower()
+            if linkurl.startswith("/"):
+                linkurl = ms_baseurl + linkurl
+                if args.verbose:
+                    eprint(f"URL replaced -> {linkurl}")
+            elif context and "/" not in linkurl and linkurl.endswith(".md"):
+                docsurl = get_doc_or_res_url(context, **meta)
+                if docsurl:
+                    linkurl = str(Path(docsurl).with_name(linkurl.replace(".md", "")))
+                    if args.verbose:
+                        eprint(f"URL replaced -> {linkurl}")
+            return f"[{linktext}]({linkurl})"
+
+        def replace_xref_with_search(matchobj):
+            xrefname = matchobj.group("xrefname")
+            assert xrefname, f"xrefname not set for {matchobj}"
+            return f"[{xrefname}]({ms_baseurl}/search/?terms={xrefname}&category=Documentation)"
+
+        text = mdlinkre.sub(replace_relative_mdurls, text)
+        text = xrefre.sub(replace_xref_with_search, text)
         return text
+
+    def purpose(cmdline_switch, default="") -> str:
+        return description(cmdline_switch.purpose, context=cmdline_switch)
 
     j2env = Environment(loader=j2ldr)
     j2env.filters["description"] = description
+    j2env.filters["purpose"] = purpose
     j2env.filters["mdurl"] = mdurl
     j2env.filters["switchmdfmt"] = switchmdfmt
     template_vars = {

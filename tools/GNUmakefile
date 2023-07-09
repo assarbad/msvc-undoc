@@ -42,6 +42,11 @@ yaml: ../msvc.yaml
 
 docs: ../LINK.exe.md
 
+clean-docs:
+	rm -f ../LINK.exe.md
+
+redocs: clean-docs docs
+
 clean:
 	rm -f clexe_documented.txt linkexe_documented.txt
 
@@ -69,5 +74,5 @@ vulture: $(PYSCRIPTS)
 check: pretty lint vulture
 
 .DEFAULT: all
-.PHONY: all black check docs documented lint pretty prerequisites vulture msvc yaml mirrors/cpp-docs
-.NOTPARALLEL: all clean docs documented rebuild CLEAN REBUILD
+.PHONY: all black check docs documented lint pretty prerequisites vulture msvc yaml mirrors/cpp-docs redocs clean-docs
+.NOTPARALLEL: all clean docs documented rebuild CLEAN REBUILD redocs clean-docs
