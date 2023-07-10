@@ -72,8 +72,25 @@ def get_op_details(ea: int, opidx: int) -> Op:
     return Op(op, optype, opvalue, strlit)
 
 
-def main():
-    clear_output_console()
+def rename_and_retype_function(oldname: str, newname: str, newtype: str, warn: bool = True, tinfo_flags=idc.TINFO_DEFINITE):
+    matches = [name for name in idautils.Names() if oldname == name[1]]
+    if matches and len(matches) == 1:
+        matches = matches[0]
+        ea, name = matches
+        print(f"{ea=:#x} -> {name=}")
+        tp = idc.parse_decl(newtype.format(**locals()), 0)
+        assert tp is not None, f"ERROR: Could not parse function type {newtype=}"
+        if not idc.apply_type(ea, tp, tinfo_flags):
+            print(f"ERROR: Failed to apply function type {newtype=} at {ea:#x}")
+        if not idc.set_name(ea, newname):
+            print(f"ERROR: Failed to rename {oldname=} to {newname=}")
+    elif not matches:
+        ...
+    elif warn:
+        print(f"WARNING: failed renaming '{oldname=}' to '{newname=}': '{newtype}'. Perhaps this helps: {matches=}")
+
+
+def detect_environment_variables():
     env_funcs = [func for func in idautils.Names() if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)]
     env_refs = {}
     env_varnames = set()
@@ -138,6 +155,36 @@ def main():
     print(60 * "=")
     for varname in sorted(env_varnames):
         print(varname)
+
+
+def main():
+    clear_output_console()
+    rename_and_retype_function("main", "wmain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?wmainInner@@YAHHQEAPEAG@Z", "wmainInner", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?HelperMain@@YAHHQEAPEAG@Z", "HelperMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?LibrarianMain@@YAHHQEAPEAG@Z", "LibrarianMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?EditorMain@@YAHHQEAPEAG@Z", "EditorMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?CvtCilMain@@YAHHQEAPEAG@Z", "CvtCilMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?DumperMain@@YAHHQEAPEAG@Z", "DumperMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?LinkerMain@@YAHHQEAPEAG@Z", "LinkerMain", "int {newname}(int argc, wchar_t** argv);")
+    rename_and_retype_function("?Message@@YAXIZZ", "Message", "void {newname}(unsigned int, ...);")
+    rename_and_retype_function("?ProcessCommandFile@@YAXPEBG@Z", "ProcessCommandFile", "void {newname}(wchar_t const* name);")
+    rename_and_retype_function(
+        "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z", "link_wfsopen", "void {newname}(wchar_t const* filename, wchar_t const* mode, int shflag);"
+    )
+    rename_and_retype_function("?link_ftell@@YAJPEAU_iobuf@@@Z", "link_ftell", "off_t {newname}(FILE* stream);")
+    rename_and_retype_function("?link_fseek@@YAHPEAU_iobuf@@JH@Z", "link_fseek", "int {newname}(FILE* stream, off_t offset, int origin);")
+    rename_and_retype_function("?link_fclose@@YAHPEAU_iobuf@@@Z", "link_fclose", "int {newname}(FILE* stream);")
+    rename_and_retype_function("?SzTrimFile@@YAPEADPEBD@Z", "SzTrimFile", "char* {newname}(char const* string1);")
+    rename_and_retype_function("?SzDupWsz@@YAPEADPEBG@Z", "SzDupWsz", "char* {newname}(LPCWCH lpWideCharStr);")
+    # ?DisplayMessage@@YAXPEBG_KW4MSGTYPE@@IPEAD@Z
+    # ?ParseCommandString@@YAXPEAG@Z
+    # ?ParseCommandLine@@YAXHQEBQEAGPEBG1_N@Z
+    # ?FParseMajorMinorVersion@@YA_NPEBGAEAK1AEA_N@Z
+    # ?FParseWin32Version@@YA_NPEBGAEAKAEA_N@Z
+    # FPrescanSwitch
+    #
+    detect_environment_variables()
 
 
 if __name__ == "__main__":
