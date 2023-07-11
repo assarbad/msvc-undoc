@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1A5ECBC7-6E0C-41D1-A625-292910188AE5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Special Files">
+      <UniqueIdentifier>{3701BC84-EC3D-2020-B873-9C3C75A1D452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{B4D2F81B-59BD-25A8-09FE-DD7FD0CEA935}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+    <None Include="premake4.lua">
+      <Filter>Special Files</Filter>
+    </None>
+    <None Include="Directory.Build.props" />
+    <None Include="project.props" />
+    <None Include=".editorconfig" />
+    <None Include=".clang-format" />
+    <None Include=".gitignore">
+      <Filter>Special Files</Filter>
+    </None>
+    <None Include=".hgignore">
+      <Filter>Header Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="InvokeCompilerPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
