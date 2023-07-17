@@ -1,0 +1,47 @@
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.{c,cpp,h,hpp,rc}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.cmd]
+end_of_line = crlf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.lua]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{rst,md}]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = false
+
+[*.xml]
+end_of_line = lf
+indent_style = space
+
+[*.{props,vcxproj,vcxproj.filters}]
+charset = utf-8
+end_of_line = crlf
+indent_style = space
+indent_size = 4
+
+[.{clang-format,editorconfig,hgignore,gitignore}]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true

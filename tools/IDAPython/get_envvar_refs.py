@@ -72,24 +72,6 @@ def get_op_details(ea: int, opidx: int) -> Op:
     return Op(op, optype, opvalue, strlit)
 
 
-def rename_and_retype_function(oldname: str, newname: str, newtype: str, warn: bool = True, tinfo_flags=idc.TINFO_DEFINITE):
-    matches = [name for name in idautils.Names() if oldname == name[1]]
-    if matches and len(matches) == 1:
-        matches = matches[0]
-        ea, name = matches
-        print(f"{ea=:#x} -> {name=}")
-        tp = idc.parse_decl(newtype.format(**locals()), 0)
-        assert tp is not None, f"ERROR: Could not parse function type {newtype=}"
-        if not idc.apply_type(ea, tp, tinfo_flags):
-            print(f"ERROR: Failed to apply function type {newtype=} at {ea:#x}")
-        if not idc.set_name(ea, newname):
-            print(f"ERROR: Failed to rename {oldname=} to {newname=}")
-    elif not matches:
-        ...
-    elif warn:
-        print(f"WARNING: failed renaming '{oldname=}' to '{newname=}': '{newtype}'. Perhaps this helps: {matches=}")
-
-
 def detect_environment_variables():
     env_funcs = [func for func in idautils.Names() if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)]
     env_refs = {}
@@ -157,34 +139,85 @@ def detect_environment_variables():
         print(varname)
 
 
+fct_renames = {
+    "link.exe": {
+        "main": ("wmain", "int {newname}(int argc, wchar_t** argv);"),
+        "?wmainInner@@YAHHQEAPEAG@Z": ("wmainInner", "int {newname}(int argc, wchar_t** argv);"),
+        "?HelperMain@@YAHHQEAPEAG@Z": ("HelperMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?LibrarianMain@@YAHHQEAPEAG@Z": ("LibrarianMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?EditorMain@@YAHHQEAPEAG@Z": ("EditorMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?CvtCilMain@@YAHHQEAPEAG@Z": ("CvtCilMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?DumperMain@@YAHHQEAPEAG@Z": ("DumperMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?LinkerMain@@YAHHQEAPEAG@Z": ("LinkerMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?Message@@YAXIZZ": ("Message", "void {newname}(unsigned int, ...);"),
+        "?ProcessCommandFile@@YAXPEBG@Z": ("ProcessCommandFile", "void {newname}(wchar_t const* name);"),
+        "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z": ("link_wfsopen", "FILE* {newname}(wchar_t const* filename, wchar_t const* mode, int shflag);"),
+        "?link_ftell@@YAJPEAU_iobuf@@@Z": ("link_ftell", "off_t {newname}(FILE* stream);"),
+        "?link_fseek@@YAHPEAU_iobuf@@JH@Z": ("link_fseek", "int {newname}(FILE* stream, off_t offset, int origin);"),
+        "?link_fclose@@YAHPEAU_iobuf@@@Z": ("link_fclose", "int {newname}(FILE* stream);"),
+        "?SzTrimFile@@YAPEADPEBD@Z": ("SzTrimFile", "char* {newname}(char const* string1);"),
+        "?SzDupWsz@@YAPEADPEBG@Z": ("SzDupWsz", "char* {newname}(LPCWCH lpWideCharStr);"),
+        "?SHA1Update@SHA1Hash@@AEAAXPEAUSHA1_CTX@@PEBEK@Z": (
+            "SHA1Hash__SHA1Update",
+            "void __fastcall SHA1Hash__SHA1Update(SHA1Hash *__hidden this, struct SHA1_CTX *, uchar const* buf, ulong buflen);",
+        ),
+    },
+}
+
+
+def retype_single(oldname: str, newname: str, rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
+    (ea, name), newtype = rule
+    newtype = newtype.format(**locals())
+    tp = idc.parse_decl(newtype, 0)
+    if tp is None:
+        return False, f"ERROR: Could not parse '{newname}' function type {newtype=}"
+    if not idc.apply_type(ea, tp, tinfo_flags):
+        return False, f"{ea:#x}: ERROR: Failed to apply function type => {newtype}"
+    return True, f"{ea:#x}: Re-typed {name} => {newtype}"
+
+
+def rename_single(oldname: str, newname: str, rule: tuple) -> bool:
+    (ea, _), _ = rule
+    if not idc.set_name(ea, newname):
+        return False, f"{ea:#x}: ERROR: Failed to rename {oldname=} to {newname=}"
+    return True, f"{ea:#x}: INFO: Renamed {oldname=} to {newname=}" if oldname != newname else None
+
+
+def rename_and_retype(renames: dict, verbose: bool = True):
+    rfname = idc.get_root_filename()
+    assert rfname, "Could not retrieve name of the file used to create the IDB"
+    if rfname not in renames:
+        print(f"Could not find '{rfname}' as top-level key in the renaming rules")
+    rules = renames[rfname]
+    # Determine the items that were already renamed and those we need to rename
+    renames = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if oldnm == nm[1] and oldnm != rules[oldnm][0]}
+    renamed = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if rules[oldnm][0] == nm[1]}
+    rule_count = len(rules)
+    accounted_for_rule_count = len(renames) + len(renamed)
+    print(f"{len(renames)} functions to rename, {len(renamed)} already renamed, {rule_count - accounted_for_rule_count} missing from IDB")
+    if verbose and rule_count != accounted_for_rule_count:
+        print(f"WARNING: {rule_count=} <> {accounted_for_rule_count=} ({len(rules)=})")
+    if renames:
+        print(50 * "=", "[RENAMES]", 10 * "=")
+        for (oldname, newname), rule in renames.items():
+            success, msg = retype_single(oldname, newname, rule)
+            if verbose and msg:
+                print(msg)
+            success, msg = rename_single(oldname, newname, rule)
+            if verbose and msg:
+                print(msg)
+    if renamed:
+        print(50 * "=", "[RENAMED]", 10 * "=")
+        for (oldname, newname), rule in renamed.items():
+            success, msg = retype_single(oldname, newname, rule)
+            if verbose and msg:
+                print(msg)
+
+
 def main():
     clear_output_console()
-    rename_and_retype_function("main", "wmain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?wmainInner@@YAHHQEAPEAG@Z", "wmainInner", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?HelperMain@@YAHHQEAPEAG@Z", "HelperMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?LibrarianMain@@YAHHQEAPEAG@Z", "LibrarianMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?EditorMain@@YAHHQEAPEAG@Z", "EditorMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?CvtCilMain@@YAHHQEAPEAG@Z", "CvtCilMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?DumperMain@@YAHHQEAPEAG@Z", "DumperMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?LinkerMain@@YAHHQEAPEAG@Z", "LinkerMain", "int {newname}(int argc, wchar_t** argv);")
-    rename_and_retype_function("?Message@@YAXIZZ", "Message", "void {newname}(unsigned int, ...);")
-    rename_and_retype_function("?ProcessCommandFile@@YAXPEBG@Z", "ProcessCommandFile", "void {newname}(wchar_t const* name);")
-    rename_and_retype_function(
-        "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z", "link_wfsopen", "void {newname}(wchar_t const* filename, wchar_t const* mode, int shflag);"
-    )
-    rename_and_retype_function("?link_ftell@@YAJPEAU_iobuf@@@Z", "link_ftell", "off_t {newname}(FILE* stream);")
-    rename_and_retype_function("?link_fseek@@YAHPEAU_iobuf@@JH@Z", "link_fseek", "int {newname}(FILE* stream, off_t offset, int origin);")
-    rename_and_retype_function("?link_fclose@@YAHPEAU_iobuf@@@Z", "link_fclose", "int {newname}(FILE* stream);")
-    rename_and_retype_function("?SzTrimFile@@YAPEADPEBD@Z", "SzTrimFile", "char* {newname}(char const* string1);")
-    rename_and_retype_function("?SzDupWsz@@YAPEADPEBG@Z", "SzDupWsz", "char* {newname}(LPCWCH lpWideCharStr);")
-    # ?DisplayMessage@@YAXPEBG_KW4MSGTYPE@@IPEAD@Z
-    # ?ParseCommandString@@YAXPEAG@Z
-    # ?ParseCommandLine@@YAXHQEBQEAGPEBG1_N@Z
-    # ?FParseMajorMinorVersion@@YA_NPEBGAEAK1AEA_N@Z
-    # ?FParseWin32Version@@YA_NPEBGAEAKAEA_N@Z
-    # FPrescanSwitch
-    #
-    detect_environment_variables()
+    rename_and_retype(fct_renames)
+    # detect_environment_variables()
 
 
 if __name__ == "__main__":

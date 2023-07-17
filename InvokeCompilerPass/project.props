@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<_PropertySheetDisplayName>Project-specific overrides</_PropertySheetDisplayName>
+		<OutDir>$(MSBuildThisFileDirectory)bin\</OutDir>
+		<IntDir>$(MSBuildThisFileDirectory)obj\$(ProjectName).$(Configuration).$(PlatformShortName)\</IntDir>
+		<GenerateManifest>false</GenerateManifest>
+		<UseOfMfc>Static</UseOfMfc>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<TargetName>$(ProjectName)32D</TargetName>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<TargetName>$(ProjectName)32</TargetName>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<TargetName>$(ProjectName)64D</TargetName>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<TargetName>$(ProjectName)64</TargetName>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+		<ClCompile>
+			<AdditionalOptions>/Bt+ /Zc:__cplusplus /utf-8 /GS %(AdditionalOptions)</AdditionalOptions>
+			<Optimization>Disabled</Optimization>
+			<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+		</ClCompile>
+		<Link>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+		<ClCompile>
+			<AdditionalOptions>/Bt+ /Zc:__cplusplus /utf-8 /GS /Oi /Os /Gy %(AdditionalOptions)</AdditionalOptions>
+			<Optimization>Full</Optimization>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+			<StringPooling>true</StringPooling>
+		</ClCompile>
+		<Link>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<OptimizeReferences>true</OptimizeReferences>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)'=='Release' AND '$(PlatformToolset)'!='ClangCL'">
+		<Link>
+			<AdditionalOptions>/release %(AdditionalOptions)</AdditionalOptions>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<WarningLevel>Level4</WarningLevel>
+			<SDLCheck>true</SDLCheck>
+			<ConformanceMode>true</ConformanceMode>
+			<LanguageStandard>stdcpp17</LanguageStandard>
+			<MinimalRebuild>false</MinimalRebuild>
+			<PreprocessorDefinitions>_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+		</ClCompile>
+		<Link>
+			<EnableUAC>false</EnableUAC>
+			<AdditionalOptions>%(AdditionalOptions) /time+ /pdbaltpath:%_PDB% /dynamicbase /nxcompat</AdditionalOptions>
+		</Link>
+	</ItemDefinitionGroup>
+</Project>
