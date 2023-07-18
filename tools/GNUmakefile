@@ -1,4 +1,4 @@
-PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/get_envvar_refs.py
+PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/toolchain_prepare.py
 UPDDOCS:=./update-docs.py
 UPDYAML:=./update-yaml.py
 ifneq ($(PIPENV_ACTIVE),1) # use the shell wrapper scripts instead, which prepare and enter the venv
