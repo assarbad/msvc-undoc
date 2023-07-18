@@ -2,8 +2,10 @@ import idaapi
 import idautils
 import ida_bytes
 import ida_funcs
+import ida_typeinf
 import idc
 from collections import namedtuple
+from functools import partial
 from typing import Optional
 
 EnvVarRef = namedtuple("EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"])
@@ -139,6 +141,44 @@ def detect_environment_variables():
         print(varname)
 
 
+linkexe_hdr = """\
+enum TOOL_TYPE
+{
+  ttHelper = 0,
+  ttCvtCIL = 1,
+  ttDumper = 2,
+  ttEditor = 3,
+  ttPushThunkObjGenerator = 4,
+  ttLibraryManager = 5,
+  ttLinker = 6,
+};
+
+struct calltype
+{
+  wchar_t *ToolName;
+  wchar_t *ExecutableName;
+  wchar_t *ParamName;
+  uint ParamNameLength;
+  TOOL_TYPE ToolType;
+  int (__cdecl *MainFunc)(int argc, wchar_t **argv);
+};
+"""
+
+
+def fixup_tooltype(ea: int):
+    retval = idc.make_array(ea, 8)
+    if not retval:
+        return retval, f"ERROR: Failed to define array at {ea:#x}!"
+    return retval, f"INFO: Created array at {ea:#x}!"
+
+
+def fixup_dbflags(ea: int):
+    retval = idc.make_array(ea, 73)
+    if not retval:
+        return retval, f"ERROR: Failed to define array at {ea:#x}!"
+    return retval, f"INFO: Created array at {ea:#x}!"
+
+
 toolchain_renames = {
     "link.exe": {
         "main": ("wmain", "int {newname}(int argc, wchar_t** argv);"),
@@ -167,11 +207,21 @@ toolchain_renames = {
         "?ControlCHandler@@YAHK@Z": ("ControlCHandler", "BOOL {newname}(DWORD CtrlType);"),
         "?EndEnmUndefExtNonWeak@@YAXPEAVENM_UNDEF_EXT@@@Z": (
             "EndEnmUndefExtNonWeak",
-            "void __cdecl {newname}(wchar_t const* expression, wchar_t const* function, wchar_t const* file, uint line, uintptr_t);",
+            "void {newname}(wchar_t const* expression, wchar_t const* function, wchar_t const* file, uint line, uintptr_t);",
         ),
+        "?ProcessWildCards@@YAXPEBG@Z": ("ProcessWildCards", "void {newname}(wchar_t const* FileArgument);"),
+        "?ProcessArgument@@YAXPEAG_N11@Z": ("ProcessArgument", "void {newname}(wchar_t* Argument, bool, bool, bool);"),
+        "?_find@@YAPEAGPEBG@Z": ("_find", "wchar_t* _find(LPCWSTR lpFileName);"),
         "?PrintLogo@@YAXXZ": ("PrintLogo", "void PrintLogo(void);"),
+        ### Imports
+        "__imp_scalable_malloc": ("__imp_scalable_malloc", "void* scalable_malloc(size_t size);"),
+        "__imp_scalable_realloc": ("__imp_scalable_realloc", "void* scalable_realloc(void* memblock, size_t size);"),
+        "__imp_scalable_free": ("__imp_scalable_free", "void scalable_free(void* memblock);"),
+        "__imp_scalable_aligned_malloc": ("__imp_scalable_aligned_malloc", "void* scalable_aligned_malloc(size_t size, size_t alignment);"),
+        "__imp_scalable_aligned_realloc": ("__imp_scalable_aligned_realloc", "void* scalable_aligned_realloc(void* memblock, size_t size, size_t alignment);"),
+        "__imp_scalable_aligned_free": ("__imp_scalable_aligned_free", "void scalable_aligned_free(void* memblock);"),
         ### Data
-        "?Dbflags@@3PADA": ("Dbflags", "bool Dbflags[73];"),  # TODO: make array 73 elements
+        "?Dbflags@@3PADA": ("Dbflags", "bool Dbflags[73];", fixup_dbflags),
         "?ToolName@@3PEBGEB": ("ToolName", "wchar_t* ToolName;"),
         "?g_dwMainThreadId@@3KA": ("g_dwMainThreadId", "DWORD g_dwMainThreadId;"),
         "?g_cbILKMax@@3_KA": ("g_cbILKMax", "uint64_t g_cbILKMax;"),
@@ -212,38 +262,48 @@ toolchain_renames = {
         "?g_fWarnZwObjInStaticLib@@3_NA": ("g_fWarnZwObjInStaticLib", "bool {newname};"),
         "?fDidInitRgci@@3_NA": ("fDidInitRgci", "bool {newname};"),
         "?g_fResolvePlaceholderTlsIndexImport@@3_NA": ("g_fResolvePlaceholderTlsIndexImport", "bool {newname};"),
-        "?fErr@@3_NA": ("fErr", "bool {newname};"),
-        # "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype ToolType;"), # TODO: make array of 8 elements (define struct)
-        # struct {wchar_t *ToolName; wchar_t *ExecutableName; wchar_t *ParamName; char Unknown[8]; int (__stdcall *MainFunc)(int argc, wchar_t **argv);};
+        "?Tool@@3W4TOOL_TYPE@@A": ("Tool", "TOOL_TYPE Tool;"),
+        "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype ToolType;", fixup_tooltype),
     },
 }
 
 
 def retype_single(oldname: str, newname: str, rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
-    (ea, name), newtype = rule
+    if len(rule) == 2:  # normalize
+        rule = (rule[0], rule[1], None,)  # fmt: skip
+    (ea, name), newtype, raw_fixup = rule
     if newtype is None:
-        return False, f"INFO: no new type for {oldname}/{newname}"
+        return False, None, f"INFO: no new type for {oldname}/{newname}"
     newtype = newtype.format(**locals())
     tp = idc.parse_decl(newtype, 0)
     if tp is None:
-        return False, f"ERROR: Could not parse '{newname}' function type {newtype=}"
+        return False, None, f"ERROR: Could not parse '{newname}' function type {newtype=}"
     if not idc.apply_type(ea, tp, tinfo_flags):
-        return False, f"{ea:#x}: ERROR: Failed to apply function type => {newtype}"
-    return True, f"{ea:#x}: INFO: Re-typed {name} => {newtype}"
+        return False, None, f"{ea:#x}: ERROR: Failed to apply function type => {newtype}"
+    fixup = partial(raw_fixup, ea) if callable(raw_fixup) else None  # specialize to the ea
+    return True, fixup, f"{ea:#x}: INFO: Re-typed {name} => {newtype}"
 
 
 def rename_single(oldname: str, newname: str, rule: tuple) -> bool:
-    (ea, _), _ = rule
+    if len(rule) == 2:  # normalize
+        rule = (rule[0], rule[1], None,)  # fmt: skip
+    (ea, _), _, _ = rule
     if not idc.set_name(ea, newname):
         return False, f"{ea:#x}: ERROR: Failed to rename {oldname=} to {newname=}"
     return True, f"{ea:#x}: INFO: Renamed {oldname=} to {newname=}" if oldname != newname else None
 
 
-def rename_and_retype(renames: dict, verbose: bool = True):
+def rename_and_retype(renames: dict, verbose: bool = False):
     rfname = idc.get_root_filename()  # get_input_file_path() for IDB _path_
     assert rfname, "Could not retrieve name of the file used to create the IDB"
     if rfname not in renames:
         print(f"Could not find '{rfname}' as top-level key in the renaming rules")
+    if rfname in {"link.exe"}:  # TODO: move this out and make more data-driven
+        errs = ida_typeinf.parse_decls(None, linkexe_hdr, None, ida_typeinf.HTI_DCL)
+        if errs in {0}:
+            print(f"INFO: no errors applying C types for '{rfname}'")
+        else:
+            print(f"WARNING: {errs} errors applying C types for '{rfname}'")
     print(f"INFO: applying renaming and re-typing rules for '{rfname}'")
     rules = renames[rfname]
     # Determine the items that were already renamed and those we need to rename
@@ -257,26 +317,30 @@ def rename_and_retype(renames: dict, verbose: bool = True):
     if renames:
         print(50 * "=", "[RENAMES]", 10 * "=")
         for (oldname, newname), rule in renames.items():
-            success, msg = retype_single(oldname, newname, rule)
-            if verbose and msg:
+            success, fixup, msg = retype_single(oldname, newname, rule)
+            if (verbose and msg) or (not success and msg):
                 print(msg)
             success, msg = rename_single(oldname, newname, rule)
-            if verbose and msg:
+            if (verbose and msg) or (not success and msg):
                 print(msg)
+            if callable(fixup):
+                success, msg = fixup()
     if renamed:
         print(50 * "=", "[RENAMED]", 10 * "=")
         for (oldname, newname), rule in renamed.items():
-            success, msg = retype_single(oldname, newname, rule)
-            if verbose and msg:
+            success, fixup, msg = retype_single(oldname, newname, rule)
+            if (verbose and msg) or (not success and msg):
                 print(msg)
+            if callable(fixup):
+                success, msg = fixup()
 
 
 def main():
     clear_output_console()
     rename_and_retype(toolchain_renames)
-    # detect_environment_variables()
+    detect_environment_variables()
 
 
 if __name__ == "__main__":
     main()
-# idaapi.refresh_idaview_anyway()
+    # idaapi.refresh_idaview_anyway()
