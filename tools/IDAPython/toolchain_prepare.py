@@ -26,6 +26,9 @@ env_interesting_funcs = {
 }
 
 
+slotidx = 1023
+
+
 def reverse_walk_envvar_insns(callee: str, ea: int, xreffunc, refname: str) -> EnvVarRef:
     regname = [env_interesting_funcs[k]["reg"] for k in env_interesting_funcs.keys() if callee.endswith(k)][0]
     for fea in sorted(xreffunc.head_items(), reverse=True):
@@ -88,7 +91,6 @@ def detect_environment_variables():
             refsbyea[ref.frm] = analyze_envvar_call(name, ref.frm)
         env_refs[key] = refsbyea
     digdeeper = {}
-    slotidx = 1023
     for (ea, name), byea_dict in env_refs.items():
         print(f"{ea:#x}: {name}() called by:")
         for insn_ea, byea in byea_dict.items():
@@ -104,8 +106,9 @@ def detect_environment_variables():
                 print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}" {byea.refname:>55}')
                 idc.set_name(op2.value, f"szEnvVar_{op2.strlit}")
                 cmt = f"Environment variable: '{op2.strlit}'"
-                idc.set_cmt(byea.insn_ea, cmt, 0)
+                idc.set_cmt(byea.insn_ea, cmt, False)
                 idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0xB1CEFB)  # "apricot"
+                global slotidx
                 ida_idc.mark_position(op2.value, 1, 0, 0, slotidx, cmt)
                 slotidx -= 1
                 # TODO: set color?
@@ -155,9 +158,9 @@ enum TOOL_TYPE
 
 struct calltype
 {
-  wchar_t *ToolName;
-  wchar_t *ExecutableName;
-  wchar_t *ParamName;
+  LPCWSTR ToolName;
+  LPCWSTR ExecutableName;
+  LPCWSTR ParamName;
   uint ParamNameLength;
   TOOL_TYPE ToolType;
   int (__cdecl *MainFunc)(int argc, wchar_t **argv);
@@ -166,17 +169,30 @@ struct calltype
 
 
 def fixup_tooltype(ea: int):
-    retval = idc.make_array(ea, 8)
+    arrsize = 8
+    retval = idc.make_array(ea, arrsize)
     if not retval:
-        return retval, f"ERROR: Failed to define array at {ea:#x}!"
+        return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
+    cmt = f"Tool types table (lib, edit, link ...)"
+    idc.set_cmt(ea, cmt, True)
+    idc.set_color(ea, idc.CIC_ITEM, 0xF0FAFF)
+    global slotidx
+    ida_idc.mark_position(ea, 1, 0, 0, slotidx, cmt)
+    slotidx -= 1
     return retval, f"INFO: Created array at {ea:#x}!"
 
 
 def fixup_dbflags(ea: int):
-    retval = idc.make_array(ea, 73)
+    arrsize = 73
+    retval = idc.make_array(ea, arrsize)
     if not retval:
-        return retval, f"ERROR: Failed to define array at {ea:#x}!"
+        return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
     return retval, f"INFO: Created array at {ea:#x}!"
+
+
+def fixup_szphase(ea: int):
+    idc.set_cmt(ea, "current phase of linking/processing", True)
+    return True, None
 
 
 toolchain_renames = {
@@ -191,13 +207,13 @@ toolchain_renames = {
         "?LinkerMain@@YAHHQEAPEAG@Z": ("LinkerMain", "int {newname}(int argc, wchar_t** argv);"),
         "?HybridPushThunkObjMain@@YAHHQEAPEAG@Z": ("HybridPushThunkObjMain", "int {newname}(int argc, wchar_t** argv);"),
         "?Message@@YAXIZZ": ("Message", "void {newname}(unsigned int, ...);"),
-        "?ProcessCommandFile@@YAXPEBG@Z": ("ProcessCommandFile", "void {newname}(wchar_t const* name);"),
-        "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z": ("link_wfsopen", "FILE* {newname}(wchar_t const* filename, wchar_t const* mode, int shflag);"),
+        "?ProcessCommandFile@@YAXPEBG@Z": ("ProcessCommandFile", "void {newname}(LPCWSTR name);"),
+        "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z": ("link_wfsopen", "FILE* {newname}(LPCWSTR filename, LPCWSTR mode, int shflag);"),
         "?link_ftell@@YAJPEAU_iobuf@@@Z": ("link_ftell", "off_t {newname}(FILE* stream);"),
         "?link_fseek@@YAHPEAU_iobuf@@JH@Z": ("link_fseek", "int {newname}(FILE* stream, off_t offset, int origin);"),
         "?link_fclose@@YAHPEAU_iobuf@@@Z": ("link_fclose", "int {newname}(FILE* stream);"),
         "?SzTrimFile@@YAPEADPEBD@Z": ("SzTrimFile", "char* {newname}(char const* string1);"),
-        "?SzDupWsz@@YAPEADPEBG@Z": ("SzDupWsz", "char* {newname}(LPCWCH lpWideCharStr);"),
+        "?SzDupWsz@@YAPEADPEBG@Z": ("SzDupWsz", "char* {newname}(LPCWSTR lpWideCharStr);"),
         "?SHA1Update@SHA1Hash@@AEAAXPEAUSHA1_CTX@@PEBEK@Z": (
             "SHA1Hash__SHA1Update",
             "void {newname}(SHA1Hash *__hidden this, struct SHA1_CTX *, uchar const* buf, ulong buflen);",
@@ -207,12 +223,23 @@ toolchain_renames = {
         "?ControlCHandler@@YAHK@Z": ("ControlCHandler", "BOOL {newname}(DWORD CtrlType);"),
         "?EndEnmUndefExtNonWeak@@YAXPEAVENM_UNDEF_EXT@@@Z": (
             "EndEnmUndefExtNonWeak",
-            "void {newname}(wchar_t const* expression, wchar_t const* function, wchar_t const* file, uint line, uintptr_t);",
+            "void {newname}(LPCWSTR expression, LPCWSTR function, LPCWSTR file,uint line, uintptr_t);",
         ),
-        "?ProcessWildCards@@YAXPEBG@Z": ("ProcessWildCards", "void {newname}(wchar_t const* FileArgument);"),
-        "?ProcessArgument@@YAXPEAG_N11@Z": ("ProcessArgument", "void {newname}(wchar_t* Argument, bool, bool, bool);"),
-        "?_find@@YAPEAGPEBG@Z": ("_find", "wchar_t* _find(LPCWSTR lpFileName);"),
+        "?ProcessWildCards@@YAXPEBG@Z": ("ProcessWildCards", "void {newname}(LPCWSTR FileArgument);"),
+        "?ProcessArgument@@YAXPEAG_N11@Z": ("ProcessArgument", "void {newname}(LPWSTR Argument, bool, bool, bool);"),
+        "?_find@@YAPEAGPEBG@Z": ("_find", "LPWSTR _find(LPCWSTR lpFileName);"),
         "?PrintLogo@@YAXXZ": ("PrintLogo", "void PrintLogo(void);"),
+        "?ProcessEditorSwitches@@YAXHPEBGHK_N1@Z": ("ProcessEditorSwitches", "void {newname}(int, LPCWSTR, int, unsigned int, bool, bool);"),
+        "?ParseSymbol@@YAXPEBG0_N@Z": ("ParseSymbol", "void {newname}(LPWSTR Source, LPCWSTR, bool);"),
+        "?FileMove@@YAXPEBG0@Z": ("FileMove", "void {newname}(LPCWSTR lpExistingFileName, LPCWSTR lpNewFileName);"),
+        "?FileHardClose@@YAXPEBG_N@Z": ("FileHardClose", "void {newname}(LPCWSTR lpFileName)"),
+        "?FileRemove@@YA_NPEBG@Z": ("FileRemove", "bool {newname}(LPWSTR FileName);"),
+        "GetFilePos": ("GetFilePos", "DWORD {newname}(HANDLE hFile);"),
+        "?link_fwprintf@@YAHPEAU_iobuf@@PEBGZZ": ("link_fwprintf", "int {newname}(FILE* stream, wchar_t const *format, ...);"),
+        "?CheckErrNo@@YAXXZ": ("CheckErrNo", "void {newname}();"),
+        "?CheckHResult@@YA_NJ@Z": ("CheckHResult", "bool {newname}(HRESULT hr);"),
+        "CheckHResultFailure": ("CheckHResultFailure", "void {newname}(HRESULT hr);"),
+        # TODO: __imp__wcsicmp <- to find relevant string references?!
         ### Imports
         "__imp_scalable_malloc": ("__imp_scalable_malloc", "void* scalable_malloc(size_t size);"),
         "__imp_scalable_realloc": ("__imp_scalable_realloc", "void* scalable_realloc(void* memblock, size_t size);"),
@@ -222,7 +249,7 @@ toolchain_renames = {
         "__imp_scalable_aligned_free": ("__imp_scalable_aligned_free", "void scalable_aligned_free(void* memblock);"),
         ### Data
         "?Dbflags@@3PADA": ("Dbflags", "bool Dbflags[73];", fixup_dbflags),
-        "?ToolName@@3PEBGEB": ("ToolName", "wchar_t* ToolName;"),
+        "?ToolName@@3PEBGEB": ("ToolName", "LPWSTR ToolName;"),
         "?g_dwMainThreadId@@3KA": ("g_dwMainThreadId", "DWORD g_dwMainThreadId;"),
         "?g_cbILKMax@@3_KA": ("g_cbILKMax", "uint64_t g_cbILKMax;"),
         "?szPdbFilename@@3PEAGEA": ("szPdbFilename", "LPCWCH {newname};"),
@@ -262,8 +289,11 @@ toolchain_renames = {
         "?g_fWarnZwObjInStaticLib@@3_NA": ("g_fWarnZwObjInStaticLib", "bool {newname};"),
         "?fDidInitRgci@@3_NA": ("fDidInitRgci", "bool {newname};"),
         "?g_fResolvePlaceholderTlsIndexImport@@3_NA": ("g_fResolvePlaceholderTlsIndexImport", "bool {newname};"),
-        "?Tool@@3W4TOOL_TYPE@@A": ("Tool", "TOOL_TYPE Tool;"),
-        "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype ToolType;", fixup_tooltype),
+        "?Tool@@3W4TOOL_TYPE@@A": ("Tool", "TOOL_TYPE {newname};"),
+        "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype {newname};", fixup_tooltype),
+        "?fCtrlCSignal@@3KA": ("fCtrlCSignal", "uint {newname};"),
+        "?szPhase@@3PEBGEB": ("szPhase", "LPCWSTR {newname};", fixup_szphase),  # TODO: resolve all assignments to comments
+        # ?rgpfi@BufIOPrivate@@3PEAPEAUFI@@EA -> table of file "descriptors", the index is used as "file number"
     },
 }
 
@@ -325,6 +355,8 @@ def rename_and_retype(renames: dict, verbose: bool = False):
                 print(msg)
             if callable(fixup):
                 success, msg = fixup()
+                if (verbose and msg) or (not success and msg):
+                    print(msg)
     if renamed:
         print(50 * "=", "[RENAMED]", 10 * "=")
         for (oldname, newname), rule in renamed.items():
@@ -333,6 +365,8 @@ def rename_and_retype(renames: dict, verbose: bool = False):
                 print(msg)
             if callable(fixup):
                 success, msg = fixup()
+                if (verbose and msg) or (not success and msg):
+                    print(msg)
 
 
 def main():
