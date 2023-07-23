@@ -9,6 +9,11 @@
 #include <Windows.h>
 #include <cstdio>
 #include <tchar.h>
+#include "./LuaBridge.h"
+#include "dllversion.h"
+#ifndef GIT_COMMIT
+#    error No Git commit set
+#endif // !GIT_COMMIT
 
 EXTERN_C_START
 

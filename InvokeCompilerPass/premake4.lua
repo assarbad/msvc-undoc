@@ -26,19 +26,26 @@ solution ("InvokeCompilerPass")
 
         files
         {
+            "lua/*.c",
+            "luaall.c",
+            "lua/*.h",
             "*.cpp",
             "*.h",
             "*.hpp",
+            "*.rc",
             "*.manifest",
             "*.cmd", "*.txt", "*.md", "*.rst", "premake4.lua",
-            "*.manifest", "*.props", "*.ruleset", ".editorconfig", ".clang-format",
+            "*.manifest", "*.props", "*.targets", "*.ruleset", ".editorconfig", ".clang-format",
             ".gitignore", ".hgignore",
         }
 
         vpaths
         {
-            ["Special Files/*"] = { "**.cmd", "premake4.lua", "**.manifest", ".gitignore", ".hgignore" },
-            ["Header Files/*"] = { "*.h", "*.hpp", },
+            ["Special Files/*"] = { "**.cmd", "premake4.lua", "**.manifest", ".gitignore", "*.props", "*.targets", ".editorconfig", ".clang-format", },
+            ["Resource Scripts/*"] = { "*.rc", "*version.h", },
+            ["Header Files/Lua/*"] = { "lua/*.h", },
+            ["Header Files/*"] = { "*.hpp", "*.h", },
+            ["Source Files/Lua/*"] = { "lua/*.c", "luaall.c", },
             ["Source Files/*"] = { "*.cpp", },
         }
 
@@ -92,6 +99,13 @@ do
         if (indent == 2) and (msg == '<Keyword>Win32Proj</Keyword>') then
             orig_p(indent, msg, first, ...) -- pass through original line
             orig_p(indent, '<ProjectName>%s</ProjectName>', prj.name)
+            return true
+        end
+        if (indent == 2) and (msg == [[<ClCompile Include="%s">]]) and (first:match("^lua\\")) then
+            local toadd = "<ExcludedFromBuild>true</ExcludedFromBuild>"
+            orig_p(indent, msg, first, ...) -- pass through original line
+            --inject_linkopt_files(orig_p, toadd, indent, msg, first, ...)
+            orig_p(indent+1, toadd) -- Exclusion for the last item, too
             return true
         end
         if (indent == 2) and (suppress_tags2[msg] ~= nil) then -- Suppress these, our property sheet takes care of those

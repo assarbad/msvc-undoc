@@ -135,6 +135,181 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lua\lapi.h" />
+    <ClInclude Include="lua\lauxlib.h" />
+    <ClInclude Include="lua\lcode.h" />
+    <ClInclude Include="lua\lctype.h" />
+    <ClInclude Include="lua\ldebug.h" />
+    <ClInclude Include="lua\ldo.h" />
+    <ClInclude Include="lua\lfunc.h" />
+    <ClInclude Include="lua\lgc.h" />
+    <ClInclude Include="lua\ljumptab.h" />
+    <ClInclude Include="lua\llex.h" />
+    <ClInclude Include="lua\llimits.h" />
+    <ClInclude Include="lua\lmem.h" />
+    <ClInclude Include="lua\lobject.h" />
+    <ClInclude Include="lua\lopcodes.h" />
+    <ClInclude Include="lua\lopnames.h" />
+    <ClInclude Include="lua\lparser.h" />
+    <ClInclude Include="lua\lprefix.h" />
+    <ClInclude Include="lua\lstate.h" />
+    <ClInclude Include="lua\lstring.h" />
+    <ClInclude Include="lua\ltable.h" />
+    <ClInclude Include="lua\ltests.h" />
+    <ClInclude Include="lua\ltm.h" />
+    <ClInclude Include="lua\lua.h" />
+    <ClInclude Include="lua\luaconf.h" />
+    <ClInclude Include="lua\lualib.h" />
+    <ClInclude Include="lua\lundump.h" />
+    <ClInclude Include="lua\lvm.h" />
+    <ClInclude Include="lua\lzio.h" />
+    <ClInclude Include="dllversion.h" />
+    <ClInclude Include="LuaBridge.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lua\lapi.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lauxlib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lbaselib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lcode.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lcorolib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lctype.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ldblib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ldebug.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ldo.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ldump.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lfunc.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lgc.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\linit.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\liolib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\llex.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lmathlib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lmem.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\loadlib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lobject.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lopcodes.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\loslib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lparser.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lstate.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lstring.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lstrlib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ltable.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ltablib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ltests.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\ltm.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lua.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lundump.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lutf8lib.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lvm.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\lzio.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="lua\onelua.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="luaall.c">
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
     <ClCompile Include="InvokeCompilerPass.cpp">
     </ClCompile>
   </ItemGroup>
@@ -147,6 +322,9 @@
     <None Include=".clang-format" />
     <None Include=".gitignore" />
     <None Include=".hgignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dllversion.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

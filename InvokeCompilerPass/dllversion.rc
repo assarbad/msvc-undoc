@@ -1,0 +1,76 @@
+///////////////////////////////////////////////////////////////////////////////
+///
+/// 2023 Oliver Schneider (assarbad.net) under the terms of the UNLICENSE
+///
+///////////////////////////////////////////////////////////////////////////////
+#include <winnt.rh>
+#include <winver.h>
+#pragma code_page(65001)
+
+#ifdef RC_INVOKED
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#include "dllversion.h"
+
+#ifdef DBG
+#define ACTUAL_FILEFLAGS VS_FF_DEBUG
+#else
+#define ACTUAL_FILEFLAGS 0
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION CREATE_XVER(FILE_MAJVER, FILE_MINVER, FILE_PATCH, FILE_BUILD)
+ PRODUCTVERSION CREATE_XVER(PRD_MAJVER, PRD_MINVER, PRD_PATCH, PRD_BUILD)
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+ FILEFLAGS ACTUAL_FILEFLAGS
+ FILEOS VOS_NT
+ FILETYPE VFT_DLL
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+#ifdef TEXT_AUTHOR
+            VALUE "Author", ANSISTRING(TEXT_AUTHOR)
+#endif
+#ifdef TEXT_COMMENTS
+            VALUE "Comments", ANSISTRING(TEXT_COMMENTS)
+#endif
+            VALUE "CompanyName", ANSISTRING(TEXT_COMPANY)
+            VALUE "FileDescription", ANSISTRING(TEXT_FILEDESC)
+            VALUE "FileVersion", ANSISTRING(CREATE_FVER(FILE_MAJVER, FILE_MINVER, FILE_PATCH, FILE_BUILD))
+            VALUE "InternalName", ANSISTRING(TEXT_INTERNALNAME)
+            VALUE "LegalCopyright", ANSISTRING(TEXT_COPYRIGHT)
+            VALUE "OriginalFilename", ANSISTRING(TEXT_MODULE)
+            VALUE "ProductName", ANSISTRING(TEXT_PRODUCTNAME)
+            VALUE "ProductVersion", ANSISTRING(CREATE_PVER(PRD_MAJVER, PRD_MINVER, PRD_PATCH, PRD_BUILD))
+#ifdef TEXT_PORTIONSCOPYRIGHT
+            VALUE "Portions Copyright", TEXT_PORTIONSCOPYRIGHT
+#endif
+#ifdef TEXT_SPECIALBUILD
+            VALUE "SpecialBuild", ANSISTRING(TEXT_SPECIALBUILD)
+#endif
+#ifdef TEXT_WEBSITE
+            VALUE "Website", ANSISTRING(TEXT_WEBSITE)
+#endif
+#if defined(HG_REV_ID) && defined(HG_REV_NO)
+            VALUE "Mercurial revision", HG_REV_ID " (" ANSISTRING(HG_REV_NO) ")"
+#endif
+#if defined(GIT_COMMIT)
+     VALUE "Git revision", GIT_COMMIT
+#endif
+#if defined(HG_FULLID) && defined(HG_REPOSITORY)
+            VALUE "Mercurial revision URL", HG_REPOSITORY "/src/" HG_FULLID
+#endif
+#ifdef HG_REPOSITORY
+            VALUE "Mercurial repository", HG_REPOSITORY
+#endif
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END
+
+#endif // RC_INVOKED

@@ -19,9 +19,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<TargetName>$(ProjectName)64</TargetName>
 	</PropertyGroup>
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<AdditionalOptions>%(AdditionalOptions) /d1trimfile:"$(MSBuildThisFileDirectory)\" /Zc:__cplusplus /utf-8 /GS</AdditionalOptions>
+		</ClCompile>
+	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
 		<ClCompile>
-			<AdditionalOptions>/Bt+ /Zc:__cplusplus /utf-8 /GS %(AdditionalOptions)</AdditionalOptions>
 			<Optimization>Disabled</Optimization>
 			<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
 			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -33,7 +37,7 @@
 	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
 		<ClCompile>
-			<AdditionalOptions>/Bt+ /Zc:__cplusplus /utf-8 /GS /Oi /Os /Gy %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalOptions>%(AdditionalOptions) /Oi /Os /Gy /Brepro</AdditionalOptions>
 			<Optimization>Full</Optimization>
 			<FunctionLevelLinking>true</FunctionLevelLinking>
 			<IntrinsicFunctions>true</IntrinsicFunctions>
@@ -64,7 +68,15 @@
 		</ClCompile>
 		<Link>
 			<EnableUAC>false</EnableUAC>
-			<AdditionalOptions>%(AdditionalOptions) /time+ /pdbaltpath:%_PDB% /dynamicbase /nxcompat</AdditionalOptions>
+			<AdditionalOptions>%(AdditionalOptions) /pdbaltpath:%_PDB% /dynamicbase /nxcompat</AdditionalOptions>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="false">
+		<ClCompile>
+			<AdditionalOptions>%(AdditionalOptions) /Bt+</AdditionalOptions>
+		</ClCompile>
+		<Link>
+			<AdditionalOptions>%(AdditionalOptions) /time+</AdditionalOptions>
 		</Link>
 	</ItemDefinitionGroup>
 </Project>
