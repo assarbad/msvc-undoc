@@ -685,7 +685,7 @@ msvc:
       db:
         args: {}
         documented: null
-        notes: appears to relate to the ILK file
+        notes: appears to relate to the ILK file, seemingly allows to set flags that pertain to it
         purpose: null
         researched: false
         resources:
