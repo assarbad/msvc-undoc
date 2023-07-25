@@ -2,7 +2,9 @@ import idaapi
 import idautils
 import ida_bytes
 import ida_funcs
+import ida_struct
 import ida_typeinf
+import ida_xref
 import idc
 from collections import namedtuple
 from functools import partial
@@ -27,6 +29,41 @@ env_interesting_funcs = {
 
 
 slotidx = 1023
+marked_positions_ea = {}
+
+
+def mark_position(ea: int, cmt: str):
+    global slotidx
+    global marked_positions_ea
+    if ea not in marked_positions_ea:
+        ida_idc.mark_position(ea, 1, 0, 0, slotidx, cmt)
+        marked_positions_ea[ea] = slotidx  # remember slot
+        slotidx -= 1
+    else:
+        oldslotidx = marked_positions_ea[ea]
+        oldcmt = ida_idc.get_mark_comment(oldslotidx)
+        if cmt != oldcmt:
+            print(f"WARNING: attempt to mark {ea:#x} with comment: {cmt}")
+            print(f"INFO: {ea:#x} has existing comment: {oldcmt}")
+
+
+def get_strlit(ea) -> Optional[str]:
+    flags = ida_bytes.get_flags(ea)
+    if ida_bytes.is_strlit(flags):
+        strtype = idc.get_str_type(ea)
+        strlit = idc.get_strlit_contents(ea, -1, strtype)
+        if strlit is not None:
+            strlit = strlit.decode("utf-8")
+            return strlit
+    return None
+
+
+def sizeof(typestr: str) -> int:
+    ti = ida_typeinf.tinfo_t()
+    if ti.get_named_type(None, typestr):
+        assert ti.present(), f"{typestr} isn't really present"
+        return ti.get_size()
+    return -1
 
 
 def reverse_walk_envvar_insns(callee: str, ea: int, xreffunc, refname: str) -> EnvVarRef:
@@ -68,19 +105,14 @@ def get_op_details(ea: int, opidx: int) -> Op:
     opvalue = idc.get_operand_value(ea, opidx)
     strlit = None
     if optype in {idc.o_mem} and opvalue != -1:
-        flags = ida_bytes.get_flags(opvalue)
-        if ida_bytes.is_strlit(flags):
-            strtype = idc.get_str_type(opvalue)
-            strlit = idc.get_strlit_contents(opvalue, -1, strtype)
-            if strlit is not None:
-                strlit = strlit.decode("utf-8")
+        strlit = get_strlit(opvalue)
     return Op(op, optype, opvalue, strlit)
 
 
 def detect_environment_variables():
     env_funcs = [func for func in idautils.Names() if any(func[1].endswith(name) and "MsvcEtw" not in func[1] for name in env_interesting_funcs)]
     env_refs = {}
-    env_varnames = set()
+    env_varnames = {}
     print(60 * "=")
     for ea, name in env_funcs:
         key = (ea, name,)  # fmt: skip
@@ -102,16 +134,13 @@ def detect_environment_variables():
                 continue
             op2 = get_op_details(byea.insn_ea, 1)
             if op2.strlit:
-                env_varnames.add(op2.strlit)
+                env_varnames[op2.strlit] = op2.value
                 print(f'  {byea.insn_ea:#x} => {op2.value:#x}: "{op2.strlit}" {byea.refname:>55}')
                 idc.set_name(op2.value, f"szEnvVar_{op2.strlit}")
-                cmt = f"Environment variable: '{op2.strlit}'"
+                cmt = f"Variable(env): '{op2.strlit}'"
                 idc.set_cmt(byea.insn_ea, cmt, False)
                 idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0xB1CEFB)  # "apricot"
-                global slotidx
-                ida_idc.mark_position(op2.value, 1, 0, 0, slotidx, cmt)
-                slotidx -= 1
-                # TODO: set color?
+                mark_position(op2.value, cmt)
             else:  # those are candidates for a deeper search
                 digdeeper[insn_ea] = byea
                 print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=}) {byea.refname:>55}")
@@ -132,16 +161,16 @@ def detect_environment_variables():
         if impcalls:
             idc.set_color(ea, idc.CIC_FUNC, 0xD6EAF0)  # "eggshell"
             refname = get_refname(ea)
-            cmt = f"Env. var. processing func.: '{refname}'"
-            ida_idc.mark_position(ea, 1, 0, 0, slotidx, cmt)
-            slotidx -= 1
+            cmt = f"Processing env. var. func.: '{refname}'"
+            mark_position(ea, cmt)
             print(f"{ea:#x} aka {refname} is interesting, {len(impcalls)} imports called:")
             for call in impcalls:
                 disasm = idc.generate_disasm_line(call, 0)
                 print(f"{call:#x} -> {disasm}")
     print(60 * "=")
-    for varname in sorted(env_varnames):
-        print(varname)
+    for varname in sorted(env_varnames.keys()):
+        var_ea = env_varnames[varname]
+        print(f"{ea:#x}: {varname}")
 
 
 linkexe_hdr = """\
@@ -163,22 +192,52 @@ struct calltype
   LPCWSTR ParamName;
   uint ParamNameLength;
   TOOL_TYPE ToolType;
-  int (__cdecl *MainFunc)(int argc, wchar_t **argv);
+  int (__cdecl *MainFunc)(int argc, wchar_t** argv);
 };
 """
 
 
+def process_calltypes(ea: int, arrsize: int, elemsize: int, typestr: str):
+    sid = ida_struct.get_struc_id(typestr)
+    if sid in {-1}:
+        print(f"WARNING: failed to retrieve struct ID for {typestr}")
+    else:
+        mmbX, mmb0 = None, None
+        struc = ida_struct.get_struc(sid)
+        if struc is not None:
+            mmb0 = struc.get_member(0)
+            mmbX = struc.get_last_member()
+        assert mmb0 is not None, f"mmb0 turned out as None"
+        assert mmbX is not None, f"mmbX turned out as None"
+        assert mmb0.get_size() in {8}, f"Currently only supporting 64-bit"
+        for idx in range(0, arrsize):
+            ea_name = ea + (idx * elemsize) + mmb0.get_soff()
+            ea_func = ea_name + mmbX.get_soff()
+            ea_strname = idc.get_qword(ea_name)  # string pointer
+            ea_mainfunc = idc.get_qword(ea_func)  # function pointer
+            strlit = get_strlit(ea_strname)
+            if strlit is not None:
+                # print(f"{ea_name:#x}: at {idx=} {ea_func:#x} -> {strlit}")
+                func = ida_funcs.get_func(ea_mainfunc)
+                ida_funcs.set_func_cmt(func, f"{strlit}: calltype -> {ea_name:#x}", False)
+                idc.set_color(ea_mainfunc, idc.CIC_FUNC, 0xF0FAFF)
+                ida_xref.add_dref(ea_mainfunc, ea_name, ida_xref.XREF_USER | ida_xref.dr_I)
+                mark_position(ea_mainfunc, f"Main function: {strlit}")
+
+
 def fixup_tooltype(ea: int):
     arrsize = 8
+    typestr = "calltype"
+    elemsize = sizeof(typestr) or 0
+    assert elemsize == 0x28, f"sizeof({typestr}) does not match expectation, got {elemsize=}"  # perhaps later 32-bit?
     retval = idc.make_array(ea, arrsize)
     if not retval:
         return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
     cmt = f"Tool types table (lib, edit, link ...)"
     idc.set_cmt(ea, cmt, True)
     idc.set_color(ea, idc.CIC_ITEM, 0xF0FAFF)
-    global slotidx
-    ida_idc.mark_position(ea, 1, 0, 0, slotidx, cmt)
-    slotidx -= 1
+    mark_position(ea, cmt)
+    process_calltypes(ea, arrsize, elemsize, typestr)
     return retval, f"INFO: Created array at {ea:#x}!"
 
 
@@ -218,7 +277,7 @@ toolchain_renames = {
             "SHA1Hash__SHA1Update",
             "void {newname}(SHA1Hash *__hidden this, struct SHA1_CTX *, uchar const* buf, ulong buflen);",
         ),
-        "?OutputInit@@YAXXZ": ("OutputInit", "void {newname}();"),
+        "?OutputInit@@YAXXZ": ("OutputInit", "void {newname}();"),  # use to find InfoStream and StdoutStream globals
         "FIsConsole": ("FIsConsole", "bool {newname}(FILE *stream);"),
         "?ControlCHandler@@YAHK@Z": ("ControlCHandler", "BOOL {newname}(DWORD CtrlType);"),
         "?EndEnmUndefExtNonWeak@@YAXPEAVENM_UNDEF_EXT@@@Z": (
@@ -233,13 +292,41 @@ toolchain_renames = {
         "?ParseSymbol@@YAXPEBG0_N@Z": ("ParseSymbol", "void {newname}(LPWSTR Source, LPCWSTR, bool);"),
         "?FileMove@@YAXPEBG0@Z": ("FileMove", "void {newname}(LPCWSTR lpExistingFileName, LPCWSTR lpNewFileName);"),
         "?FileHardClose@@YAXPEBG_N@Z": ("FileHardClose", "void {newname}(LPCWSTR lpFileName)"),
-        "?FileRemove@@YA_NPEBG@Z": ("FileRemove", "bool {newname}(LPWSTR FileName);"),
+        "?FileRemove@@YA_NPEBG@Z": ("FileRemove", "bool {newname}(LPCWSTR FileName);"),
         "GetFilePos": ("GetFilePos", "DWORD {newname}(HANDLE hFile);"),
         "?link_fwprintf@@YAHPEAU_iobuf@@PEBGZZ": ("link_fwprintf", "int {newname}(FILE* stream, wchar_t const *format, ...);"),
+        "?link_vfwprintf@@YAHPEAU_iobuf@@PEBGPEAD@Z": ("link_vfwprintf", "int {newname}(FILE* stream, wchar_t const *format, va_list argptr);"),
         "?CheckErrNo@@YAXXZ": ("CheckErrNo", "void {newname}();"),
         "?CheckHResult@@YA_NJ@Z": ("CheckHResult", "bool {newname}(HRESULT hr);"),
         "CheckHResultFailure": ("CheckHResultFailure", "void {newname}(HRESULT hr);"),
-        # TODO: __imp__wcsicmp <- to find relevant string references?!
+        "?InfoPrintf@@YAHPEBGZZ": ("InfoPrintf", "int {newname}(wchar_t const *format, ...);"),
+        "?InfoVprintf@@YAHPEBGPEAD@Z": (
+            "InfoVprintf",
+            "int {newname}(wchar_t const *format, va_list argptr);",
+        ),  # use to find szOutputRedirectionString and InfoStream globals
+        "ExpandOutputString": ("ExpandOutputString", "int {newname}(wchar_t const *format, va_list argptr);"),
+        "?StdOutVprintf@@YAHPEBGPEAD@Z": ("StdOutVprintf", "int {newname}(wchar_t const *format, va_list argptr);"),  # use to find fIsOutputRedirected globals
+        "?InfoClose@@YAHXZ": ("InfoClose", "int {newname}(void);"),
+        "?DisplayFatal@@YAXPEBG_KW4MSGTYPE@@_NIPEAD@Z": (
+            "DisplayFatal",
+            "void __noreturn {newname}(wchar_t const *format, __int64 unknown2, unsigned int unknown3, bool unknown4, unsigned int msgid, va_list argptr);",
+        ),
+        "?DisplayMessage@@YAXPEBG_KW4MSGTYPE@@IPEAD@Z": (
+            "DisplayMessage",
+            "void {newname}(const wchar_t *format, __int64 unknown2, unsigned int unknown3, unsigned int msgid, va_list argptr);",
+        ),
+        "?DisplayWarning@@YAXPEBG_KIPEAD@Z": ("DisplayWarning", "void {newname}(const wchar_t *format, __int64 unknown2, unsigned int msgid, va_list argptr);"),
+        "?Fatal@@YAXPEBGIZZ": (
+            "Fatal",
+            "void __noreturn {newname}(wchar_t const *format, unsigned int msgid, ...);",
+        ),  # -> process to comment which message ID is being set (and make the number operand decimal) [EDX]
+        "?Fatal@CON@@QEBAXIZZ": (None, "void __noreturn CON::Fatal(CON *__hidden this, unsigned int msgid, ...);"),
+        "?Warning@@YAXPEBGIZZ": (None, None),  # [EDX]
+        "?WarningLine@@YAXPEBG_KIZZ": ("WarningLine", "void {newname}(wchar_t const *format, __int64 unknown2, unsigned int msgid, ...);"),
+        "EditorFatal": ("EditorFatal", None),  # (???, msgid, ???)
+        "?DisableWarning@@YAXI@Z": ("DisableWarning", "void {newname}(unsigned int msgid)"),
+        "?FIgnoreWarning@@YA_NI@Z": ("FIgnoreWarning", "bool FIgnoreWarning(unsigned int msgid);"),
+        "?FWarningAsError@@YA_NI@Z": ("FWarningAsError", "bool FWarningAsError(unsigned int msgid);"),
         ### Imports
         "__imp_scalable_malloc": ("__imp_scalable_malloc", "void* scalable_malloc(size_t size);"),
         "__imp_scalable_realloc": ("__imp_scalable_realloc", "void* scalable_realloc(void* memblock, size_t size);"),
@@ -290,7 +377,7 @@ toolchain_renames = {
         "?fDidInitRgci@@3_NA": ("fDidInitRgci", "bool {newname};"),
         "?g_fResolvePlaceholderTlsIndexImport@@3_NA": ("g_fResolvePlaceholderTlsIndexImport", "bool {newname};"),
         "?Tool@@3W4TOOL_TYPE@@A": ("Tool", "TOOL_TYPE {newname};"),
-        "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype {newname};", fixup_tooltype),
+        "?ToolType@@3PAUcalltype@@A": ("ToolType", "calltype {newname}[8];", fixup_tooltype),
         "?fCtrlCSignal@@3KA": ("fCtrlCSignal", "uint {newname};"),
         "?szPhase@@3PEBGEB": ("szPhase", "LPCWSTR {newname};", fixup_szphase),  # TODO: resolve all assignments to comments
         # ?rgpfi@BufIOPrivate@@3PEAPEAUFI@@EA -> table of file "descriptors", the index is used as "file number"
@@ -298,7 +385,7 @@ toolchain_renames = {
 }
 
 
-def retype_single(oldname: str, newname: str, rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
+def retype_single(oldname: str, newname: Optional[str], rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
     if len(rule) == 2:  # normalize
         rule = (rule[0], rule[1], None,)  # fmt: skip
     (ea, name), newtype, raw_fixup = rule
@@ -314,10 +401,12 @@ def retype_single(oldname: str, newname: str, rule: tuple, tinfo_flags=idc.TINFO
     return True, fixup, f"{ea:#x}: INFO: Re-typed {name} => {newtype}"
 
 
-def rename_single(oldname: str, newname: str, rule: tuple) -> bool:
+def rename_single(oldname: str, newname: Optional[str], rule: tuple) -> bool:
     if len(rule) == 2:  # normalize
         rule = (rule[0], rule[1], None,)  # fmt: skip
     (ea, _), _, _ = rule
+    if newname is None:
+        return False, f"INFO: no new name for {oldname}"
     if not idc.set_name(ea, newname):
         return False, f"{ea:#x}: ERROR: Failed to rename {oldname=} to {newname=}"
     return True, f"{ea:#x}: INFO: Renamed {oldname=} to {newname=}" if oldname != newname else None
@@ -327,7 +416,8 @@ def rename_and_retype(renames: dict, verbose: bool = False):
     rfname = idc.get_root_filename()  # get_input_file_path() for IDB _path_
     assert rfname, "Could not retrieve name of the file used to create the IDB"
     if rfname not in renames:
-        print(f"Could not find '{rfname}' as top-level key in the renaming rules")
+        print(f"WARNING: Could not find '{rfname}' as top-level key in the renaming rules")
+        return
     if rfname in {"link.exe"}:  # TODO: move this out and make more data-driven
         errs = ida_typeinf.parse_decls(None, linkexe_hdr, None, ida_typeinf.HTI_DCL)
         if errs in {0}:
@@ -335,15 +425,20 @@ def rename_and_retype(renames: dict, verbose: bool = False):
         else:
             print(f"WARNING: {errs} errors applying C types for '{rfname}'")
     print(f"INFO: applying renaming and re-typing rules for '{rfname}'")
+    orig_renames = renames
     rules = renames[rfname]
     # Determine the items that were already renamed and those we need to rename
     renames = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if oldnm == nm[1] and oldnm != rules[oldnm][0]}
     renamed = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if rules[oldnm][0] == nm[1]}
     rule_count = len(rules)
     accounted_for_rule_count = len(renames) + len(renamed)
-    print(f"INFO: {len(renames)} items to rename, {len(renamed)} already renamed, {rule_count - accounted_for_rule_count} missing from IDB")
+    print(f"INFO: {len(renames)} items to rename, {len(renamed)} already renamed, {rule_count - accounted_for_rule_count} missing from IDB (or duplicates?)")
     if verbose and rule_count != accounted_for_rule_count:
         print(f"WARNING: {rule_count=} <> {accounted_for_rule_count=} ({len(rules)=})")
+        all_rules = set(orig_renames.keys())
+        missing = all_rules - set(renames.keys()) - set(renamed.keys())
+        for item in sorted(missing):
+            print(f"WARNING: missing '{item}'")
     if renames:
         print(50 * "=", "[RENAMES]", 10 * "=")
         for (oldname, newname), rule in renames.items():
@@ -377,4 +472,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # idaapi.refresh_idaview_anyway()
+
+# idaapi.refresh_idaview_anyway()
+# rsrc_string_format from custom_data_types_and_formats.py may also come in handy for some functions
