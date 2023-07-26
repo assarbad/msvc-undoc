@@ -6,9 +6,12 @@ import ida_struct
 import ida_typeinf
 import ida_xref
 import idc
+import re
 from collections import namedtuple
 from functools import partial
-from typing import Optional
+from typing import Optional, Tuple
+
+# colors via https://latexcolor.com/
 
 EnvVarRef = namedtuple("EnvVarRef", ["callee", "ea", "xreffunc", "insn_ea", "insn", "length", "disasm", "regname", "op1", "refname"])
 Op = namedtuple("Op", ["op", "type", "value", "strlit"])
@@ -30,6 +33,56 @@ env_interesting_funcs = {
 
 slotidx = 1023
 marked_positions_ea = {}
+
+
+def set_color(ea: int, what: int, color: int) -> Tuple[Optional[bool], Optional[str]]:
+    valid_whats = {idc.CIC_ITEM, idc.CIC_FUNC, idc.CIC_SEGM}
+    if what not in valid_whats:
+        return False, f"invalid {what=} for {ea:#x}, the following are valid: {valid_whats=}"
+    oldclr = idc.get_color(ea, what)
+    if oldclr != color:  # need to apply a color?
+        retval = idc.set_color(ea, what, color)
+        if retval:
+            return True, f"applied color {color&0xffffff:#x} to {ea:#x} (old: {oldclr&0xffffff:#x}"
+        return False, f"failed to apply color {color&0xffffff:#x} to {ea:#x} (old: {oldclr&0xffffff:#x}"
+    return None, None  # indicate nothing was done
+
+
+def set_color_code_or_else_with_carp(ea: int, code_color: int, else_color: Optional[int] = None) -> bool:
+    """\
+        Sets color on code (function) -- checked by this function -- or item (anything else) to the given value or does nothing!
+
+        Errors are reported via print(), success is silently ignored
+
+        Returns: True upon success, False upon failure and None if no action was taken (not data/code or color was already applied)
+    """
+    flags = ida_bytes.get_flags(ea)
+    ret, msg = None, None
+    if ida_bytes.is_code(flags):
+        ret, msg = set_color(ea, idc.CIC_FUNC, code_color)
+    else:
+        ret, msg = set_color(ea, idc.CIC_ITEM, else_color or code_color)
+    if ret or ret is None:
+        return ret
+    print(f"ERROR: {msg}")
+    return False
+
+
+def add_func_flags(ea: int, flags_to_add: int) -> bool:
+    flags = ida_bytes.get_flags(ea)
+    if not ida_bytes.is_code(flags):
+        return None  # nothing was done, because it was data
+    oldflags = idc.get_func_flags(ea)
+    if oldflags in {-1}:
+        print(f"WARNING: could not retrieve existing function flags at {ea:#x}, unable to add new flags.")
+    else:
+        if oldflags & flags_to_add == flags_to_add:
+            return None  # indicate nothing was done, but distinct from failure
+        else:
+            if idc.set_func_flags(ea, flags_to_add | oldflags):
+                return True
+            print(f"WARNING: failed to set function flags at {ea:#x}. {oldflags=:#x}, {flags_to_add=:#x}")
+    return False
 
 
 def mark_position(ea: int, cmt: str):
@@ -139,13 +192,13 @@ def detect_environment_variables():
                 idc.set_name(op2.value, f"szEnvVar_{op2.strlit}")
                 cmt = f"Variable(env): '{op2.strlit}'"
                 idc.set_cmt(byea.insn_ea, cmt, False)
-                idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0xB1CEFB)  # "apricot"
+                set_color_code_or_else_with_carp(byea.insn_ea, 0xB1CEFB)  # "apricot"
                 mark_position(op2.value, cmt)
             else:  # those are candidates for a deeper search
                 digdeeper[insn_ea] = byea
                 print(f"  {byea.insn_ea:#x} => {op2.value:#x}: {byea.disasm} ({op2.type=}) {byea.refname:>55}")
-                idc.set_color(byea.insn_ea, idc.CIC_ITEM, 0x35E1FF)  # "banana"
-                idc.set_color(ea, idc.CIC_ITEM, 0x30E1F0)  # "dandelion"
+                set_color_code_or_else_with_carp(byea.insn_ea, 0x35E1FF)  # "banana"
+                set_color_code_or_else_with_carp(ea, 0x30E1F0)  # "dandelion"
     print(60 * "=")
     interesting_func_eas = {}
     for ea, byea in digdeeper.items():
@@ -159,7 +212,7 @@ def detect_environment_variables():
         calls = set([i for i in idautils.FuncItems(ea) for x in idautils.XrefsFrom(i) if x.type in {idaapi.fl_CF, idaapi.fl_CN}])
         impcalls = [c for c in calls if any(name in idc.generate_disasm_line(c, 0) for name in env_interesting_funcs)]
         if impcalls:
-            idc.set_color(ea, idc.CIC_FUNC, 0xD6EAF0)  # "eggshell"
+            set_color_code_or_else_with_carp(ea, 0xD6EAF0)  # "eggshell"
             refname = get_refname(ea)
             cmt = f"Processing env. var. func.: '{refname}'"
             mark_position(ea, cmt)
@@ -170,7 +223,7 @@ def detect_environment_variables():
     print(60 * "=")
     for varname in sorted(env_varnames.keys()):
         var_ea = env_varnames[varname]
-        print(f"{ea:#x}: {varname}")
+        print(f"{var_ea:#x}: {varname}")
 
 
 linkexe_hdr = """\
@@ -220,7 +273,7 @@ def process_calltypes(ea: int, arrsize: int, elemsize: int, typestr: str):
                 # print(f"{ea_name:#x}: at {idx=} {ea_func:#x} -> {strlit}")
                 func = ida_funcs.get_func(ea_mainfunc)
                 ida_funcs.set_func_cmt(func, f"{strlit}: calltype -> {ea_name:#x}", False)
-                idc.set_color(ea_mainfunc, idc.CIC_FUNC, 0xF0FAFF)
+                set_color_code_or_else_with_carp(ea_mainfunc, 0xF0FAFF)  # floral white
                 ida_xref.add_dref(ea_mainfunc, ea_name, ida_xref.XREF_USER | ida_xref.dr_I)
                 mark_position(ea_mainfunc, f"Main function: {strlit}")
 
@@ -235,7 +288,7 @@ def fixup_tooltype(ea: int):
         return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
     cmt = f"Tool types table (lib, edit, link ...)"
     idc.set_cmt(ea, cmt, True)
-    idc.set_color(ea, idc.CIC_ITEM, 0xF0FAFF)
+    set_color_code_or_else_with_carp(ea, 0xF0FAFF)  # floral white
     mark_position(ea, cmt)
     process_calltypes(ea, arrsize, elemsize, typestr)
     return retval, f"INFO: Created array at {ea:#x}!"
@@ -265,12 +318,20 @@ toolchain_renames = {
         "?DumperMain@@YAHHQEAPEAG@Z": ("DumperMain", "int {newname}(int argc, wchar_t** argv);"),
         "?LinkerMain@@YAHHQEAPEAG@Z": ("LinkerMain", "int {newname}(int argc, wchar_t** argv);"),
         "?HybridPushThunkObjMain@@YAHHQEAPEAG@Z": ("HybridPushThunkObjMain", "int {newname}(int argc, wchar_t** argv);"),
+        "?CvtCilUsage@@YAXXZ": ("CvtCilUsage", None),
+        "?DumperUsage@@YAXXZ": ("DumperUsage", None),
+        "?LibrarianUsage@@YAXXZ": ("LibrarianUsage", None),
+        "?LinkerUsage@@YAXXZ": ("LinkerUsage", None),
+        "?EmitHelp@@YAXII@Z": ("EmitHelp", "void {newname}(unsigned int toolmsg, unsigned int helpmsg);"),
         "?Message@@YAXIZZ": ("Message", "void {newname}(unsigned int, ...);"),
         "?ProcessCommandFile@@YAXPEBG@Z": ("ProcessCommandFile", "void {newname}(LPCWSTR name);"),
         "?link_wfsopen@@YAPEAU_iobuf@@PEBG0H@Z": ("link_wfsopen", "FILE* {newname}(LPCWSTR filename, LPCWSTR mode, int shflag);"),
         "?link_ftell@@YAJPEAU_iobuf@@@Z": ("link_ftell", "off_t {newname}(FILE* stream);"),
         "?link_fseek@@YAHPEAU_iobuf@@JH@Z": ("link_fseek", "int {newname}(FILE* stream, off_t offset, int origin);"),
         "?link_fclose@@YAHPEAU_iobuf@@@Z": ("link_fclose", "int {newname}(FILE* stream);"),
+        "?link_fwprintf@@YAHPEAU_iobuf@@PEBGZZ": ("link_fwprintf", "int {newname}(FILE* stream, wchar_t const *format, ...);"),
+        "?link_vfwprintf@@YAHPEAU_iobuf@@PEBGPEAD@Z": ("link_vfwprintf", "int {newname}(FILE* stream, wchar_t const *format, va_list argptr);"),
+        "?link_fread@@YA_KPEAX_K1PEAU_iobuf@@@Z": ("link_fread", "size_t {newname}(void *buffer, size_t size, size_t count, FILE *stream);"),
         "?SzTrimFile@@YAPEADPEBD@Z": ("SzTrimFile", "char* {newname}(char const* string1);"),
         "?SzDupWsz@@YAPEADPEBG@Z": ("SzDupWsz", "char* {newname}(LPCWSTR lpWideCharStr);"),
         "?SHA1Update@SHA1Hash@@AEAAXPEAUSHA1_CTX@@PEBEK@Z": (
@@ -294,8 +355,6 @@ toolchain_renames = {
         "?FileHardClose@@YAXPEBG_N@Z": ("FileHardClose", "void {newname}(LPCWSTR lpFileName)"),
         "?FileRemove@@YA_NPEBG@Z": ("FileRemove", "bool {newname}(LPCWSTR FileName);"),
         "GetFilePos": ("GetFilePos", "DWORD {newname}(HANDLE hFile);"),
-        "?link_fwprintf@@YAHPEAU_iobuf@@PEBGZZ": ("link_fwprintf", "int {newname}(FILE* stream, wchar_t const *format, ...);"),
-        "?link_vfwprintf@@YAHPEAU_iobuf@@PEBGPEAD@Z": ("link_vfwprintf", "int {newname}(FILE* stream, wchar_t const *format, va_list argptr);"),
         "?CheckErrNo@@YAXXZ": ("CheckErrNo", "void {newname}();"),
         "?CheckHResult@@YA_NJ@Z": ("CheckHResult", "bool {newname}(HRESULT hr);"),
         "CheckHResultFailure": ("CheckHResultFailure", "void {newname}(HRESULT hr);"),
@@ -323,10 +382,10 @@ toolchain_renames = {
         "?Fatal@CON@@QEBAXIZZ": (None, "void __noreturn CON::Fatal(CON *__hidden this, unsigned int msgid, ...);"),
         "?Warning@@YAXPEBGIZZ": (None, None),  # [EDX]
         "?WarningLine@@YAXPEBG_KIZZ": ("WarningLine", "void {newname}(wchar_t const *format, __int64 unknown2, unsigned int msgid, ...);"),
-        "EditorFatal": ("EditorFatal", None),  # (???, msgid, ???)
+        "EditorFatal": ("EditorFatal", "void __noreturn EditorFatal(wchar_t *format, unsigned int msgid, ...);"),
         "?DisableWarning@@YAXI@Z": ("DisableWarning", "void {newname}(unsigned int msgid)"),
         "?FIgnoreWarning@@YA_NI@Z": ("FIgnoreWarning", "bool FIgnoreWarning(unsigned int msgid);"),
-        "?FWarningAsError@@YA_NI@Z": ("FWarningAsError", "bool FWarningAsError(unsigned int msgid);"),
+        "?FWarningAsError@@YA_NI@Z": ("FWarningAsError", "bool FWarningAsError(unsigned int msgid);"),  # cs:?fWarningIsError@@3_NA
         ### Imports
         "__imp_scalable_malloc": ("__imp_scalable_malloc", "void* scalable_malloc(size_t size);"),
         "__imp_scalable_realloc": ("__imp_scalable_realloc", "void* scalable_realloc(void* memblock, size_t size);"),
@@ -381,14 +440,32 @@ toolchain_renames = {
         "?fCtrlCSignal@@3KA": ("fCtrlCSignal", "uint {newname};"),
         "?szPhase@@3PEBGEB": ("szPhase", "LPCWSTR {newname};", fixup_szphase),  # TODO: resolve all assignments to comments
         # ?rgpfi@BufIOPrivate@@3PEAPEAUFI@@EA -> table of file "descriptors", the index is used as "file number"
+        # "Library" functions
+        "?strdup_TCE@@YAPEADPEBD@Z": ("strdup_TCE", "char* {newname}(char const* strSource);", None, True),
+        "?strdup_TCE@@YAXPEBDPEAPEADPEA_K@Z": (None, "void strdup_TCE(char const* Src, char ** Duplicated, size_t * allocated);", None, True),
+        "strcmp_0": ("strcmp_0", "int {newname}(char const *str1, char const *str2);", None, True),
+        "?wcschr@@YAPEAGPEAGG@Z": ("wcschr", "wchar_t * {newname}(const wchar_t *str, wchar_t ch);", None, True),
+        "wcsrchr_0": (None, "wchar_t * {newname}(const wchar_t *str, wchar_t ch);", None, True),
+        "wcscmp_0": (None, "int __cdecl {newname}(const wchar_t *str1, const wchar_t *str2);", None, True),
+        "swscanf_s": (None, "int {newname}(wchar_t const*const buffer, wchar_t const*const format, ...);", None, True),
+        "swprintf_s": (None, "int {newname}(wchar_t *const Buffer, const size_t BufferCount, const wchar_t *const Format, ...);", None, True),
+        "?memcpy_avx@@YAPEBXPEBX0_K@Z": ("memcpy_avx", "void const* {newname}(void * dst, void const* src, size_t count);", None, True),
+        "strncmp_avx": ("strncmp_avx", "int {newname}(char const* str1, char const* str2, size_t count);", None, True),
     },
 }
 
 
 def retype_single(oldname: str, newname: Optional[str], rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
-    if len(rule) == 2:  # normalize
-        rule = (rule[0], rule[1], None,)  # fmt: skip
-    (ea, name), newtype, raw_fixup = rule
+    if len(rule) in {1}:  # normalize
+        rule = (rule[0], None, None, None)  # fmt: skip
+    elif len(rule) in {2}:  # normalize
+        rule = (rule[0], rule[1], None, None)  # fmt: skip
+    elif len(rule) in {3}:  # normalize
+        rule = (rule[0], rule[1], rule[2], None)  # fmt: skip
+    assert len(rule) == 4, f"Unexpected size: {len(rule)=} (for {oldname=}/{newname=}/{rule=})"
+    (ea, name), newtype, raw_fixup, _ = rule
+    if newname is None:
+        newname = oldname
     if newtype is None:
         return False, None, f"INFO: no new type for {oldname}/{newname}"
     newtype = newtype.format(**locals())
@@ -402,10 +479,15 @@ def retype_single(oldname: str, newname: Optional[str], rule: tuple, tinfo_flags
 
 
 def rename_single(oldname: str, newname: Optional[str], rule: tuple) -> bool:
-    if len(rule) == 2:  # normalize
-        rule = (rule[0], rule[1], None,)  # fmt: skip
-    (ea, _), _, _ = rule
-    if newname is None:
+    if len(rule) in {1}:  # normalize
+        rule = (rule[0], None, None, None)  # fmt: skip
+    elif len(rule) in {2}:  # normalize
+        rule = (rule[0], rule[1], None, None)  # fmt: skip
+    elif len(rule) in {3}:  # normalize
+        rule = (rule[0], rule[1], rule[2], None)  # fmt: skip
+    assert len(rule) == 4, f"Unexpected size: {len(rule)=}"
+    (ea, _), _, _, _ = rule
+    if newname is None or newname == oldname:
         return False, f"INFO: no new name for {oldname}"
     if not idc.set_name(ea, newname):
         return False, f"{ea:#x}: ERROR: Failed to rename {oldname=} to {newname=}"
@@ -425,20 +507,32 @@ def rename_and_retype(renames: dict, verbose: bool = False):
         else:
             print(f"WARNING: {errs} errors applying C types for '{rfname}'")
     print(f"INFO: applying renaming and re-typing rules for '{rfname}'")
-    orig_renames = renames
+
+    all_rules = set(renames[rfname].keys())
     rules = renames[rfname]
+
     # Determine the items that were already renamed and those we need to rename
-    renames = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if oldnm == nm[1] and oldnm != rules[oldnm][0]}
+    renames = {
+        (oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:])
+        for nm in idautils.Names()
+        for oldnm in rules
+        if oldnm == nm[1] and oldnm != rules[oldnm][0] and rules[oldnm][0] is not None
+    }
     renamed = {(oldnm, rules[oldnm][0]): (nm, *rules[oldnm][1:]) for nm in idautils.Names() for oldnm in rules if rules[oldnm][0] == nm[1]}
+
     rule_count = len(rules)
     accounted_for_rule_count = len(renames) + len(renamed)
-    print(f"INFO: {len(renames)} items to rename, {len(renamed)} already renamed, {rule_count - accounted_for_rule_count} missing from IDB (or duplicates?)")
-    if verbose and rule_count != accounted_for_rule_count:
+
+    missing = all_rules - set([k[0] for k in renames.keys()]) - set([k[0] for k in renamed.keys()])
+    for not_really in [x for nm in idautils.Names() for x in missing if x == nm[1]]:
+        missing.remove(not_really)
+    print(f"INFO: {len(renames)} items to rename, {len(renamed)} already renamed, {len(missing)} missing from IDB")
+
+    if verbose and len(missing):
         print(f"WARNING: {rule_count=} <> {accounted_for_rule_count=} ({len(rules)=})")
-        all_rules = set(orig_renames.keys())
-        missing = all_rules - set(renames.keys()) - set(renamed.keys())
         for item in sorted(missing):
             print(f"WARNING: missing '{item}'")
+
     if renames:
         print(50 * "=", "[RENAMES]", 10 * "=")
         for (oldname, newname), rule in renames.items():
@@ -452,6 +546,7 @@ def rename_and_retype(renames: dict, verbose: bool = False):
                 success, msg = fixup()
                 if (verbose and msg) or (not success and msg):
                     print(msg)
+
     if renamed:
         print(50 * "=", "[RENAMED]", 10 * "=")
         for (oldname, newname), rule in renamed.items():
@@ -463,10 +558,140 @@ def rename_and_retype(renames: dict, verbose: bool = False):
                 if (verbose and msg) or (not success and msg):
                     print(msg)
 
+    shown_libfuncs_banner = False
+    for oldname, rule in rules.items():
+        if len(rule) > 3 and rule[3]:
+            names = set([oldname])
+            if rule[0] is not None:
+                names.add(rule[0])
+            match = set([nm[0] for nm in idautils.Names() for match in names if nm[1] in names])
+            assert len(match) == 1, f"Expected exactly one ({len(match)=}) match for {oldname=}: {match}"
+            ea = list(match)[0]
+            if add_func_flags(ea, idc.FUNC_LIB):
+                if not shown_libfuncs_banner:
+                    print(50 * "=", "[LIBFUNCS]", 10 * "=")
+                    shown_libfuncs_banner = True
+                print(f"Marked {oldname} at {ea:#x} as library function")
+
+
+def mark_lib_functions():
+    libfunc_lambdas = [
+        lambda x: x.startswith("std::vector<std::wstring>::"),
+        lambda x: x.startswith("std::vector<bool>::"),
+        lambda x: x.startswith("std::string::"),
+        lambda x: x.startswith("std::filesystem::"),
+        lambda x: x.startswith("std::basic_string<unsigned short,"),
+        lambda x: x.startswith("std::basic_streambuf<unsigned short,"),
+        lambda x: x.startswith("std::basic_istream<unsigned short,"),
+        lambda x: x.startswith("std::bad_cast::"),
+        lambda x: x.startswith("std::use_facet<"),
+        lambda x: x.startswith("std::vector<char,"),
+        lambda x: x.startswith("std::vector<ulong>::"),
+        lambda x: x.startswith("std::vector<unsigned __int64>::"),
+        lambda x: x.startswith("std::error_category::"),
+        lambda x: x.startswith("std::basic_string_view<unsigned short,"),
+        lambda x: x.startswith("std::basic_stringbuf<unsigned short,"),
+        lambda x: x == "??$swprintf_s@$0CAA@@@YAHAEAY0CAA@GPEBGZZ",
+        lambda x: x == "_vswprintf_s_l",
+        lambda x: x == "memset_zero_avx",
+        lambda x: x == "memcpy_s",
+        lambda x: x == "initialize_legacy_wide_specifiers",
+        lambda x: x == "fwprintf",
+        lambda x: x == "_cprintf",
+        lambda x: x == "_vcprintf_l",
+        lambda x: x == "_vfprintf_l",
+        lambda x: x == "_vfwprintf_l",
+        lambda x: x == "_vsnprintf_s_l",
+        lambda x: x == "_vsnwprintf_s_l",
+        lambda x: x == "_vswprintf_s_l",
+        lambda x: x == "_snwprintf_s",
+        lambda x: x == "_snprintf_s",
+        lambda x: x.startswith("__scrt_"),
+        lambda x: x == "__delayLoadHelper2",
+    ]
+    counter = 0
+    for ea, name in idautils.Names():
+        for check in libfunc_lambdas:
+            demangled = idc.demangle_name(name, idc.get_inf_attr(idc.INF_SHORT_DN))
+            if check(name) or check(demangled or ""):
+                if add_func_flags(ea, idc.FUNC_LIB):
+                    if demangled:
+                        print(f"INFO: marked lib function at {ea:#x} -> {demangled} ({name})")
+                    else:
+                        print(f"INFO: marked lib function at {ea:#x} -> {name}")
+                    counter += 1
+    if counter:
+        print(f"INFO: marked {counter} library functions")
+
+
+def color_lambdas():
+    lmbdre = re.compile(r"_lambda_[0-9a-f]{32}")
+    counter = 0
+    for ea, name in idautils.Names():
+        if lmbdre.search(name):
+            demangled = idc.demangle_name(name, idc.get_inf_attr(idc.INF_SHORT_DN))
+            # if demangled:
+            # print(f"INFO: lambda-related name at {ea:#x} -> {demangled} ({name})")
+            # else:
+            # print(f"INFO: lambda-related name at {ea:#x} -> {name}")
+            if set_color_code_or_else_with_carp(ea, 0xFAE6E6):  # lavender (bright)
+                counter += 1
+    if counter:
+        print(f"INFO: colored {counter} lambda-related names")
+
+
+def color_initializers():
+    counter = 0
+    for ea, name in idautils.Names():
+        if "_dynamic_initializer_for" in name:
+            if set_color_code_or_else_with_carp(ea, 0x98FF98, 0xADDFAD):  # mint green / moss green
+                counter += 1
+    if counter:
+        print(f"INFO: colored {counter} initializer-related names")
+
+
+def color_dtors():
+    counter = 0
+    for ea, name in idautils.Names():
+        if "_dynamic_atexit_destructor_for" in name:
+            if set_color_code_or_else_with_carp(ea, 0x5E6FFE, 0x6699FF):  # bittersweet / atomic tangerine
+                counter += 1
+    if counter:
+        print(f"INFO: colored {counter} atexit-dtor-related names")
+
+
+def color_delayloads():
+    counter = 0
+    for ea, name in idautils.Names():
+        if "__imp_load_" in name:
+            if set_color_code_or_else_with_carp(ea, 0x2258E2):  # flame
+                counter += 1
+    if counter:
+        print(f"INFO: colored {counter} delayload-related names")
+
+
+def mark_and_color_usagefuncs():
+    counter = 0
+    for ea, name in idautils.Names():
+        if "Usage" in name:
+            flags = ida_bytes.get_flags(ea)
+            if ida_bytes.is_code(flags):
+                if set_color_code_or_else_with_carp(ea, 0xE6F0FA):  # linen
+                    counter += 1
+                mark_position(ea, f"Usage function: {name}")
+    if counter:
+        print(f"INFO: colored {counter} usage function names")
+
 
 def main():
     clear_output_console()
     rename_and_retype(toolchain_renames)
+    mark_lib_functions()
+    color_lambdas()
+    color_initializers()
+    color_dtors()
+    color_delayloads()
+    mark_and_color_usagefuncs()
     detect_environment_variables()
 
 
