@@ -2,6 +2,7 @@ import idaapi
 import idautils
 import ida_bytes
 import ida_funcs
+import ida_idc
 import ida_struct
 import ida_typeinf
 import ida_xref
@@ -135,8 +136,10 @@ def reverse_walk_envvar_insns(callee: str, ea: int, xreffunc, refname: str) -> E
 
 def get_refname(ea: int, demangle: bool = True) -> str:
     refname = idc.get_func_name(ea)
-    dmngld_refname = idc.demangle_name(refname, idc.get_inf_attr(idc.INF_SHORT_DN))
-    return dmngld_refname if dmngld_refname else refname
+    if demangle:
+        dmngld_refname = idc.demangle_name(refname, idc.get_inf_attr(idc.INF_SHORT_DN))
+        return dmngld_refname if dmngld_refname else refname
+    return refname
 
 
 def analyze_envvar_call(callee: str, ea: int) -> Optional[EnvVarRef]:
@@ -260,9 +263,9 @@ def process_calltypes(ea: int, arrsize: int, elemsize: int, typestr: str):
         if struc is not None:
             mmb0 = struc.get_member(0)
             mmbX = struc.get_last_member()
-        assert mmb0 is not None, f"mmb0 turned out as None"
-        assert mmbX is not None, f"mmbX turned out as None"
-        assert mmb0.get_size() in {8}, f"Currently only supporting 64-bit"
+        assert mmb0 is not None, "mmb0 turned out as None"
+        assert mmbX is not None, "mmbX turned out as None"
+        assert mmb0.get_size() in {8}, "Currently only supporting 64-bit"
         for idx in range(0, arrsize):
             ea_name = ea + (idx * elemsize) + mmb0.get_soff()
             ea_func = ea_name + mmbX.get_soff()
@@ -286,7 +289,7 @@ def fixup_tooltype(ea: int):
     retval = idc.make_array(ea, arrsize)
     if not retval:
         return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
-    cmt = f"Tool types table (lib, edit, link ...)"
+    cmt = "Tool types table (lib, edit, link ...)"
     idc.set_cmt(ea, cmt, True)
     set_color_code_or_else_with_carp(ea, 0xF0FAFF)  # floral white
     mark_position(ea, cmt)
@@ -386,14 +389,14 @@ toolchain_renames = {
         "?DisableWarning@@YAXI@Z": ("DisableWarning", "void {newname}(unsigned int msgid)"),
         "?FIgnoreWarning@@YA_NI@Z": ("FIgnoreWarning", "bool FIgnoreWarning(unsigned int msgid);"),
         "?FWarningAsError@@YA_NI@Z": ("FWarningAsError", "bool FWarningAsError(unsigned int msgid);"),  # cs:?fWarningIsError@@3_NA
-        ### Imports
+        # Imports
         "__imp_scalable_malloc": ("__imp_scalable_malloc", "void* scalable_malloc(size_t size);"),
         "__imp_scalable_realloc": ("__imp_scalable_realloc", "void* scalable_realloc(void* memblock, size_t size);"),
         "__imp_scalable_free": ("__imp_scalable_free", "void scalable_free(void* memblock);"),
         "__imp_scalable_aligned_malloc": ("__imp_scalable_aligned_malloc", "void* scalable_aligned_malloc(size_t size, size_t alignment);"),
         "__imp_scalable_aligned_realloc": ("__imp_scalable_aligned_realloc", "void* scalable_aligned_realloc(void* memblock, size_t size, size_t alignment);"),
         "__imp_scalable_aligned_free": ("__imp_scalable_aligned_free", "void scalable_aligned_free(void* memblock);"),
-        ### Data
+        # Data
         "?Dbflags@@3PADA": ("Dbflags", "bool Dbflags[73];", fixup_dbflags),
         "?ToolName@@3PEBGEB": ("ToolName", "LPWSTR ToolName;"),
         "?g_dwMainThreadId@@3KA": ("g_dwMainThreadId", "DWORD g_dwMainThreadId;"),
@@ -629,7 +632,7 @@ def color_lambdas():
     counter = 0
     for ea, name in idautils.Names():
         if lmbdre.search(name):
-            demangled = idc.demangle_name(name, idc.get_inf_attr(idc.INF_SHORT_DN))
+            # demangled = idc.demangle_name(name, idc.get_inf_attr(idc.INF_SHORT_DN))
             # if demangled:
             # print(f"INFO: lambda-related name at {ea:#x} -> {demangled} ({name})")
             # else:

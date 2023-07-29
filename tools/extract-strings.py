@@ -14,16 +14,14 @@ __doc__ = """
 
 This script is used to extract the strings from the resource DLLs into an `.ini` file
 """
-import argparse
+import argparse  # noqa: F401
 import ctypes
-import os
-import re
+import json
 import sys
 
 from pathlib import Path
 from typing import Optional
-from configparser import RawConfigParser
-from functools import cache, partial
+from functools import partial
 
 eprint = partial(print, file=sys.stderr)
 
@@ -38,9 +36,12 @@ def parse_options():
     """
     from argparse import ArgumentParser
 
+    jsonfile = Path(__file__).absolute().parent / "rsrc_strings.json"
+
     parser = ArgumentParser(description="Extract the strings from the resource DLLs")
-    parser.add_argument("-d", "--dir", action="store", type=Path, help="Directory where to find '*ui.dll' files for MSVC")
     parser.add_argument("-v", "--verbose", action="count", default=0, help="Turn up verbosity to see more details of what is going on.")
+    parser.add_argument("-J", "--json", action="store", default=jsonfile, type=Path, help="JSON file to write")
+    parser.add_argument("dirname", metavar="DIRECTORY", action="store", type=Path, help="Directory where to find '*ui.dll' files for MSVC")
     return parser.parse_args()
 
 
@@ -62,7 +63,7 @@ def extract_rsrc_strings(dllpath: Path) -> list:
     rsrc_strings = []
     for strid in range(0, 0xFFFF):
         wstr = get_rsrc_string(hmod, strid)
-        rsrc_strings.append((strid, wstr, ))  # fmt: skip
+        rsrc_strings.append((strid, wstr.strip(" \t\r\n") if wstr is not None else None, ))  # fmt: skip
     if FreeLibrary(hmod) in {0}:  # ERROR_SUCCESS
         eprint(f"WARNING: FreeLibrary() call failed with last error {ctypes.get_last_error()}")
     return rsrc_strings
@@ -72,24 +73,28 @@ def main() -> int:
     """\
         Very simply the main entry point to this script
     """
-    reslist = RawConfigParser()
-    for dllpath in args.dir.rglob("*ui.dll*"):
+    outname = args.json
+    reslist = {}
+    for dllpath in args.dirname.rglob("*ui.dll*"):
         eprint(f"INFO: Attempting to extract strings from '{dllpath}'")
         rsrc_strings = extract_rsrc_strings(dllpath)
-        scname = f"{dllpath.name}"
-        reslist.add_section(scname)
-        count = 0
+        dll = f"{dllpath.name}"
+        reslist[dll] = []
         for strid, wstr in rsrc_strings:
             if wstr:
-                count += 1
-                reslist.set(scname, f"{strid}", wstr)
-        if not count:
-            reslist.remove_section(scname)
+                reslist[dll].append((f"{strid}", wstr, ))  # fmt: skip
+        if not reslist[dll]:
+            del reslist[dll]
         else:
-            eprint(f"INFO: {dllpath.name} has {count} strings")
-    if reslist.sections():
-        with open("rsrc_strings.ini", "w", encoding="utf-8", newline="\n") as resfile:
-            reslist.write(resfile)
+            eprint(f"INFO: {dllpath.name} has {len(reslist[dll])} strings")
+    with open(outname, "w", encoding="utf-8", newline="\n") as jsonout:
+        json.dump(reslist, jsonout, ensure_ascii=True, sort_keys=True, indent="\t")
+    # Verify roundtripping:
+    # with open(outname, "r", encoding="utf-8", newline="\n") as jsonin:
+        # data = json.load(jsonin)
+        # jsonin.close()
+        # with open(outname.with_suffix(".jsn"), "w", encoding="utf-8", newline="\n") as jsonout:
+            # json.dump(data, jsonout, ensure_ascii=True, sort_keys=True, indent="\t")
     return 0
 
 

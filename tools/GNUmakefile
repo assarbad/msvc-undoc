@@ -1,9 +1,18 @@
-PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/toolchain_prepare.py
+PYSCRIPTS:=update-yaml.py update-docs.py IDAPython/toolchain_prepare.py extract-strings.py
 UPDDOCS:=./update-docs.py
 UPDYAML:=./update-yaml.py
 ifneq ($(PIPENV_ACTIVE),1) # use the shell wrapper scripts instead, which prepare and enter the venv
 UPDDOCS:=$(patsubst %.py,%,$(UPDDOCS))
 UPDYAML:=$(patsubst %.py,%,$(UPDYAML))
+endif
+ifneq ($(COMSPEC)$(ComSpec),)
+BLACK:=py -3 -m black
+FLAKE8:=py -3 -m flake8
+VULTURE:=py -3 -m vulture
+else
+BLACK:=black
+FLAKE8:=flake8
+VULTURE:=vulture
 endif
 all: linkexe_documented.txt black lint vulture msvc.yaml
 
@@ -28,7 +37,7 @@ clexe_documented.txt: mirrors/cpp-docs/docs/build/reference/linker-options.md mi
 
 documented: linkexe_documented.txt clexe_documented.txt mirrors/www.geoffchappell.com/studies/msvc
 
-msvc: black lint yaml
+msvc: yaml
 
 yaml: ../msvc.yaml
 
@@ -58,7 +67,7 @@ rebuild: clean all
 REBUILD: CLEAN all
 
 lint: $(PYSCRIPTS)
-	flake8 $^
+	$(FLAKE8) $^
 
 pretty: black
 
@@ -66,10 +75,10 @@ prerequisites: requirements.txt install-python-prerequisites.sh
 	./install-python-prerequisites.sh
 
 black: $(PYSCRIPTS)
-	$@ $^
+	$(BLACK) $^
 
 vulture: $(PYSCRIPTS)
-	$@ $^
+	$(VULTURE) $^
 
 check: pretty lint vulture
 
