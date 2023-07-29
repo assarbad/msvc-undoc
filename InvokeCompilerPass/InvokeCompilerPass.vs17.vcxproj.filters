@@ -4,11 +4,17 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{1A5ECBC7-6E0C-41D1-A625-292910188AE5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lua">
-      <UniqueIdentifier>{3FC4B9BF-93FE-3851-3E5E-1E5885C69E93}</UniqueIdentifier>
+    <Filter Include="Source Files\fmt">
+      <UniqueIdentifier>{241A3A2A-3ACD-CE04-BCA6-D147FD37DB00}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{B4D2F81B-59BD-25A8-09FE-DD7FD0CEA935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\fmt">
+      <UniqueIdentifier>{ADC3E575-91ED-5BBB-DDF7-29EDBE50F78F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{3FC4B9BF-93FE-3851-3E5E-1E5885C69E93}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Lua">
       <UniqueIdentifier>{76A64559-262E-D414-9849-637C8027E305}</UniqueIdentifier>
@@ -45,6 +51,45 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fmt\include\fmt\args.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\chrono.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\color.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\compile.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\core.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\format-inl.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\format.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\os.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\ostream.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\printf.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\ranges.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\std.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
+    <ClInclude Include="fmt\include\fmt\xchar.h">
+      <Filter>Header Files\fmt</Filter>
+    </ClInclude>
     <ClInclude Include="lua\lapi.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
@@ -137,6 +182,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fmt\src\format.cc">
+      <Filter>Source Files\fmt</Filter>
+    </ClCompile>
     <ClCompile Include="lua\lapi.c">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>

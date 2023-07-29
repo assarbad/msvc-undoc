@@ -23,9 +23,12 @@ solution ("InvokeCompilerPass")
         kind            ("SharedLib")
         flags           {"Unicode", "NoPCH", "NoMinimalRebuild", "Symbols",}
         defines         {"WIN32", "_WINDOWS", "_USRDLL",}
+        includedirs     {"lua", "fmt/include",}
 
         files
         {
+            "fmt/src/format.cc",
+            "fmt/include/fmt/*.h",
             "lua/*.c",
             "luaall.c",
             "lua/*.h",
@@ -43,10 +46,12 @@ solution ("InvokeCompilerPass")
         {
             ["Special Files/*"] = { "**.cmd", "premake4.lua", "**.manifest", ".gitignore", "*.props", "*.targets", ".editorconfig", ".clang-format", },
             ["Resource Scripts/*"] = { "*.rc", "*version.h", },
+            ["Header Files/fmt/*"] = { "fmt/include/fmt/*.h", },
             ["Header Files/Lua/*"] = { "lua/*.h", },
             ["Header Files/*"] = { "*.hpp", "*.h", },
+            ["Source Files/fmt/*"] = { "fmt/src/*.cc", },
             ["Source Files/Lua/*"] = { "lua/*.c", "luaall.c", },
-            ["Source Files/*"] = { "*.cpp", },
+            ["Source Files/*"] = { "*.cpp", "*.cc", },
         }
 
         configuration {"Debug"}
