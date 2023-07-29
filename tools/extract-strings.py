@@ -91,10 +91,10 @@ def main() -> int:
         json.dump(reslist, jsonout, ensure_ascii=True, sort_keys=True, indent="\t")
     # Verify roundtripping:
     # with open(outname, "r", encoding="utf-8", newline="\n") as jsonin:
-        # data = json.load(jsonin)
-        # jsonin.close()
-        # with open(outname.with_suffix(".jsn"), "w", encoding="utf-8", newline="\n") as jsonout:
-            # json.dump(data, jsonout, ensure_ascii=True, sort_keys=True, indent="\t")
+    # data = json.load(jsonin)
+    # jsonin.close()
+    # with open(outname.with_suffix(".jsn"), "w", encoding="utf-8", newline="\n") as jsonout:
+    # json.dump(data, jsonout, ensure_ascii=True, sort_keys=True, indent="\t")
     return 0
 
 
