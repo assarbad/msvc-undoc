@@ -9,6 +9,8 @@
           https://github.com/windirstat/premake-stable
           https://sourceforge.net/projects/windirstat/files/premake-stable/
           https://osdn.net/projects/windirstat/storage/historical/premake-stable/
+
+// SPDX-License-Identifier: Unlicense
   ]]
 local action = _ACTION or ""
 
@@ -42,6 +44,11 @@ solution ("InvokeCompilerPass")
             ".gitignore", ".hgignore",
         }
 
+        excludes
+        {
+            "ICPTest.cpp",
+        }
+
         vpaths
         {
             ["Special Files/*"] = { "**.cmd", "premake4.lua", "**.manifest", ".gitignore", "*.props", "*.targets", ".editorconfig", ".clang-format", },
@@ -51,6 +58,33 @@ solution ("InvokeCompilerPass")
             ["Header Files/*"] = { "*.hpp", "*.h", },
             ["Source Files/fmt/*"] = { "fmt/src/*.cc", },
             ["Source Files/Lua/*"] = { "lua/*.c", "luaall.c", },
+            ["Source Files/*"] = { "*.cpp", "*.cc", },
+        }
+
+        configuration {"Debug"}
+            defines         {"_DEBUG"}
+
+        configuration {"Release"}
+            defines         {"NDEBUG"}
+            flags           {"Optimize", "NoIncrementalLink", "NoEditAndContinue"}
+
+    project ("ICPTest")
+        uuid            ("96228B54-5C76-46BD-B899-B56F15A2C9F9")
+        language        ("C++")
+        kind            ("ConsoleApp")
+        flags           {"Unicode", "NoPCH", "NoMinimalRebuild", "Symbols",}
+        defines         {"WIN32", "_WINDOWS", }
+        links           {"InvokeCompilerPass",}
+
+        files
+        {
+            "ICPTest.cpp",
+            "InvokeCompilerPass.h",
+        }
+
+        vpaths
+        {
+            ["Header Files/*"] = { "*.hpp", "*.h", },
             ["Source Files/*"] = { "*.cpp", "*.cc", },
         }
 

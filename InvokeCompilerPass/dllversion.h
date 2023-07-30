@@ -2,6 +2,8 @@
 ///
 /// 2023 Oliver Schneider (assarbad.net) under the terms of the UNLICENSE
 ///
+/// SPDX-License-Identifier: Unlicense
+///
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef __DLLVERSION_H_VER__
 #define __DLLVERSION_H_VER__ 2023072321
@@ -32,7 +34,7 @@
 #define TEXT_FILEDESC      DLL to research InvokeCompilerPassW of MSVC // component description
 #define TEXT_COMPANY       Oliver Schneider (assarbad.net)          // company
 #define TEXT_MODULE        InvokeCompilerPass                       // module name
-#define TEXT_COPYRIGHT     Copyright \x00a9 DLL_YEAR TEXT_AUTHOR    // copyright information
+#define TEXT_COPYRIGHT     DLL_YEAR TEXT_AUTHOR                     // copyright information
 #define TEXT_INTERNALNAME  InvokeCompilerPass.dll
 
 #define _ANSISTRING(text) #text

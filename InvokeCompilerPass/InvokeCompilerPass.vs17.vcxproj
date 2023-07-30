@@ -185,7 +185,10 @@
     <ClInclude Include="lua\lvm.h" />
     <ClInclude Include="lua\lzio.h" />
     <ClInclude Include="dllversion.h" />
+    <ClInclude Include="InvokeCompilerPass.h" />
     <ClInclude Include="LuaBridge.h" />
+    <ClInclude Include="ntnative.h" />
+    <ClInclude Include="ntpebldr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fmt\src\format.cc">

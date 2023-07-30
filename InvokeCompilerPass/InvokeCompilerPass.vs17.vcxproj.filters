@@ -177,7 +177,16 @@
     <ClInclude Include="dllversion.h">
       <Filter>Resource Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="InvokeCompilerPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="LuaBridge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ntnative.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ntpebldr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,4 +4,4 @@ As per [this website](http://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
 
 ## License
 
-Lua and LuaBridge obviously come under their own respective licenses, the remainder is under UNLICENSE, just like the rest of the project.
+Any third-party code (e.g. Lua and LuaVBidge3, fmtlib) obviously comes under its own respective licenses, the same goes for `ntnative.h` and `ntpebldr.h`; the remainder is under UNLICENSE, just like the rest of the project (docs etc. as well as the items outside of this subdirectory).

@@ -4,37 +4,60 @@
 ///
 /// Based on http://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/ and
 /// subsequent own research.
+///
+/// SPDX-License-Identifier: Unlicense
+///
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <Windows.h>
-#include <cstdio>
+#include <string.h>
 #include <tchar.h>
 #include "./LuaBridge.h"
 #include "dllversion.h"
 #ifndef GIT_COMMIT
 #    error No Git commit set
 #endif // !GIT_COMMIT
+#include <fmt/format.h>
+#include <fmt/xchar.h>
+#include "ntpebldr.h"
 
 EXTERN_C_START
 
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
+
 __declspec(dllexport) BOOL WINAPI InvokeCompilerPassW(int argc, wchar_t** argv, int unk, HMODULE* phCLUIMod)
 {
+#if 1
     _ftprintf(stderr, _T("[%hs] argc = %i\n"), __FUNCTION__, argc);
     for (int idx = 0; idx < argc; idx++)
     {
         _ftprintf(stderr, _T("[%hs] idx=%i: '%s'\n"), __FUNCTION__, idx, argv[idx]);
     }
     return TRUE;
+#endif // 1
 }
 
 __declspec(dllexport) void WINAPI AbortCompilerPass(int how)
 {
+#if 1
     _ftprintf(stderr, _T("[%hs] how = %i\n"), __FUNCTION__, how);
+#endif // 1
 }
 
-BOOL WINAPI DllMain(HINSTANCE, DWORD /*fdwReason*/, LPVOID /*lpvReserved*/)
+thread_local lua_State* lua = nullptr;
+thread_local lua_CFunction old_panic = nullptr;
+
+int panic(lua_State* L)
 {
-#if 0
+    auto const message = fmt::format(L"Lua panicked at {}.", fmt::ptr(L));
+    ::OutputDebugStringW(message.c_str());
+    return 0;
+}
+
+BOOL WINAPI DllMain(HINSTANCE, DWORD fdwReason, LPVOID lpvReserved)
+{
     // Perform actions based on the reason for calling.
     switch (fdwReason)
     {
@@ -45,10 +68,15 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD /*fdwReason*/, LPVOID /*lpvReserved*/)
 
     case DLL_THREAD_ATTACH:
         // Do thread-specific initialization.
+        lua = luaL_newstate();
+        old_panic = lua_atpanic(lua, panic);
+        luaL_openlibs(lua);
         break;
 
     case DLL_THREAD_DETACH:
         // Do thread-specific cleanup.
+        lua_close(lua);
+        lua = nullptr;
         break;
 
     case DLL_PROCESS_DETACH:
@@ -61,7 +89,6 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD /*fdwReason*/, LPVOID /*lpvReserved*/)
         // Perform any necessary cleanup.
         break;
     }
-#endif
     return TRUE;
 }
 
