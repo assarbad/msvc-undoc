@@ -34,7 +34,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef __NTPEBLDR_H_VER__
-#define __NTPEBLDR_H_VER__ 2023073022
+#define __NTPEBLDR_H_VER__ 2023073123
 #if !NTPEBLDR_NO_PRAGMA_ONCE && ((defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP))
 #    pragma once
 #endif
@@ -867,11 +867,12 @@ namespace NT
                 NTSTATUS Status;
                 PVOID Address;
                 PVOID DllBase;
+                LDR_DATA_TABLE_ENTRY const* LdrDataTableEntry;
                 ULONG SizeOfImage;
             } MapByTrait;
 
             STATIC_INLINE NTSTATUS CALLBACK MapTraitPredicate(LDR_DATA_TABLE_ENTRY_CTX const& ldrctx,
-                                                              LDR_DATA_TABLE_ENTRY const* /*ldrdataentry*/,
+                                                              LDR_DATA_TABLE_ENTRY const* ldrdataentry,
                                                               MapByTrait& data)
             {
                 if (ldrctx.DllBase && ldrctx.SizeOfImage && (data.Address || data.DllBase))
@@ -881,6 +882,7 @@ namespace NT
                         if (!data.Address) // No address to look for given?
                         {
                             data.SizeOfImage = ldrctx.SizeOfImage;
+                            data.LdrDataTableEntry = ldrdataentry;
                             return data.Status = STATUS_SUCCESS; // Found it!
                         }                                        // fall through into the other check
                     }
@@ -897,6 +899,7 @@ namespace NT
                         {
                             data.DllBase = ldrctx.DllBase;
                             data.SizeOfImage = ldrctx.SizeOfImage;
+                            data.LdrDataTableEntry = ldrdataentry;
                             return data.Status = STATUS_SUCCESS;
                         }
                     }
@@ -906,7 +909,7 @@ namespace NT
 
             STATIC_INLINE HMODULE GetModHandleByAddress(PVOID Address)
             {
-                MapByTrait context = {STATUS_UNSUCCESSFUL, Address, nullptr, 0};
+                MapByTrait context = {STATUS_UNSUCCESSFUL, Address, nullptr, nullptr, 0};
                 NTSTATUS Status = IteratePebLdrDataTable<MapByTrait>(MapTraitPredicate, context);
                 if (NT_SUCCESS(Status))
                 {
@@ -917,9 +920,31 @@ namespace NT
 
             STATIC_INLINE MapByTrait GetModTraits(HMODULE hMod)
             {
-                MapByTrait context = {STATUS_UNSUCCESSFUL, nullptr, hMod, 0};
+                MapByTrait context = {STATUS_UNSUCCESSFUL, nullptr, hMod, nullptr, 0};
                 (void)IteratePebLdrDataTable<MapByTrait>(MapTraitPredicate, context);
                 return context;
+            }
+
+            STATIC_INLINE LDR_DATA_TABLE_ENTRY const* GetLdrDataEntryByModule(HMODULE hMod)
+            {
+                MapByTrait context = {STATUS_UNSUCCESSFUL, nullptr, hMod, nullptr, 0};
+                NTSTATUS Status = IteratePebLdrDataTable<MapByTrait>(MapTraitPredicate, context);
+                if (NT_SUCCESS(Status))
+                {
+                    return context.LdrDataTableEntry;
+                }
+                return nullptr;
+            }
+
+            STATIC_INLINE LDR_DATA_TABLE_ENTRY const* GetLdrDataEntryByAddress(PVOID Address)
+            {
+                MapByTrait context = {STATUS_UNSUCCESSFUL, Address, nullptr, nullptr, 0};
+                NTSTATUS Status = IteratePebLdrDataTable<MapByTrait>(MapTraitPredicate, context);
+                if (NT_SUCCESS(Status))
+                {
+                    return context.LdrDataTableEntry;
+                }
+                return nullptr;
             }
         } // namespace by_trait
 
@@ -1071,6 +1096,10 @@ namespace NT
             return nthdrs;
         }
     } // namespace predefined_helpers
+
+    using predefined_helpers::by_trait::GetLdrDataEntryByAddress;
+    using predefined_helpers::by_trait::GetLdrDataEntryByModule;
+    using predefined_helpers::by_trait::GetModHandleByAddress;
 
     STATIC_INLINE LDR_DATA_TABLE_ENTRY const* GetLdrDataEntryByLoadOrderIndex(ULONG Index)
     {

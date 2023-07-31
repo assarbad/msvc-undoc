@@ -22,4 +22,7 @@ EXTERN_C_START
 DLLEXPORT BOOL WINAPI InvokeCompilerPassW(int, wchar_t**, int, HMODULE*);
 DLLEXPORT void WINAPI AbortCompilerPass(int);
 
+DLLEXPORT LPCWSTR WINAPI GetThisDllName();
+DLLEXPORT LPCWSTR WINAPI GetThisProcessImageName();
+
 EXTERN_C_END
