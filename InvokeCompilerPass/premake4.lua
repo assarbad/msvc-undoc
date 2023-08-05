@@ -14,6 +14,7 @@
   ]]
 local action = _ACTION or ""
 
+if action > "vs2005" then
 solution ("InvokeCompilerPass")
     configurations  {"Debug", "Release"}
     platforms       {"x32", "x64"}
@@ -25,7 +26,7 @@ solution ("InvokeCompilerPass")
         kind            ("SharedLib")
         flags           {"Unicode", "NoPCH", "NoMinimalRebuild", "Symbols",}
         defines         {"WIN32", "_WINDOWS", "_USRDLL",}
-        includedirs     {"lua", "fmt/include",}
+        includedirs     {"lua", "fmt/include", "utfcpp/source",}
 
         files
         {
@@ -47,6 +48,7 @@ solution ("InvokeCompilerPass")
         excludes
         {
             "ICPTest.cpp",
+            "LuaTest.cpp",
         }
 
         vpaths
@@ -73,8 +75,9 @@ solution ("InvokeCompilerPass")
         language        ("C++")
         kind            ("ConsoleApp")
         flags           {"Unicode", "NoPCH", "NoMinimalRebuild", "Symbols",}
-        defines         {"WIN32", "_WINDOWS", }
+        defines         {"WIN32", "_WINDOWS",}
         links           {"InvokeCompilerPass",}
+        includedirs     {"lua", "fmt/include", "utfcpp/source",}
 
         files
         {
@@ -82,9 +85,73 @@ solution ("InvokeCompilerPass")
             "InvokeCompilerPass.h",
         }
 
+        excludes
+        {
+            "LuaTest.cpp",
+        }
+
         vpaths
         {
             ["Header Files/*"] = { "*.hpp", "*.h", },
+            ["Source Files/*"] = { "*.cpp", "*.cc", },
+        }
+
+        configuration {"Debug"}
+            defines         {"_DEBUG"}
+
+        configuration {"Release"}
+            defines         {"NDEBUG"}
+            flags           {"Optimize", "NoIncrementalLink", "NoEditAndContinue"}
+end
+
+solution ("LuaTest")
+    configurations  {"Debug", "Release"}
+    platforms       {"x32", "x64"}
+    location        (".")
+
+    project ("LuaTest")
+        uuid            ("162E824B-4E6F-473A-BEDB-54954D41488F")
+        language        ("C++")
+        kind            ("ConsoleApp")
+        flags           {"Unicode", "NoPCH", "NoMinimalRebuild", "Symbols",}
+        defines         {"WIN32", "_WINDOWS",}
+        includedirs     {"lua", "fmt/include", "utfcpp/source",}
+
+        files
+        {
+            "fmt/src/format.cc",
+            "fmt/include/fmt/*.h",
+            "lua/*.c",
+            "luaall.c",
+            "lua/*.h",
+            "*.cpp",
+            "*.h",
+            "*.hpp",
+            "*.rc",
+            "*.manifest",
+            "*.cmd", "*.txt", "*.md", "*.rst", "premake4.lua",
+            "*.manifest", "*.props", "*.targets", "*.ruleset", ".editorconfig", ".clang-format",
+            ".gitignore", ".hgignore",
+        }
+
+        excludes
+        {
+            "fmt/*",
+            "utfcpp/*",
+            "ICPTest.cpp",
+            "InvokeCompilerPass.cpp",
+            "InvokeCompilerPass.h",
+        }
+
+        vpaths
+        {
+            ["Special Files/*"] = { "**.cmd", "premake4.lua", "**.manifest", ".gitignore", "*.props", "*.targets", ".editorconfig", ".clang-format", },
+            ["Resource Scripts/*"] = { "*.rc", "*version.h", },
+            ["Header Files/fmt/*"] = { "fmt/include/fmt/*.h", },
+            ["Header Files/Lua/*"] = { "lua/*.h", },
+            ["Header Files/*"] = { "*.hpp", "*.h", },
+            ["Source Files/fmt/*"] = { "fmt/src/*.cc", },
+            ["Source Files/Lua/*"] = { "lua/*.c", "luaall.c", },
             ["Source Files/*"] = { "*.cpp", "*.cc", },
         }
 

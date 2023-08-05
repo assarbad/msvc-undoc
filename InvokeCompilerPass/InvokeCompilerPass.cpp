@@ -59,10 +59,6 @@ BOOL CopyFullDllName(NT::LDR_DATA_TABLE_ENTRY const* LdrDataEntry, UNICODE_STRIN
 
 EXTERN_C_START
 
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-
 LPCWSTR WINAPI GetThisDllName()
 {
     return lpwcThisDllName;
@@ -92,16 +88,6 @@ void WINAPI AbortCompilerPass(int how)
 #endif // 1
 }
 
-thread_local lua_State* lua = nullptr;
-thread_local lua_CFunction old_panic = nullptr;
-
-int panic(lua_State* L)
-{
-    auto const message = fmt::format(L"Lua panicked at {}.", fmt::ptr(L));
-    ::OutputDebugStringW(message.c_str());
-    return 0;
-}
-
 BOOL WINAPI DllMain(HINSTANCE hThisDll, DWORD fdwReason, LPVOID lpvReserved)
 {
     // Perform actions based on the reason for calling.
@@ -127,15 +113,10 @@ BOOL WINAPI DllMain(HINSTANCE hThisDll, DWORD fdwReason, LPVOID lpvReserved)
 
     case DLL_THREAD_ATTACH:
         // Do thread-specific initialization.
-        lua = luaL_newstate();
-        old_panic = lua_atpanic(lua, panic);
-        luaL_openlibs(lua);
         break;
 
     case DLL_THREAD_DETACH:
         // Do thread-specific cleanup.
-        lua_close(lua);
-        lua = nullptr;
         break;
 
     case DLL_PROCESS_DETACH:

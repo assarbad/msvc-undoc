@@ -21,8 +21,14 @@
 	</PropertyGroup>
 	<ItemDefinitionGroup>
 		<ClCompile>
-			<AdditionalOptions>%(AdditionalOptions) /d1trimfile:"$(MSBuildThisFileDirectory)\" /Zc:__cplusplus /utf-8 /GS</AdditionalOptions>
+			<AdditionalOptions>%(AdditionalOptions) /d1trimfile:"$(MSBuildThisFileDirectory)\" /Zc:__cplusplus /utf-8 /GS /Brepro</AdditionalOptions>
 		</ClCompile>
+		<Link Condition="'$(ConfigurationType)' != 'StaticLibrary'">
+			<AdditionalOptions>%(AdditionalOptions) /Brepro</AdditionalOptions>
+		</Link>
+		<Lib Condition="'$(ConfigurationType)' == 'StaticLibrary'">
+			<AdditionalOptions>%(AdditionalOptions) /Brepro</AdditionalOptions>
+		</Lib>
 	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
 		<ClCompile>
@@ -30,21 +36,21 @@
 			<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
 			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
 		</ClCompile>
-		<Link>
+		<Link Condition="'$(ConfigurationType)' != 'StaticLibrary'">
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
 		</Link>
 	</ItemDefinitionGroup>
 	<ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
 		<ClCompile>
-			<AdditionalOptions>%(AdditionalOptions) /Oi /Os /Gy /Brepro</AdditionalOptions>
+			<AdditionalOptions>%(AdditionalOptions) /Oi /Os /Gy</AdditionalOptions>
 			<Optimization>Full</Optimization>
 			<FunctionLevelLinking>true</FunctionLevelLinking>
 			<IntrinsicFunctions>true</IntrinsicFunctions>
 			<RuntimeLibrary>MultiThreaded</RuntimeLibrary>
 			<StringPooling>true</StringPooling>
 		</ClCompile>
-		<Link>
+		<Link Condition="'$(ConfigurationType)' != 'StaticLibrary'">
 			<EnableCOMDATFolding>true</EnableCOMDATFolding>
 			<OptimizeReferences>true</OptimizeReferences>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,9 +70,10 @@
 			<MinimalRebuild>false</MinimalRebuild>
 			<PreprocessorDefinitions>_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_ALLOW_RTCc_IN_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-			<DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+			<DebugInformationFormat Condition="'$(ConfigurationType)' != 'StaticLibrary'">ProgramDatabase</DebugInformationFormat>
+			<DebugInformationFormat Condition="'$(ConfigurationType)' == 'StaticLibrary'">OldStyle</DebugInformationFormat>
 		</ClCompile>
-		<Link>
+		<Link Condition="'$(ConfigurationType)' != 'StaticLibrary'">
 			<EnableUAC>false</EnableUAC>
 			<AdditionalOptions>%(AdditionalOptions) /pdbaltpath:%_PDB% /dynamicbase /nxcompat</AdditionalOptions>
 		</Link>
@@ -75,8 +82,11 @@
 		<ClCompile>
 			<AdditionalOptions>%(AdditionalOptions) /Bt+</AdditionalOptions>
 		</ClCompile>
-		<Link>
+		<Link Condition="'$(ConfigurationType)' != 'StaticLibrary'">
 			<AdditionalOptions>%(AdditionalOptions) /time+</AdditionalOptions>
 		</Link>
+		<Lib Condition="'$(ConfigurationType)' == 'StaticLibrary'">
+			<AdditionalOptions>%(AdditionalOptions) /time+</AdditionalOptions>
+		</Lib>
 	</ItemDefinitionGroup>
 </Project>
