@@ -27,8 +27,14 @@
   * [Article by Daniel Pistelli][12]
 * Performance-related resources
   * [Visual Studio 2017 Throughput Improvements and Advice][13]
+  * [Finding build bottlenecks with C++ Build Insights][20]
+  * [C++ build throughput investigation and tune up][19]
   * [Best unknown MSVC flag: d2cgsummary][14]
   * [Another cool MSVC flag: /d1reportTime][15]
+* Deterministic builds:
+  * [Why are the module timestamps in Windows 10 so nonsensical?][16]
+  * [The Chromium Projects: Deterministic builds][17]
+  * [reproducible-builds.org][18]
 
 # Useful tips
 
@@ -69,3 +75,8 @@ The following `Directory.Build.props` provides a simple example of how to use th
 [13]: https://devblogs.microsoft.com/cppblog/visual-studio-2017-throughput-improvements-and-advice/
 [14]: https://aras-p.info/blog/2017/10/23/Best-unknown-MSVC-flag-d2cgsummary/
 [15]: https://aras-p.info/blog/2019/01/21/Another-cool-MSVC-flag-d1reportTime/
+[16]: https://devblogs.microsoft.com/oldnewthing/20180103-00/?p=97705
+[17]: https://www.chromium.org/developers/testing/isolated-testing/deterministic-builds/
+[18]: https://reproducible-builds.org/
+[19]: https://devblogs.microsoft.com/cppblog/cpp-build-throughput-investigation-and-tune-up/
+[20]: https://devblogs.microsoft.com/cppblog/finding-build-bottlenecks-with-cpp-build-insights/
