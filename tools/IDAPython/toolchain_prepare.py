@@ -685,9 +685,26 @@ def mark_and_color_usagefuncs():
     if counter:
         print(f"INFO: colored {counter} usage function names")
 
+def find_string_refs():
+    stringrefs = {}
+    stringctrs = []
+    for s in idautils.Strings():
+        refs = set()
+        for xref in idautils.XrefsTo(s.ea):
+            refs.add(xref.frm)
+        stringctrs.append((len(refs), xref.to,))
+        if xref.to in stringrefs:
+            stringrefs[xref.to] = refs | stringrefs[xref.to]
+        else:
+            stringrefs[xref.to] = refs
+    stringctrs = sorted(stringctrs, key=lambda x: x[0], reverse=True)
+    for num, ea in stringctrs:
+        if num > 3:
+            print(f"{num}: {ea:#x}")
 
 def main():
     clear_output_console()
+    # find_string_refs()
     rename_and_retype(toolchain_renames)
     mark_lib_functions()
     color_lambdas()
