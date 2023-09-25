@@ -4,7 +4,8 @@
 		<ThisProjectBuildLogFileName Condition="'$(MSBuildProjectName)' == ''">$(MSBuildThisFileDirectory)BuildCommandLines.log</ThisProjectBuildLogFileName>
 		<ThisProjectBuildLogFileName Condition="'$(MSBuildProjectName)' != ''">$(MSBuildThisFileDirectory)BuildCommandLines-$(MSBuildProjectName).log</ThisProjectBuildLogFileName>
 		<PreferredToolArchitecture Condition="'$(PreferredToolArchitecture)' == '' and ('$(PROCESSOR_ARCHITECTURE)' == 'AMD64')">x64</PreferredToolArchitecture>
-		<GitWorkTreeRootDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), '.git\HEAD'))</GitWorkTreeRootDir>
+		<GitWorkTreeRootDir>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), '.git\refs\heads\main'))</GitWorkTreeRootDir>
+		<GitWorkTreeRootDir Condition="'$(GitWorkTreeRootDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), '.git\refs\heads\master'))</GitWorkTreeRootDir>
 		<GitWorkTreeRootDir Condition="'$(GitWorkTreeRootDir)' != '' and !HasTrailingSlash('$(GitWorkTreeRootDir)')">$(GitWorkTreeRootDir)\</GitWorkTreeRootDir>
 		<GitDirSentinelFile Condition="Exists('$(GitWorkTreeRootDir).git\HEAD')">$(GitWorkTreeRootDir).git\HEAD</GitDirSentinelFile>
 	</PropertyGroup>
@@ -12,7 +13,7 @@
 		<Message Text="Setting LOG_BUILD_COMMANDLINES='$(ThisProjectBuildLogFileName)'" />
 		<SetEnv Name="LOG_BUILD_COMMANDLINES" Value="$(ThisProjectBuildLogFileName)" Prefix="false" />
 		<SetEnv Name="PreferredToolArchitecture" Value="$(PreferredToolArchitecture)" Prefix="false" />
-		<Message Importance="high" Text="Retrieved %24(GitWorkTreeRootDir) = '$(GitWorkTreeRootDir)'" />
+		<Message Importance="high" Text="Retrieved %24(GitWorkTreeRootDir) = '$(GitWorkTreeRootDir)'" Condition="'$(GitWorkTreeRootDir)' != ''" />
 	</Target>
 	<Target Name="FindGitExecutablePath" Condition="'$(GitDirSentinelFile)' != ''">
 		<PropertyGroup>

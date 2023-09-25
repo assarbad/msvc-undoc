@@ -34,7 +34,10 @@
     <None Include="Directory.Build.props">
       <Filter>Special Files</Filter>
     </None>
-    <None Include="project.props">
+    <None Include="project.early.props">
+      <Filter>Special Files</Filter>
+    </None>
+    <None Include="project.late.props">
       <Filter>Special Files</Filter>
     </None>
     <None Include=".editorconfig">
@@ -45,9 +48,6 @@
     </None>
     <None Include=".gitignore">
       <Filter>Special Files</Filter>
-    </None>
-    <None Include=".hgignore">
-      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
