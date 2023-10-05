@@ -4,7 +4,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-2018, 2021 Oliver Schneider (assarbad.net)
+// Copyright (c) 2016-2018, 2021, 2023 Oliver Schneider (assarbad.net)
 //
 // Permission is hereby granted, free of charge, to any person or organization
 // obtaining a copy of the software and accompanying documentation covered by
@@ -39,135 +39,136 @@
 // https://www.vergiliusproject.com/
 ///////////////////////////////////////////////////////////////////////////////
 
-// clang-format off
 #ifndef __NTNATIVE_H_VER__
-#define __NTNATIVE_H_VER__ 2021080900
+#define __NTNATIVE_H_VER__ 2023100520
 #if (defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP)
-#pragma once
+#    pragma once
 #endif // Check for "#pragma once" support
 
 // Fake the SAL1 annotations where they don't exist.
 #if !defined(__in_bcount) && !defined(_In_reads_bytes_)
-#   define __success(x)
-#   define __field_range(x, y)
-#   define __field_nullterminated
-#   define __in
-#   define __in_z
-#   define __in_bcount(x)
-#   define __in_opt
-#   define __inout
-#   define __inout_opt
-#   define __out
-#   define __out_bcount(x)
-#   define __out_opt
-#   define __out_bcount_opt(x)
-#   define __reserved
+#    define __success(x)
+#    define __field_range(x, y)
+#    define __field_nullterminated
+#    define __in
+#    define __in_z
+#    define __in_bcount(x)
+#    define __in_opt
+#    define __inout
+#    define __inout_opt
+#    define __out
+#    define __out_bcount(x)
+#    define __out_opt
+#    define __out_bcount_opt(x)
+#    define __reserved
 #endif
 
 // Fake the SAL2 annotations where they don't exist.
 #if defined(__in_bcount) && !defined(_In_reads_bytes_)
-#   define _Success_(x) __success(x)
-#   define _Field_range_(x, y) __field_range(x, y)
-#   define _Field_z_ __field_nullterminated
-#   define _In_ __in
-#   define _In_z_ __in_z
-#   define _In_reads_bytes_(x) __in_bcount(x)
-#   define _In_opt_ __in_opt
-#   define _Inout_ __inout
-#   define _Inout_opt_ __inout_opt
-#   define _Out_ __out
-#   define _Out_writes_bytes_(x) __out_bcount(x)
-#   define _Out_opt_ __out_opt
-#   define _Out_writes_bytes_opt_(x) __out_bcount_opt(x)
-#   define _Reserved_ __reserved
+#    define _Success_(x)              __success(x)
+#    define _Field_range_(x, y)       __field_range(x, y)
+#    define _Field_z_                 __field_nullterminated
+#    define _In_                      __in
+#    define _In_z_                    __in_z
+#    define _In_reads_bytes_(x)       __in_bcount(x)
+#    define _In_opt_                  __in_opt
+#    define _Inout_                   __inout
+#    define _Inout_opt_               __inout_opt
+#    define _Out_                     __out
+#    define _Out_writes_bytes_(x)     __out_bcount(x)
+#    define _Out_opt_                 __out_opt
+#    define _Out_writes_bytes_opt_(x) __out_bcount_opt(x)
+#    define _Reserved_                __reserved
 #endif
 
 #ifndef _Must_inspect_result_
-#   define _Must_inspect_result_
+#    define _Must_inspect_result_
 #endif
 
 #ifndef _Ret_maybenull_
-#   define _Ret_maybenull_
+#    define _Ret_maybenull_
 #endif
 
 #ifndef _Ret_writes_bytes_maybenull_
-#   define _Ret_writes_bytes_maybenull_(Size)
+#    define _Ret_writes_bytes_maybenull_(Size)
 #endif
 
 #ifndef _Post_writable_byte_size_
-#   define _Post_writable_byte_size_(Size)
+#    define _Post_writable_byte_size_(Size)
 #endif
 
 #ifndef _Post_invalid_
-#   define _Post_invalid_
+#    define _Post_invalid_
 #endif
 
 #ifndef _When_
-#   define _When_(x, y)
+#    define _When_(x, y)
 #endif
 
 #ifndef _Out_range_
-#   define _Out_range_(x, y)
+#    define _Out_range_(x, y)
 #endif
 
 #ifndef _Frees_ptr_opt_
-#   define _Frees_ptr_opt_
+#    define _Frees_ptr_opt_
 #endif
 
 #ifndef _Frees_ptr_
-#   define _Frees_ptr_
+#    define _Frees_ptr_
 #endif
 
 #ifndef _Inout_updates_opt_
-#   define _Inout_updates_opt_(x)
+#    define _Inout_updates_opt_(x)
 #endif
 
 #ifndef _Inout_updates_
-#   define _Inout_updates_(x)
+#    define _Inout_updates_(x)
 #endif
 
 #if defined(DDKBUILD)
-#   include <WinDef.h>
+#    include <WinDef.h>
 #else
-#   pragma push_macro("NTSYSCALLAPI")
-#   ifdef NTSYSCALLAPI
-#       undef NTSYSCALLAPI
-#       define NTSYSCALLAPI
-#   endif
-#   pragma warning(disable:4201)
-#   define OBJECT_INFORMATION_CLASS OBJECT_INFORMATION_CLASS_MOCK
-#   define _OBJECT_INFORMATION_CLASS _OBJECT_INFORMATION_CLASS_MOCK
-#   define ObjectBasicInformation ObjectBasicInformation_Mock
-#   define ObjectTypeInformation ObjectTypeInformation_Mock
-#   define NtQueryObject NtQueryObject_Mock
-#   include <winternl.h>
-#   undef OBJECT_INFORMATION_CLASS
-#   undef _OBJECT_INFORMATION_CLASS
-#   undef ObjectBasicInformation
-#   undef ObjectTypeInformation
-#   undef NtQueryObject
-#   pragma warning(default:4201)
-#   pragma pop_macro("NTSYSCALLAPI")
+#    pragma push_macro("NTSYSCALLAPI")
+#    ifdef NTSYSCALLAPI
+#        undef NTSYSCALLAPI
+#        define NTSYSCALLAPI
+#    endif
+#    pragma warning(disable : 4201)
+#    define OBJECT_INFORMATION_CLASS  OBJECT_INFORMATION_CLASS_MOCK
+#    define _OBJECT_INFORMATION_CLASS _OBJECT_INFORMATION_CLASS_MOCK
+#    define ObjectBasicInformation    ObjectBasicInformation_Mock
+#    define ObjectTypeInformation     ObjectTypeInformation_Mock
+#    define NtQueryObject             NtQueryObject_Mock
+#    include <winternl.h>
+#    undef OBJECT_INFORMATION_CLASS
+#    undef _OBJECT_INFORMATION_CLASS
+#    undef ObjectBasicInformation
+#    undef ObjectTypeInformation
+#    undef NtQueryObject
+#    pragma warning(default : 4201)
+#    pragma pop_macro("NTSYSCALLAPI")
 #endif // DDKBUILD
 #pragma warning(push)
-#pragma warning(disable:4005)
+#pragma warning(disable : 4005)
 #include <ntstatus.h>
 #pragma warning(pop)
 
 #if defined(DDKBUILD)
-#   if defined(__cplusplus)
+#    if defined(__cplusplus)
 extern "C"
 {
-#   endif
-    typedef struct _UNICODE_STRING {
+#    endif
+    typedef struct _UNICODE_STRING
+    {
         USHORT Length;
         USHORT MaximumLength;
-        PWSTR  Buffer;
+        PWSTR Buffer;
     } UNICODE_STRING;
-    typedef UNICODE_STRING *PUNICODE_STRING;
-    typedef const UNICODE_STRING *PCUNICODE_STRING;
+    typedef UNICODE_STRING* PUNICODE_STRING;
+    typedef const UNICODE_STRING* PCUNICODE_STRING;
 
-    typedef struct _OBJECT_ATTRIBUTES {
+    typedef struct _OBJECT_ATTRIBUTES
+    {
         ULONG Length;
         HANDLE RootDirectory;
         PUNICODE_STRING ObjectName;
@@ -175,22 +176,23 @@ extern "C"
         PVOID SecurityDescriptor;
         PVOID SecurityQualityOfService;
     } OBJECT_ATTRIBUTES;
-    typedef OBJECT_ATTRIBUTES *POBJECT_ATTRIBUTES;
+    typedef OBJECT_ATTRIBUTES* POBJECT_ATTRIBUTES;
 
-#   ifndef _NTDEF_
+#    ifndef _NTDEF_
     typedef _Success_(return >= 0) LONG NTSTATUS;
-    typedef NTSTATUS *PNTSTATUS;
+    typedef NTSTATUS* PNTSTATUS;
 
-#   if defined(DDKBUILD)
-    typedef struct _STRING {
+#        if defined(DDKBUILD)
+    typedef struct _STRING
+    {
         USHORT Length;
         USHORT MaximumLength;
-#       ifdef MIDL_PASS
-        [size_is(MaximumLength), length_is(Length) ]
-#       endif // MIDL_PASS
-        PCHAR Buffer;
+#            ifdef MIDL_PASS
+        [ size_is(MaximumLength), length_is(Length) ]
+#            endif // MIDL_PASS
+            PCHAR Buffer;
     } STRING;
-    typedef STRING *PSTRING;
+    typedef STRING* PSTRING;
 
     typedef STRING ANSI_STRING;
     typedef PSTRING PANSI_STRING;
@@ -201,14 +203,16 @@ extern "C"
     typedef int PROCESSINFOCLASS;
     typedef int THREADINFOCLASS;
     typedef int SYSTEM_INFORMATION_CLASS;
-    typedef CONST char *PCSZ;
+    typedef CONST char* PCSZ;
     typedef PSTRING PCANSI_STRING;
-#   endif
+#        endif
 
-#   endif
+#    endif
 
-    typedef struct _IO_STATUS_BLOCK {
-        union {
+    typedef struct _IO_STATUS_BLOCK
+    {
+        union
+        {
             NTSTATUS Status;
             PVOID Pointer;
         } DUMMYUNIONNAME;
@@ -216,39 +220,34 @@ extern "C"
         ULONG_PTR Information;
     } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
 
-#   define RtlMoveMemory(Destination,Source,Length) memmove((Destination),(Source),(Length)) // use __movsb?
-#   define RtlFillMemory(Destination,Length,Fill) memset((Destination),(Fill),(Length)) // use __stosb?
-#   define RtlZeroMemory(Destination,Length) memset((Destination),0,(Length))
+#    define RtlMoveMemory(Destination, Source, Length) memmove((Destination), (Source), (Length)) // use __movsb?
+#    define RtlFillMemory(Destination, Length, Fill)   memset((Destination), (Fill), (Length))    // use __stosb?
+#    define RtlZeroMemory(Destination, Length)         memset((Destination), 0, (Length))
 
     NTSTATUS
     NTAPI
-    NtClose(
-        _In_ HANDLE Handle
-    );
+    NtClose(_In_ _Post_ptr_invalid_ HANDLE Handle);
 
-    VOID
-    NTAPI
-    RtlInitUnicodeString(
-        _Out_ PUNICODE_STRING DestinationString,
-        _In_opt_ PCWSTR SourceString
-    );
-#   if defined(__cplusplus)
-    }
-#   endif
+    VOID NTAPI RtlInitUnicodeString(_Out_ PUNICODE_STRING DestinationString, _In_opt_z_ PCWSTR SourceString);
+#    if defined(__cplusplus)
+}
+#    endif
 #endif // DDKBUILD
 
 #ifndef InitializeObjectAttributes
-#   define InitializeObjectAttributes( p, n, a, r, s ) { \
-        (p)->Length = sizeof( OBJECT_ATTRIBUTES );          \
-        (p)->RootDirectory = r;                             \
-        (p)->Attributes = a;                                \
-        (p)->ObjectName = n;                                \
-        (p)->SecurityDescriptor = s;                        \
-        (p)->SecurityQualityOfService = NULL;               \
+#    define InitializeObjectAttributes(p, n, a, r, s) \
+        {                                             \
+            (p)->Length = sizeof(OBJECT_ATTRIBUTES);  \
+            (p)->RootDirectory = r;                   \
+            (p)->Attributes = a;                      \
+            (p)->ObjectName = n;                      \
+            (p)->SecurityDescriptor = s;              \
+            (p)->SecurityQualityOfService = NULL;     \
         }
 #endif
 
-typedef enum _OBJECT_INFORMATION_CLASS {
+typedef enum _OBJECT_INFORMATION_CLASS
+{
     ObjectBasicInformation,
     ObjectNameInformation,
     ObjectTypeInformation,
@@ -257,28 +256,33 @@ typedef enum _OBJECT_INFORMATION_CLASS {
 } OBJECT_INFORMATION_CLASS;
 
 #ifndef RTL_CONSTANT_STRING
-#if defined(__cplusplus)
+#    if defined(__cplusplus)
 extern "C++"
 {
-    char _RTL_CONSTANT_STRING_type_check(const char *s);
-    char _RTL_CONSTANT_STRING_type_check(const WCHAR *s);
+    char _RTL_CONSTANT_STRING_type_check(const char* s);
+    char _RTL_CONSTANT_STRING_type_check(const WCHAR* s);
     // __typeof would be desirable here instead of sizeof.
     template <size_t N> class _RTL_CONSTANT_STRING_remove_const_template_class;
-    template <> class _RTL_CONSTANT_STRING_remove_const_template_class<sizeof(char)>  { public: typedef  char T; };
-    template <> class _RTL_CONSTANT_STRING_remove_const_template_class<sizeof(WCHAR)> { public: typedef WCHAR T; };
-#   define _RTL_CONSTANT_STRING_remove_const_macro(s) \
-        (const_cast<_RTL_CONSTANT_STRING_remove_const_template_class<sizeof((s)[0])>::T*>(s))
+    template <> class _RTL_CONSTANT_STRING_remove_const_template_class<sizeof(char)>
+    {
+      public:
+        typedef char T;
+    };
+    template <> class _RTL_CONSTANT_STRING_remove_const_template_class<sizeof(WCHAR)>
+    {
+      public:
+        typedef WCHAR T;
+    };
+#        define _RTL_CONSTANT_STRING_remove_const_macro(s) (const_cast<_RTL_CONSTANT_STRING_remove_const_template_class<sizeof((s)[0])>::T*>(s))
 }
-#else
-    char _RTL_CONSTANT_STRING_type_check(const void *s);
-#   define _RTL_CONSTANT_STRING_remove_const_macro(s) (s)
-#endif // __cplusplus
-#define RTL_CONSTANT_STRING(s) \
-{ \
-    sizeof( s ) - sizeof( (s)[0] ), \
-    sizeof( s ) / (sizeof(_RTL_CONSTANT_STRING_type_check(s))), \
-    _RTL_CONSTANT_STRING_remove_const_macro(s) \
-}
+#    else
+char _RTL_CONSTANT_STRING_type_check(const void* s);
+#        define _RTL_CONSTANT_STRING_remove_const_macro(s) (s)
+#    endif // __cplusplus
+#    define RTL_CONSTANT_STRING(s)                                                                                                           \
+        {                                                                                                                                    \
+            sizeof(s) - sizeof((s)[0]), sizeof(s) / (sizeof(_RTL_CONSTANT_STRING_type_check(s))), _RTL_CONSTANT_STRING_remove_const_macro(s) \
+        }
 #endif // RTL_CONSTANT_STRING
 
 #if defined(__cplusplus)
@@ -287,1355 +291,1502 @@ extern "C"
 #endif
 
 #ifndef OBJECT_TYPE_CREATE
-#   define OBJECT_TYPE_CREATE (0x0001)
+#    define OBJECT_TYPE_CREATE (0x0001)
 #endif // OBJECT_TYPE_CREATE
 
 #ifndef OBJECT_TYPE_ALL_ACCESS
-#   define OBJECT_TYPE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
+#    define OBJECT_TYPE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
 #endif // OBJECT_TYPE_ALL_ACCESS
 
 #ifndef DIRECTORY_QUERY
-#   define DIRECTORY_QUERY                 (0x0001)
+#    define DIRECTORY_QUERY (0x0001)
 #endif // DIRECTORY_QUERY
 #ifndef DIRECTORY_TRAVERSE
-#   define DIRECTORY_TRAVERSE              (0x0002)
+#    define DIRECTORY_TRAVERSE (0x0002)
 #endif // DIRECTORY_TRAVERSE
 #ifndef DIRECTORY_CREATE_OBJECT
-#   define DIRECTORY_CREATE_OBJECT         (0x0004)
+#    define DIRECTORY_CREATE_OBJECT (0x0004)
 #endif // DIRECTORY_CREATE_OBJECT
 #ifndef DIRECTORY_CREATE_SUBDIRECTORY
-#   define DIRECTORY_CREATE_SUBDIRECTORY   (0x0008)
+#    define DIRECTORY_CREATE_SUBDIRECTORY (0x0008)
 #endif // DIRECTORY_CREATE_SUBDIRECTORY
 
 #ifndef DIRECTORY_ALL_ACCESS
-#   define DIRECTORY_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0xF)
+#    define DIRECTORY_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0xF)
 #endif // DIRECTORY_ALL_ACCESS
 
 #ifndef SYMBOLIC_LINK_QUERY
-#   define SYMBOLIC_LINK_QUERY (0x0001)
+#    define SYMBOLIC_LINK_QUERY (0x0001)
 #endif // SYMBOLIC_LINK_QUERY
 
 #ifndef SYMBOLIC_LINK_ALL_ACCESS
-#   define SYMBOLIC_LINK_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
+#    define SYMBOLIC_LINK_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
 #endif // SYMBOLIC_LINK_ALL_ACCESS
 
 #ifndef _NTDEF_
     typedef _Success_(return >= 0) LONG NTSTATUS;
-    typedef NTSTATUS *PNTSTATUS;
-#   define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
-#   define NT_INFORMATION(Status) ((((ULONG)(Status)) >> 30) == 1)
-#   define NT_WARNING(Status) ((((ULONG)(Status)) >> 30) == 2)
-#   define NT_ERROR(Status) ((((ULONG)(Status)) >> 30) == 3)
+    typedef NTSTATUS* PNTSTATUS;
+#    define NT_SUCCESS(Status)     (((NTSTATUS)(Status)) >= 0)
+#    define NT_INFORMATION(Status) ((((ULONG)(Status)) >> 30) == 1)
+#    define NT_WARNING(Status)     ((((ULONG)(Status)) >> 30) == 2)
+#    define NT_ERROR(Status)       ((((ULONG)(Status)) >> 30) == 3)
 #endif
 
-typedef enum _SECTION_INHERIT {
-    ViewShare = 1,
-    ViewUnmap = 2
-} SECTION_INHERIT;
+    typedef enum _SECTION_INHERIT
+    {
+        ViewShare = 1,
+        ViewUnmap = 2
+    } SECTION_INHERIT;
 
-//
-// Section Access Rights.
-//
+    //
+    // Section Access Rights.
+    //
 
-#define SECTION_QUERY                0x0001
-#define SECTION_MAP_WRITE            0x0002
-#define SECTION_MAP_READ             0x0004
-#define SECTION_MAP_EXECUTE          0x0008
-#define SECTION_EXTEND_SIZE          0x0010
-#define SECTION_MAP_EXECUTE_EXPLICIT 0x0020 // not included in SECTION_ALL_ACCESS
+#ifndef SECTION_QUERY
+#    define SECTION_QUERY 0x0001
+#endif // SECTION_QUERY
+#ifndef SECTION_MAP_WRITE
+#    define SECTION_MAP_WRITE 0x0002
+#endif // SECTION_MAP_WRITE
+#ifndef SECTION_MAP_READ
+#    define SECTION_MAP_READ 0x0004
+#endif // SECTION_MAP_READ
+#ifndef SECTION_MAP_EXECUTE
+#    define SECTION_MAP_EXECUTE 0x0008
+#endif // SECTION_MAP_EXECUTE
+#ifndef SECTION_EXTEND_SIZE
+#    define SECTION_EXTEND_SIZE 0x0010
+#endif // SECTION_EXTEND_SIZE
+#ifndef SECTION_MAP_EXECUTE_EXPLICIT
+#    define SECTION_MAP_EXECUTE_EXPLICIT 0x0020 // not included in SECTION_ALL_ACCESS
+#endif                                          // SECTION_MAP_EXECUTE_EXPLICIT
 
-#define SECTION_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED|SECTION_QUERY|\
-                            SECTION_MAP_WRITE |      \
-                            SECTION_MAP_READ |       \
-                            SECTION_MAP_EXECUTE |    \
-                            SECTION_EXTEND_SIZE)
+#ifndef SECTION_ALL_ACCESS
+#    define SECTION_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | SECTION_EXTEND_SIZE)
+#endif // SECTION_ALL_ACCESS
 
-typedef struct _OBJECT_BASIC_INFORMATION {
-    ULONG Attributes;
-    ACCESS_MASK DesiredAccess;
-    ULONG HandleCount;
-    ULONG ReferenceCount;
-    ULONG PagedPoolUsage;
-    ULONG NonPagedPoolUsage;
-    ULONG Reserved[3];
-    ULONG NameInformationLength;
-    ULONG TypeInformationLength;
-    ULONG SecurityDescriptorLength;
-    LARGE_INTEGER CreationTime;
-} OBJECT_BASIC_INFORMATION, *POBJECT_BASIC_INFORMATION;
+    typedef struct _OBJECT_BASIC_INFORMATION
+    {
+        ULONG Attributes;
+        ACCESS_MASK DesiredAccess;
+        ULONG HandleCount;
+        ULONG ReferenceCount;
+        ULONG PagedPoolUsage;
+        ULONG NonPagedPoolUsage;
+        ULONG Reserved[3];
+        ULONG NameInformationLength;
+        ULONG TypeInformationLength;
+        ULONG SecurityDescriptorLength;
+        LARGE_INTEGER CreationTime;
+    } OBJECT_BASIC_INFORMATION, *POBJECT_BASIC_INFORMATION;
 
-typedef struct _OBJECT_TYPE_INFORMATION
-{
-    UNICODE_STRING TypeName;
-    ULONG TotalNumberOfObjects;
-    ULONG TotalNumberOfHandles;
-    ULONG TotalPagedPoolUsage;
-    ULONG TotalNonPagedPoolUsage;
-    ULONG TotalNamePoolUsage;
-    ULONG TotalHandleTableUsage;
-    ULONG HighWaterNumberOfObjects;
-    ULONG HighWaterNumberOfHandles;
-    ULONG HighWaterPagedPoolUsage;
-    ULONG HighWaterNonPagedPoolUsage;
-    ULONG HighWaterNamePoolUsage;
-    ULONG HighWaterHandleTableUsage;
-    ULONG InvalidAttributes;
-    GENERIC_MAPPING GenericMapping;
-    ULONG ValidAccessMask;
-    BOOLEAN SecurityRequired;
-    BOOLEAN MaintainHandleCount;
-    UCHAR TypeIndex;
-    CHAR ReservedByte;
-    ULONG PoolType;
-    ULONG DefaultPagedPoolCharge;
-    ULONG DefaultNonPagedPoolCharge;
-} OBJECT_TYPE_INFORMATION, *POBJECT_TYPE_INFORMATION;
+    typedef struct _OBJECT_TYPE_INFORMATION
+    {
+        UNICODE_STRING TypeName;
+        ULONG TotalNumberOfObjects;
+        ULONG TotalNumberOfHandles;
+        ULONG TotalPagedPoolUsage;
+        ULONG TotalNonPagedPoolUsage;
+        ULONG TotalNamePoolUsage;
+        ULONG TotalHandleTableUsage;
+        ULONG HighWaterNumberOfObjects;
+        ULONG HighWaterNumberOfHandles;
+        ULONG HighWaterPagedPoolUsage;
+        ULONG HighWaterNonPagedPoolUsage;
+        ULONG HighWaterNamePoolUsage;
+        ULONG HighWaterHandleTableUsage;
+        ULONG InvalidAttributes;
+        GENERIC_MAPPING GenericMapping;
+        ULONG ValidAccessMask;
+        BOOLEAN SecurityRequired;
+        BOOLEAN MaintainHandleCount;
+        UCHAR TypeIndex;
+        CHAR ReservedByte;
+        ULONG PoolType;
+        ULONG DefaultPagedPoolCharge;
+        ULONG DefaultNonPagedPoolCharge;
+    } OBJECT_TYPE_INFORMATION, *POBJECT_TYPE_INFORMATION;
 
-typedef struct _OBJECT_TYPES_INFORMATION
-{
-    ULONG NumberOfTypes;
-    OBJECT_TYPE_INFORMATION TypeInformation[ANYSIZE_ARRAY];
-} OBJECT_TYPES_INFORMATION, *POBJECT_TYPES_INFORMATION;
+    typedef struct _OBJECT_TYPES_INFORMATION
+    {
+        ULONG NumberOfTypes;
+        OBJECT_TYPE_INFORMATION TypeInformation[ANYSIZE_ARRAY];
+    } OBJECT_TYPES_INFORMATION, *POBJECT_TYPES_INFORMATION;
 
-typedef struct _OBJECT_DIRECTORY_INFORMATION {
-    UNICODE_STRING Name;
-    UNICODE_STRING TypeName;
-} OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
+    typedef struct _OBJECT_DIRECTORY_INFORMATION
+    {
+        UNICODE_STRING Name;
+        UNICODE_STRING TypeName;
+    } OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
 
-typedef enum _ATOM_INFORMATION_CLASS
-{
-    AtomBasicInformation,
-    AtomTableInformation,
-} ATOM_INFORMATION_CLASS;
+    typedef enum _ATOM_INFORMATION_CLASS
+    {
+        AtomBasicInformation,
+        AtomTableInformation,
+    } ATOM_INFORMATION_CLASS;
 
-typedef enum _EVENT_INFORMATION_CLASS
-{
-    EventBasicInformation
-} EVENT_INFORMATION_CLASS;
+    typedef enum _EVENT_INFORMATION_CLASS
+    {
+        EventBasicInformation
+    } EVENT_INFORMATION_CLASS;
 
-typedef enum _IO_COMPLETION_INFORMATION_CLASS {
-    IoCompletionBasicInformation
-} IO_COMPLETION_INFORMATION_CLASS, *PIO_COMPLETION_INFORMATION_CLASS;
+    typedef enum _IO_COMPLETION_INFORMATION_CLASS
+    {
+        IoCompletionBasicInformation
+    } IO_COMPLETION_INFORMATION_CLASS, *PIO_COMPLETION_INFORMATION_CLASS;
 
-typedef enum _KEY_INFORMATION_CLASS {
-    KeyBasicInformation,
-    KeyNodeInformation,
-    KeyFullInformation,
-    KeyNameInformation,
-    KeyCachedInformation,
-    KeyFlagsInformation,
-    KeyVirtualizationInformation,
-    KeyHandleTagsInformation,
-    MaxKeyInfoClass  // MaxKeyInfoClass should always be the last enum
-} KEY_INFORMATION_CLASS;
+    typedef enum _KEY_INFORMATION_CLASS
+    {
+        KeyBasicInformation,
+        KeyNodeInformation,
+        KeyFullInformation,
+        KeyNameInformation,
+        KeyCachedInformation,
+        KeyFlagsInformation,
+        KeyVirtualizationInformation,
+        KeyHandleTagsInformation,
+        MaxKeyInfoClass // MaxKeyInfoClass should always be the last enum
+    } KEY_INFORMATION_CLASS;
 
-typedef enum _KEY_VALUE_INFORMATION_CLASS {
-    KeyValueBasicInformation,
-    KeyValueFullInformation,
-    KeyValuePartialInformation,
-    KeyValueFullInformationAlign64,
-    KeyValuePartialInformationAlign64,
-    MaxKeyValueInfoClass  // MaxKeyValueInfoClass should always be the last enum
-} KEY_VALUE_INFORMATION_CLASS;
+    typedef enum _KEY_VALUE_INFORMATION_CLASS
+    {
+        KeyValueBasicInformation,
+        KeyValueFullInformation,
+        KeyValuePartialInformation,
+        KeyValueFullInformationAlign64,
+        KeyValuePartialInformationAlign64,
+        MaxKeyValueInfoClass // MaxKeyValueInfoClass should always be the last enum
+    } KEY_VALUE_INFORMATION_CLASS;
 
-#if !defined(_WDMDDK_) && !defined(_WDM_INCLUDED_) && !defined(_DDK_DRIVER_) && !defined(WINAPI_FAMILY_PARTITION) && !defined(WINAPI_PARTITION_DESKTOP) && !defined(WINAPI_PARTITION_SYSTEM)
-/* newer Windows Kits have this one, so we check for WINAPI_FAMILY_PARTITION and friends */
-typedef enum _KEY_SET_INFORMATION_CLASS {
-    KeyWriteTimeInformation,
-    KeyWow64FlagsInformation,
-    KeyControlFlagsInformation,
-    KeySetVirtualizationInformation,
-    KeySetDebugInformation,
-    KeySetHandleTagsInformation,
-    MaxKeySetInfoClass  // MaxKeySetInfoClass should always be the last enum
-} KEY_SET_INFORMATION_CLASS;
+#if !defined(_WDMDDK_) && !defined(_WDM_INCLUDED_) && !defined(_DDK_DRIVER_) && !defined(WINAPI_FAMILY_PARTITION) && !defined(WINAPI_PARTITION_DESKTOP) && \
+    !defined(WINAPI_PARTITION_SYSTEM)
+    /* newer Windows Kits have this one, so we check for WINAPI_FAMILY_PARTITION and friends */
+    typedef enum _KEY_SET_INFORMATION_CLASS
+    {
+        KeyWriteTimeInformation,
+        KeyWow64FlagsInformation,
+        KeyControlFlagsInformation,
+        KeySetVirtualizationInformation,
+        KeySetDebugInformation,
+        KeySetHandleTagsInformation,
+        MaxKeySetInfoClass // MaxKeySetInfoClass should always be the last enum
+    } KEY_SET_INFORMATION_CLASS;
 #endif
 
-typedef enum _MUTANT_INFORMATION_CLASS
-{
-    MutantBasicInformation,
-    MutantOwnerInformation
-} MUTANT_INFORMATION_CLASS;
+    typedef enum _MUTANT_INFORMATION_CLASS
+    {
+        MutantBasicInformation,
+        MutantOwnerInformation
+    } MUTANT_INFORMATION_CLASS;
 
-typedef enum _SECTION_INFORMATION_CLASS {
-    SectionBasicInformation,
-    SectionImageInformation
-} SECTION_INFORMATION_CLASS;
+    typedef enum _SECTION_INFORMATION_CLASS
+    {
+        SectionBasicInformation,
+        SectionImageInformation
+    } SECTION_INFORMATION_CLASS;
 
-typedef enum _SEMAPHORE_INFORMATION_CLASS
-{
-    SemaphoreBasicInformation
-} SEMAPHORE_INFORMATION_CLASS;
+    typedef enum _SEMAPHORE_INFORMATION_CLASS
+    {
+        SemaphoreBasicInformation
+    } SEMAPHORE_INFORMATION_CLASS;
 
-typedef enum _TIMER_INFORMATION_CLASS
-{
-    TimerBasicInformation
-} TIMER_INFORMATION_CLASS;
+    typedef enum _TIMER_INFORMATION_CLASS
+    {
+        TimerBasicInformation
+    } TIMER_INFORMATION_CLASS;
 
-typedef enum _EVENT_TYPE {
-    NotificationEvent,
-    SynchronizationEvent
-} EVENT_TYPE, *PEVENT_TYPE;
+    typedef enum _EVENT_TYPE
+    {
+        NotificationEvent,
+        SynchronizationEvent
+    } EVENT_TYPE, *PEVENT_TYPE;
 
-typedef struct _EVENT_BASIC_INFORMATION {
-    EVENT_TYPE EventType;
-    LONG EventState;
-} EVENT_BASIC_INFORMATION, *PEVENT_BASIC_INFORMATION;
+    typedef struct _EVENT_BASIC_INFORMATION
+    {
+        EVENT_TYPE EventType;
+        LONG EventState;
+    } EVENT_BASIC_INFORMATION, *PEVENT_BASIC_INFORMATION;
 
-typedef struct _IO_COMPLETION_BASIC_INFORMATION {
-    LONG Depth;
-} IO_COMPLETION_BASIC_INFORMATION, *PIO_COMPLETION_BASIC_INFORMATION;
+    typedef struct _IO_COMPLETION_BASIC_INFORMATION
+    {
+        LONG Depth;
+    } IO_COMPLETION_BASIC_INFORMATION, *PIO_COMPLETION_BASIC_INFORMATION;
 
-typedef struct _KEY_BASIC_INFORMATION {
-    LARGE_INTEGER LastWriteTime;
-    ULONG TitleIndex;
-    ULONG NameLength;
-    WCHAR Name[1]; // Variable length string
-} KEY_BASIC_INFORMATION, *PKEY_BASIC_INFORMATION;
+    typedef struct _KEY_BASIC_INFORMATION
+    {
+        LARGE_INTEGER LastWriteTime;
+        ULONG TitleIndex;
+        ULONG NameLength;
+        WCHAR Name[1]; // Variable length string
+    } KEY_BASIC_INFORMATION, *PKEY_BASIC_INFORMATION;
 
-typedef struct _KEY_VALUE_BASIC_INFORMATION {
-    ULONG   TitleIndex;
-    ULONG   Type;
-    ULONG   NameLength;
-    WCHAR   Name[1];            // Variable size
-} KEY_VALUE_BASIC_INFORMATION, *PKEY_VALUE_BASIC_INFORMATION;
+    typedef struct _KEY_VALUE_BASIC_INFORMATION
+    {
+        ULONG TitleIndex;
+        ULONG Type;
+        ULONG NameLength;
+        WCHAR Name[1]; // Variable size
+    } KEY_VALUE_BASIC_INFORMATION, *PKEY_VALUE_BASIC_INFORMATION;
 
-typedef struct _KEY_VALUE_FULL_INFORMATION {
-    ULONG   TitleIndex;
-    ULONG   Type;
-    ULONG   DataOffset;
-    ULONG   DataLength;
-    ULONG   NameLength;
-    WCHAR   Name[1];            // Variable size
-    //          Data[1];            // Variable size data not declared
-} KEY_VALUE_FULL_INFORMATION, *PKEY_VALUE_FULL_INFORMATION;
+    typedef struct _KEY_VALUE_FULL_INFORMATION
+    {
+        ULONG TitleIndex;
+        ULONG Type;
+        ULONG DataOffset;
+        ULONG DataLength;
+        ULONG NameLength;
+        WCHAR Name[1]; // Variable size
+        //          Data[1];            // Variable size data not declared
+    } KEY_VALUE_FULL_INFORMATION, *PKEY_VALUE_FULL_INFORMATION;
 
-typedef struct _KEY_VALUE_PARTIAL_INFORMATION {
-    ULONG   TitleIndex;
-    ULONG   Type;
-    ULONG   DataLength;
-    UCHAR   Data[1];            // Variable size
-} KEY_VALUE_PARTIAL_INFORMATION, *PKEY_VALUE_PARTIAL_INFORMATION;
+    typedef struct _KEY_VALUE_PARTIAL_INFORMATION
+    {
+        ULONG TitleIndex;
+        ULONG Type;
+        ULONG DataLength;
+        UCHAR Data[1]; // Variable size
+    } KEY_VALUE_PARTIAL_INFORMATION, *PKEY_VALUE_PARTIAL_INFORMATION;
 
-typedef struct _KEY_VALUE_PARTIAL_INFORMATION_ALIGN64 {
-    ULONG   Type;
-    ULONG   DataLength;
-    UCHAR   Data[1];            // Variable size
-} KEY_VALUE_PARTIAL_INFORMATION_ALIGN64, *PKEY_VALUE_PARTIAL_INFORMATION_ALIGN64;
+    typedef struct _KEY_VALUE_PARTIAL_INFORMATION_ALIGN64
+    {
+        ULONG Type;
+        ULONG DataLength;
+        UCHAR Data[1]; // Variable size
+    } KEY_VALUE_PARTIAL_INFORMATION_ALIGN64, *PKEY_VALUE_PARTIAL_INFORMATION_ALIGN64;
 
-#if (_MSC_VER  < 1500) || defined(DDKBUILD)
-typedef struct _KEY_VALUE_ENTRY {
-    PUNICODE_STRING ValueName;
-    ULONG           DataLength;
-    ULONG           DataOffset;
-    ULONG           Type;
-} KEY_VALUE_ENTRY, *PKEY_VALUE_ENTRY;
+#if (_MSC_VER < 1500) || defined(DDKBUILD)
+    typedef struct _KEY_VALUE_ENTRY
+    {
+        PUNICODE_STRING ValueName;
+        ULONG DataLength;
+        ULONG DataOffset;
+        ULONG Type;
+    } KEY_VALUE_ENTRY, *PKEY_VALUE_ENTRY;
 #endif
 
-typedef struct _MUTANT_BASIC_INFORMATION {
-    LONG CurrentCount;
-    BOOLEAN OwnedByCaller;
-    BOOLEAN AbandonedState;
-} MUTANT_BASIC_INFORMATION, *PMUTANT_BASIC_INFORMATION;
+    typedef struct _MUTANT_BASIC_INFORMATION
+    {
+        LONG CurrentCount;
+        BOOLEAN OwnedByCaller;
+        BOOLEAN AbandonedState;
+    } MUTANT_BASIC_INFORMATION, *PMUTANT_BASIC_INFORMATION;
 
-typedef struct _SECTIONBASICINFO {
-    PVOID BaseAddress;
-    ULONG AllocationAttributes;
-    LARGE_INTEGER MaximumSize;
-} SECTION_BASIC_INFORMATION, *PSECTION_BASIC_INFORMATION;
+    typedef struct _SECTIONBASICINFO
+    {
+        PVOID BaseAddress;
+        ULONG AllocationAttributes;
+        LARGE_INTEGER MaximumSize;
+    } SECTION_BASIC_INFORMATION, *PSECTION_BASIC_INFORMATION;
 
 #pragma warning(push)
-#pragma warning(disable:4201 4214)
-typedef struct _SECTION_IMAGE_INFORMATION {
-    PVOID TransferAddress;
-    ULONG ZeroBits;
-    ULONG MaximumStackSize;
-    ULONG CommittedStackSize;
-    ULONG SubSystemType;
-    union {
-        struct {
-            USHORT SubSystemMinorVersion;
-            USHORT SubSystemMajorVersion;
-        } minmaj;
-        ULONG SubSystemVersion;
-    };
-    ULONG GpValue;
-    USHORT ImageCharacteristics;
-    USHORT DllCharacteristics;
-    USHORT Machine;
-    BOOLEAN ImageContainsCode;
-    BOOLEAN ImageFlags;
-    ULONG ComPlusNativeReady: 1;
-    ULONG ComPlusILOnly: 1;
-    ULONG ImageDynamicallyRelocated: 1;
-    ULONG Reserved: 5;
-    ULONG LoaderFlags;
-    ULONG ImageFileSize;
-    ULONG CheckSum;
-} SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION;
+#pragma warning(disable : 4201 4214)
+    typedef struct _SECTION_IMAGE_INFORMATION
+    {
+        PVOID TransferAddress;
+        ULONG ZeroBits;
+        ULONG MaximumStackSize;
+        ULONG CommittedStackSize;
+        ULONG SubSystemType;
+        union
+        {
+            struct
+            {
+                USHORT SubSystemMinorVersion;
+                USHORT SubSystemMajorVersion;
+            } minmaj;
+            ULONG SubSystemVersion;
+        };
+        ULONG GpValue;
+        USHORT ImageCharacteristics;
+        USHORT DllCharacteristics;
+        USHORT Machine;
+        BOOLEAN ImageContainsCode;
+        BOOLEAN ImageFlags;
+        ULONG ComPlusNativeReady : 1;
+        ULONG ComPlusILOnly : 1;
+        ULONG ImageDynamicallyRelocated : 1;
+        ULONG Reserved : 5;
+        ULONG LoaderFlags;
+        ULONG ImageFileSize;
+        ULONG CheckSum;
+    } SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION;
 #pragma warning(pop)
 
-typedef struct _SEMAPHORE_BASIC_INFORMATION {
-    ULONG CurrentCount;
-    ULONG MaximumCount;
-} SEMAPHORE_BASIC_INFORMATION, *PSEMAPHORE_BASIC_INFORMATION;
+    typedef struct _SEMAPHORE_BASIC_INFORMATION
+    {
+        ULONG CurrentCount;
+        ULONG MaximumCount;
+    } SEMAPHORE_BASIC_INFORMATION, *PSEMAPHORE_BASIC_INFORMATION;
 
-typedef struct _TIMER_BASIC_INFORMATION {
-    LARGE_INTEGER RemainingTime;
-    BOOLEAN TimerState;
-} TIMER_BASIC_INFORMATION, *PTIMER_BASIC_INFORMATION;
-
-//
-//  The context structure is used when generating 8.3 names.  The caller must
-//  always zero out the structure before starting a new generation sequence
-//
-
-typedef struct _GENERATE_NAME_CONTEXT {
+    typedef struct _TIMER_BASIC_INFORMATION
+    {
+        LARGE_INTEGER RemainingTime;
+        BOOLEAN TimerState;
+    } TIMER_BASIC_INFORMATION, *PTIMER_BASIC_INFORMATION;
 
     //
-    //  The structure is divided into two strings.  The Name, and extension.
-    //  Each part contains the value that was last inserted in the name.
-    //  The length values are in terms of wchars and not bytes.  We also
-    //  store the last index value used in the generation collision algorithm.
+    //  The context structure is used when generating 8.3 names.  The caller must
+    //  always zero out the structure before starting a new generation sequence
     //
 
-    USHORT Checksum;
-    BOOLEAN ChecksumInserted;
+    typedef struct _GENERATE_NAME_CONTEXT
+    {
 
-    _Field_range_(<=, 8) UCHAR NameLength;        // not including extension
-    WCHAR NameBuffer[8];                          // e.g., "ntoskrnl"
+        //
+        //  The structure is divided into two strings.  The Name, and extension.
+        //  Each part contains the value that was last inserted in the name.
+        //  The length values are in terms of wchars and not bytes.  We also
+        //  store the last index value used in the generation collision algorithm.
+        //
 
-    _Field_range_(<=, 4) ULONG ExtensionLength;   // including dot
-    WCHAR ExtensionBuffer[4];                     // e.g., ".exe"
+        USHORT Checksum;
+        BOOLEAN ChecksumInserted;
 
-    ULONG LastIndexValue;
+        _Field_range_(<=, 8) UCHAR NameLength; // not including extension
+        WCHAR NameBuffer[8];                   // e.g., "ntoskrnl"
 
-} GENERATE_NAME_CONTEXT;
-typedef GENERATE_NAME_CONTEXT *PGENERATE_NAME_CONTEXT;
+        _Field_range_(<=, 4) ULONG ExtensionLength; // including dot
+        WCHAR ExtensionBuffer[4];                   // e.g., ".exe"
+
+        ULONG LastIndexValue;
+
+    } GENERATE_NAME_CONTEXT;
+    typedef GENERATE_NAME_CONTEXT* PGENERATE_NAME_CONTEXT;
 
 #ifndef PIO_APC_ROUTINE_DEFINED
-#pragma warning(push) /* disable code analyzer warnings for ATL & WTL libraries */
-#pragma warning(disable:28301) /* warning C28301 : No annotations for first declaration of ... */
-typedef VOID (NTAPI *PIO_APC_ROUTINE) (_In_ PVOID ApcContext, _In_ PIO_STATUS_BLOCK IoStatusBlock, _In_ ULONG Reserved);
-#define PIO_APC_ROUTINE_DEFINED
-#pragma warning(pop) /* restore code analyzer warnings*/
-#endif // PIO_APC_ROUTINE_DEFINED
+#    pragma warning(push)            /* disable code analyzer warnings for ATL & WTL libraries */
+#    pragma warning(disable : 28301) /* warning C28301 : No annotations for first declaration of ... */
+    typedef VOID(NTAPI* PIO_APC_ROUTINE)(_In_ PVOID ApcContext, _In_ PIO_STATUS_BLOCK IoStatusBlock, _In_ ULONG Reserved);
+#    define PIO_APC_ROUTINE_DEFINED
+#    pragma warning(pop) /* restore code analyzer warnings*/
+#endif                   // PIO_APC_ROUTINE_DEFINED
 
-typedef enum _NT_FILE_INFORMATION_CLASS
-{
-    FileInformationDirectory = 1,
-    FileInformationFullDirectory, //  2
-    FileInformationBothDirectory, //  3
-    FileInformationBasic, //  4
-    FileInformationStandard, //  5
-    FileInformationInternal, //  6
-    FileInformationEa, //  7
-    FileInformationAccess, //  8
-    FileInformationName, //  9
-    FileInformationRename, //  10
-    FileInformationLink, //  11
-    FileInformationNames, //  12
-    FileInformationDisposition, //  13
-    FileInformationPosition, //  14
-    FileInformationFullEa, //  15
-    FileInformationMode, //  16
-    FileInformationAlignment, //  17
-    FileInformationAll, //  18
-    FileInformationAllocation, //  19
-    FileInformationEndOfFile, //  20
-    FileInformationAlternateName, //  21
-    FileInformationStream, //  22
-    FileInformationPipe, //  23
-    FileInformationPipeLocal, //  24
-    FileInformationPipeRemote, //  25
-    FileInformationMailslotQuery, //  26
-    FileInformationMailslotSet, //  27
-    FileInformationCompression, //  28
-    FileInformationObjectId, //  29
-    FileInformationCompletion, //  30
-    FileInformationMoveCluster, //  31
-    FileInformationQuota, //  32
-    FileInformationReparsePoint, //  33
-    FileInformationNetworkOpen, //  34
-    FileInformationAttributeTag, //  35
-    FileInformationTracking, //  36
-    FileInformationIdBothDirectory, //  37
-    FileInformationIdFullDirectory, //  38
-    FileInformationValidDataLength, //  39
-    FileInformationShortName, //  40
-    FileInformationIoCompletionNotification, //  41
-    FileInformationIoStatusBlockRange, //  42
-    FileInformationIoPriorityHint, //  43
-    FileInformationSfioReserve, //  44
-    FileInformationSfioVolume, //  45
-    FileInformationHardLink, //  46
-    FileInformationProcessIdsUsingFile, //  47
-    FileInformationNormalizedName, //  48
-    FileInformationNetworkPhysicalName, //  49
-    FileInformationIdGlobalTxDirectory, //  50
-    FileInformationIsRemoteDevice, //  51
-    FileInformationAttributeCache, //  52
-    FileInformationMaximum,
-} NT_FILE_INFORMATION_CLASS, *PNT_FILE_INFORMATION_CLASS;
+    typedef enum _NT_FILE_INFORMATION_CLASS
+    {
+        FileInformationDirectory = 1,
+        FileInformationFullDirectory,            //  2
+        FileInformationBothDirectory,            //  3
+        FileInformationBasic,                    //  4
+        FileInformationStandard,                 //  5
+        FileInformationInternal,                 //  6
+        FileInformationEa,                       //  7
+        FileInformationAccess,                   //  8
+        FileInformationName,                     //  9
+        FileInformationRename,                   //  10
+        FileInformationLink,                     //  11
+        FileInformationNames,                    //  12
+        FileInformationDisposition,              //  13
+        FileInformationPosition,                 //  14
+        FileInformationFullEa,                   //  15
+        FileInformationMode,                     //  16
+        FileInformationAlignment,                //  17
+        FileInformationAll,                      //  18
+        FileInformationAllocation,               //  19
+        FileInformationEndOfFile,                //  20
+        FileInformationAlternateName,            //  21
+        FileInformationStream,                   //  22
+        FileInformationPipe,                     //  23
+        FileInformationPipeLocal,                //  24
+        FileInformationPipeRemote,               //  25
+        FileInformationMailslotQuery,            //  26
+        FileInformationMailslotSet,              //  27
+        FileInformationCompression,              //  28
+        FileInformationObjectId,                 //  29
+        FileInformationCompletion,               //  30
+        FileInformationMoveCluster,              //  31
+        FileInformationQuota,                    //  32
+        FileInformationReparsePoint,             //  33
+        FileInformationNetworkOpen,              //  34
+        FileInformationAttributeTag,             //  35
+        FileInformationTracking,                 //  36
+        FileInformationIdBothDirectory,          //  37
+        FileInformationIdFullDirectory,          //  38
+        FileInformationValidDataLength,          //  39
+        FileInformationShortName,                //  40
+        FileInformationIoCompletionNotification, //  41
+        FileInformationIoStatusBlockRange,       //  42
+        FileInformationIoPriorityHint,           //  43
+        FileInformationSfioReserve,              //  44
+        FileInformationSfioVolume,               //  45
+        FileInformationHardLink,                 //  46
+        FileInformationProcessIdsUsingFile,      //  47
+        FileInformationNormalizedName,           //  48
+        FileInformationNetworkPhysicalName,      //  49
+        FileInformationIdGlobalTxDirectory,      //  50
+        FileInformationIsRemoteDevice,           //  51
+        FileInformationAttributeCache,           //  52
+        FileInformationMaximum,
+    } NT_FILE_INFORMATION_CLASS, *PNT_FILE_INFORMATION_CLASS;
 
-typedef struct _FILE_STREAM_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG StreamNameLength;
-    LARGE_INTEGER StreamSize;
-    LARGE_INTEGER StreamAllocationSize;
-    WCHAR StreamName[1];
-} FILE_STREAM_INFORMATION, *PFILE_STREAM_INFORMATION;
+    typedef struct _FILE_STREAM_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG StreamNameLength;
+        LARGE_INTEGER StreamSize;
+        LARGE_INTEGER StreamAllocationSize;
+        WCHAR StreamName[1];
+    } FILE_STREAM_INFORMATION, *PFILE_STREAM_INFORMATION;
 
-typedef struct _FILE_DIRECTORY_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG FileIndex;
-    LARGE_INTEGER CreationTime;
-    LARGE_INTEGER LastAccessTime;
-    LARGE_INTEGER LastWriteTime;
-    LARGE_INTEGER ChangeTime;
-    LARGE_INTEGER EndOfFile;
-    LARGE_INTEGER AllocationSize;
-    ULONG FileAttributes;
-    ULONG FileNameLength;
-    WCHAR FileName[1];
-} FILE_DIRECTORY_INFORMATION, *PFILE_DIRECTORY_INFORMATION;
+    typedef struct _FILE_DIRECTORY_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        WCHAR FileName[1];
+    } FILE_DIRECTORY_INFORMATION, *PFILE_DIRECTORY_INFORMATION;
 
-typedef struct _FILE_FULL_DIR_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG FileIndex;
-    LARGE_INTEGER CreationTime;
-    LARGE_INTEGER LastAccessTime;
-    LARGE_INTEGER LastWriteTime;
-    LARGE_INTEGER ChangeTime;
-    LARGE_INTEGER EndOfFile;
-    LARGE_INTEGER AllocationSize;
-    ULONG FileAttributes;
-    ULONG FileNameLength;
-    ULONG EaSize;
-    WCHAR FileName[1];
-} FILE_FULL_DIR_INFORMATION, *PFILE_FULL_DIR_INFORMATION;
+    typedef struct _FILE_FULL_DIR_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        WCHAR FileName[1];
+    } FILE_FULL_DIR_INFORMATION, *PFILE_FULL_DIR_INFORMATION;
 
-typedef struct _FILE_ID_FULL_DIR_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG FileIndex;
-    LARGE_INTEGER CreationTime;
-    LARGE_INTEGER LastAccessTime;
-    LARGE_INTEGER LastWriteTime;
-    LARGE_INTEGER ChangeTime;
-    LARGE_INTEGER EndOfFile;
-    LARGE_INTEGER AllocationSize;
-    ULONG FileAttributes;
-    ULONG FileNameLength;
-    ULONG EaSize;
-    LARGE_INTEGER FileId;
-    WCHAR FileName[1];
-} FILE_ID_FULL_DIR_INFORMATION, *PFILE_ID_FULL_DIR_INFORMATION;
+    typedef struct _FILE_ID_FULL_DIR_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        LARGE_INTEGER FileId;
+        WCHAR FileName[1];
+    } FILE_ID_FULL_DIR_INFORMATION, *PFILE_ID_FULL_DIR_INFORMATION;
 
-typedef struct _FILE_BOTH_DIR_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG FileIndex;
-    LARGE_INTEGER CreationTime;
-    LARGE_INTEGER LastAccessTime;
-    LARGE_INTEGER LastWriteTime;
-    LARGE_INTEGER ChangeTime;
-    LARGE_INTEGER EndOfFile;
-    LARGE_INTEGER AllocationSize;
-    ULONG FileAttributes;
-    ULONG FileNameLength;
-    ULONG EaSize;
-    CCHAR ShortNameLength;
-    WCHAR ShortName[12];
-    WCHAR FileName[1];
-} FILE_BOTH_DIR_INFORMATION, *PFILE_BOTH_DIR_INFORMATION;
+    typedef struct _FILE_BOTH_DIR_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        CCHAR ShortNameLength;
+        WCHAR ShortName[12];
+        WCHAR FileName[1];
+    } FILE_BOTH_DIR_INFORMATION, *PFILE_BOTH_DIR_INFORMATION;
 
-typedef struct _FILE_ID_BOTH_DIR_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG FileIndex;
-    LARGE_INTEGER CreationTime;
-    LARGE_INTEGER LastAccessTime;
-    LARGE_INTEGER LastWriteTime;
-    LARGE_INTEGER ChangeTime;
-    LARGE_INTEGER EndOfFile;
-    LARGE_INTEGER AllocationSize;
-    ULONG FileAttributes;
-    ULONG FileNameLength;
-    ULONG EaSize;
-    CCHAR ShortNameLength;
-    WCHAR ShortName[12];
-    LARGE_INTEGER FileId;
-    WCHAR FileName[1];
-} FILE_ID_BOTH_DIR_INFORMATION, *PFILE_ID_BOTH_DIR_INFORMATION;
+    typedef struct _FILE_ID_BOTH_DIR_INFORMATION
+    {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        CCHAR ShortNameLength;
+        WCHAR ShortName[12];
+        LARGE_INTEGER FileId;
+        WCHAR FileName[1];
+    } FILE_ID_BOTH_DIR_INFORMATION, *PFILE_ID_BOTH_DIR_INFORMATION;
 
-/* xref: https://googleprojectzero.blogspot.de/2016/02/the-definitive-guide-on-win32-to-nt.html */
-typedef struct _RTL_RELATIVE_NAME
-{
-    UNICODE_STRING RelativeName;
-    HANDLE ContainingDirectory;
-    void* CurDirRef;
-} RTL_RELATIVE_NAME, *PRTL_RELATIVE_NAME;
+    /* xref: https://googleprojectzero.blogspot.de/2016/02/the-definitive-guide-on-win32-to-nt.html */
+    typedef struct _RTL_RELATIVE_NAME
+    {
+        UNICODE_STRING RelativeName;
+        HANDLE ContainingDirectory;
+        void* CurDirRef;
+    } RTL_RELATIVE_NAME, *PRTL_RELATIVE_NAME;
 
-typedef enum
-{
-    RtlPathTypeUnknown,
-    RtlPathTypeUncAbsolute,
-    RtlPathTypeDriveAbsolute,
-    RtlPathTypeDriveRelative,
-    RtlPathTypeRooted,
-    RtlPathTypeRelative,
-    RtlPathTypeLocalDevice,
-    RtlPathTypeRootLocalDevice,
-} RTL_PATH_TYPE;
+    typedef enum
+    {
+        RtlPathTypeUnknown,
+        RtlPathTypeUncAbsolute,
+        RtlPathTypeDriveAbsolute,
+        RtlPathTypeDriveRelative,
+        RtlPathTypeRooted,
+        RtlPathTypeRelative,
+        RtlPathTypeLocalDevice,
+        RtlPathTypeRootLocalDevice,
+    } RTL_PATH_TYPE;
 
-//
-// I/O completion port access rights
-//
+    //
+    // I/O completion port access rights
+    //
 
-#define IO_COMPLETION_QUERY_STATE   0x0001
-#define IO_COMPLETION_MODIFY_STATE  0x0002
-#define IO_COMPLETION_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED|SYNCHRONIZE|0x3)
+#ifndef IO_COMPLETION_QUERY_STATE
+#    define IO_COMPLETION_QUERY_STATE 0x0001
+#endif // IO_COMPLETION_QUERY_STATE
+#ifndef IO_COMPLETION_MODIFY_STATE
+#    define IO_COMPLETION_MODIFY_STATE 0x0002
+#endif // IO_COMPLETION_MODIFY_STATE
+#ifndef IO_COMPLETION_ALL_ACCESS
+#    define IO_COMPLETION_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | IO_COMPLETION_QUERY_STATE | IO_COMPLETION_MODIFY_STATE)
+#endif // IO_COMPLETION_ALL_ACCESS
 
 #if !defined(DYNAMIC_NTNATIVE) || (!DYNAMIC_NTNATIVE)
-BOOLEAN
-NTAPI
-RtlCreateUnicodeString(
-    _Out_ PUNICODE_STRING DestinationString,
-    _In_opt_ PCWSTR SourceString
-);
-
-NTSTATUS
-NTAPI
-RtlGetVersion(
-    LPOSVERSIONINFOEXW lpVersionInformation
-);
-
-_Ret_maybenull_
-_Success_(return != NULL)
-PIMAGE_NT_HEADERS
-NTAPI
-RtlImageNtHeader(
-    _In_ PVOID Base
-);
-
-NTSTATUS
-NTAPI
-NtCreateIoCompletion(
-    _Out_ PHANDLE IoCompletionHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _Inout_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
-    _In_opt_ ULONG Count
-);
-
-NTSTATUS
-NTAPI
-NtSetIoCompletion(
-    _In_ HANDLE IoCompletionHandle,
-    _In_ PVOID KeyContext,
-    _In_opt_ PVOID ApcContext,
-    _In_ NTSTATUS IoStatus,
-    _In_ ULONG_PTR IoStatusInformation
-);
-
-NTSTATUS
-NTAPI
-NtRemoveIoCompletion(
-    _In_ HANDLE IoCompletionHandle,
-    _Out_ PVOID *KeyContext,
-    _Out_ PVOID *ApcContext,
-    _Out_ PIO_STATUS_BLOCK IoStatus,
-    _In_opt_ PLARGE_INTEGER Timeout
-);
-
-_Ret_maybenull_
-_Success_(return != NULL)
-PVOID
-NTAPI
-RtlImageDirectoryEntryToData(
-    _In_ PVOID Base,
-    _In_ BOOLEAN MappedAsImage,
-    _In_ USHORT DirectoryEntry,
-    _Out_ PULONG Size
-);
-
-_Ret_maybenull_
-_Success_(return != NULL)
-PVOID
-NTAPI
-RtlImageRvaToVa(
-    _In_ PIMAGE_NT_HEADERS NtHeaders,
-    _In_ PVOID Base,
-    _In_ ULONG Rva,
-    _Inout_opt_ PIMAGE_SECTION_HEADER *LastRvaSection
-);
-
-NTSTATUS
-NTAPI
-NtQueryEvent(
-    _In_ HANDLE EventHandle,
-    _In_ EVENT_INFORMATION_CLASS EventInformationClass,
-    _Out_writes_bytes_(EventInformationLength) PVOID EventInformation,
-    _In_ ULONG EventInformationLength,
-    _Out_opt_ PULONG ReturnLength
-);
-
-NTSTATUS
-NTAPI
-NtQueryIoCompletion(
-    _In_ HANDLE IoCompletionHandle,
-    _In_ IO_COMPLETION_INFORMATION_CLASS InformationClass,
-    _Out_writes_bytes_(InformationBufferLength) PVOID IoCompletionInformation,
-    _In_ ULONG InformationBufferLength,
-    _Out_opt_ PULONG RequiredLength
-);
-
-NTSTATUS
-NTAPI
-NtQueryMutant(
-    _In_ HANDLE MutantHandle,
-    _In_ MUTANT_INFORMATION_CLASS MutantInformationClass,
-    _Out_writes_bytes_(MutantInformationLength) PVOID MutantInformation,
-    _In_ ULONG MutantInformationLength,
-    _Out_opt_ PULONG ReturnLength
-);
-
-NTSTATUS
-NTAPI
-NtQueryObject(
-    _In_opt_ HANDLE Handle,
-    _In_ OBJECT_INFORMATION_CLASS ObjectInformationClass,
-    _Out_writes_bytes_opt_(ObjectInformationLength) PVOID ObjectInformation,
-    _In_ ULONG ObjectInformationLength,
-    _Out_opt_ PULONG ReturnLength
-    );
-
-NTSTATUS
-NTAPI
-NtQuerySemaphore(
-    _In_ HANDLE SemaphoreHandle,
-    _In_ SEMAPHORE_INFORMATION_CLASS SemaphoreInformationClass,
-    _Out_writes_bytes_(SemaphoreInformationLength) PVOID SemaphoreInformation,
-    _In_ ULONG SemaphoreInformationLength,
-    _Out_opt_ PULONG ReturnLength
-);
-
-NTSTATUS
-NTAPI
-NtQuerySection(
-    _In_ HANDLE SectionHandle,
-    _In_ SECTION_INFORMATION_CLASS SectionInformationClass,
-    _Out_ PVOID SectionInformation,
-    _In_ ULONG SectionInformationLength,
-    _Out_opt_ PULONG ReturnLength
- );
-
-NTSTATUS
-NTAPI
-NtQueryTimer(
-    _In_ HANDLE TimerHandle,
-    _In_ TIMER_INFORMATION_CLASS TimerInformationClass,
-    _Out_ PVOID TimerInformation,
-    _In_ ULONG TimerInformationLength,
-    _Out_opt_ PULONG ReturnLength
-);
-
-NTSTATUS
-NTAPI
-NtOpenDirectoryObject(
-    _Out_ PHANDLE DirectoryHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtQueryDirectoryObject(
-    _In_ HANDLE DirectoryHandle,
-    _Out_writes_bytes_(Length) PVOID Buffer,
-    _In_ ULONG Length,
-    _In_ BOOLEAN ReturnSingleEntry,
-    _In_ BOOLEAN RestartScan,
-    _Inout_ PULONG Context,
-    _Out_opt_ PULONG ReturnLength
-);
-
-NTSTATUS
-NTAPI
-NtOpenSymbolicLinkObject(
-    _Out_ PHANDLE LinkHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtQuerySymbolicLinkObject(
-    _In_ HANDLE LinkHandle,
-    _Inout_ PUNICODE_STRING LinkTarget,
-    _Out_opt_ PULONG ReturnedLength
-);
-
-NTSTATUS
-NTAPI
-NtOpenEvent(
-    _Out_ PHANDLE EventHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenMutant(
-    _Out_ PHANDLE MutantHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenSection(
-    _Out_ PHANDLE SectionHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenTimer(
-    _Out_ PHANDLE TimerHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenSemaphore(
-    _Out_ PHANDLE SemaphoreHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenEventPair(
-    _Out_ PHANDLE EventPairHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenIoCompletion(
-    _Out_ PHANDLE IoCompletionHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtOpenKey(
-    _Out_ PHANDLE KeyHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes
-);
-
-NTSTATUS
-NTAPI
-NtCreateKey(
-    _Out_ PHANDLE KeyHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes,
-    _Reserved_ ULONG TitleIndex,
-    _In_opt_ PUNICODE_STRING Class,
-    _In_ ULONG CreateOptions,
-    _Out_opt_ PULONG Disposition
-);
-
-NTSTATUS
-NTAPI
-NtEnumerateKey(
-    _In_ HANDLE KeyHandle,
-    _In_ ULONG Index,
-    _In_ KEY_INFORMATION_CLASS KeyInformationClass,
-    _Out_writes_bytes_opt_(Length) PVOID KeyInformation,
-    _In_ ULONG Length,
-    _Out_ PULONG ResultLength
-);
-
-NTSTATUS
-NTAPI
-NtEnumerateValueKey(
-    _In_ HANDLE KeyHandle,
-    _In_ ULONG Index,
-    _In_ KEY_VALUE_INFORMATION_CLASS KeyValueInformationClass,
-    _Out_writes_bytes_opt_(Length) PVOID KeyValueInformation,
-    _In_ ULONG Length,
-    _Out_ PULONG ResultLength
-);
-
-NTSTATUS
-NTAPI
-NtQueryKey(
-    _In_ HANDLE KeyHandle,
-    _In_ KEY_INFORMATION_CLASS KeyInformationClass,
-    _Out_writes_bytes_opt_(Length) PVOID KeyInformation,
-    _In_ ULONG Length,
-    _Out_ PULONG ResultLength
-);
-
-NTSTATUS
-NTAPI
-NtQueryValueKey(
-    _In_ HANDLE KeyHandle,
-    _In_ PUNICODE_STRING ValueName,
-    _In_ KEY_VALUE_INFORMATION_CLASS KeyValueInformationClass,
-    _Out_writes_bytes_opt_(Length) PVOID KeyValueInformation,
-    _In_ ULONG Length,
-    _Out_ PULONG ResultLength
-);
-
-NTSTATUS
-NTAPI
-NtSetValueKey(
-    _In_ HANDLE KeyHandle,
-    _In_ PUNICODE_STRING ValueName,
-    _In_opt_ ULONG TitleIndex,
-    _In_ ULONG Type,
-    _In_reads_bytes_(DataSize) PVOID Data,
-    _In_ ULONG DataSize
-);
-
-NTSTATUS
-NTAPI
-NtDeleteValueKey(
-    _In_ HANDLE KeyHandle,
-    _In_ PUNICODE_STRING ValueName
-);
-
-NTSTATUS
-NTAPI
-NtQueryOpenSubKeys(
-    _In_ POBJECT_ATTRIBUTES TargetKey,
-    _Out_ PULONG HandleCount
-);
-
-#pragma warning(suppress:28252)
-NTSTATUS
-NTAPI
-NtRenameKey(
-    _In_ HANDLE KeyHandle,
-    _In_ PUNICODE_STRING NewName
-);
-
-NTSTATUS
-NTAPI
-RtlValidateUnicodeString(
-    _In_ _Reserved_ ULONG Flags,
-    _In_ PCUNICODE_STRING String
-);
-
-NTSTATUS
-NTAPI
-RtlDowncaseUnicodeString(
-         PUNICODE_STRING DestinationString,
-    _In_ PCUNICODE_STRING SourceString,
-    _In_ BOOLEAN AllocateDestinationString
-);
-
-NTSTATUS
-NTAPI
-RtlUpcaseUnicodeString(
-    _Inout_ PUNICODE_STRING  DestinationString,
-    _In_ PCUNICODE_STRING SourceString,
-    _In_ BOOLEAN AllocateDestinationString
-);
-
-WCHAR
-NTAPI
-RtlDowncaseUnicodeChar(
-    _In_ WCHAR SourceCharacter
-);
-
-WCHAR
-NTAPI
-RtlUpcaseUnicodeChar(
-    _In_ WCHAR SourceCharacter
-);
-
-_Must_inspect_result_
-LONG
-NTAPI
-RtlCompareUnicodeString(
-    _In_ PCUNICODE_STRING String1,
-    _In_ PCUNICODE_STRING String2,
-    _In_ BOOLEAN CaseInSensitive
-);
-
-_Must_inspect_result_
-BOOLEAN
-NTAPI
-RtlEqualUnicodeString(
-    _In_ PCUNICODE_STRING String1,
-    _In_ PCUNICODE_STRING String2,
-    _In_ BOOLEAN CaseInSensitive
-);
-
-VOID
-NTAPI
-RtlCopyUnicodeString(
-    _In_ PUNICODE_STRING DestinationString,
-    _In_ PCUNICODE_STRING SourceString
-);
-
-NTSTATUS
-NTAPI
-RtlAppendUnicodeStringToString(
-    _In_ PUNICODE_STRING Destination,
-    _In_ PCUNICODE_STRING Source
-);
-
-NTSTATUS
-NTAPI
-RtlAppendUnicodeToString(
-    _In_ PUNICODE_STRING Destination,
-    _In_opt_ PCWSTR Source
-);
-
-_Must_inspect_result_
-BOOLEAN
-NTAPI
-RtlPrefixUnicodeString(
-    _In_ PCUNICODE_STRING String1,
-    _In_ PCUNICODE_STRING String2,
-    _In_ BOOLEAN CaseInSensitive
-);
-
-NTSTATUS /* VOID in pre-Vista */
-NTAPI
-RtlGenerate8dot3Name(
-    _In_ PCUNICODE_STRING Name,
-    _In_ BOOLEAN AllowExtendedCharacters,
-    _Inout_ PGENERATE_NAME_CONTEXT Context,
-    _Inout_ PUNICODE_STRING Name8dot3
-);
-
-NTSTATUS
-NTAPI
-RtlVolumeDeviceToDosName(
-    _In_ PVOID VolumeDeviceObject,
-    _Out_ PUNICODE_STRING DosName
-);
-
-NTSTATUS
-NTAPI
-NtCreateSection(
-    _Out_ PHANDLE SectionHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
-    _In_opt_ PLARGE_INTEGER MaximumSize,
-    _In_ ULONG SectionPageProtection,
-    _In_ ULONG AllocationAttributes,
-    _In_opt_ HANDLE FileHandle
-);
-
-NTSTATUS
-NTAPI
-NtMapViewOfSection(
-    _In_ HANDLE SectionHandle,
-    _In_ HANDLE ProcessHandle,
-    _Inout_ PVOID *BaseAddress,
-    _In_ ULONG_PTR ZeroBits,
-    _In_ SIZE_T CommitSize,
-    _Inout_opt_ PLARGE_INTEGER SectionOffset,
-    _Inout_ PSIZE_T ViewSize,
-    _In_ SECTION_INHERIT InheritDisposition,
-    _In_ ULONG AllocationType,
-    _In_ ULONG Win32Protect
-);
-
-NTSTATUS
-NTAPI
-NtUnmapViewOfSection(
-    _In_ HANDLE ProcessHandle,
-    _In_opt_ PVOID BaseAddress
-);
-
-NTSTATUS
-NTAPI
-NtQueryDirectoryFile(
-    _In_ HANDLE FileHandle,
-    _In_opt_ HANDLE Event,
-    _In_opt_ PIO_APC_ROUTINE ApcRoutine,
-    _In_opt_ PVOID ApcContext,
-    _Out_ PIO_STATUS_BLOCK IoStatusBlock,
-    _Out_writes_bytes_(Length) PVOID FileInformation,
-    _In_ ULONG Length,
-    _In_ NT_FILE_INFORMATION_CLASS FileInformationClass,
-    _In_ BOOLEAN ReturnSingleEntry,
-    _In_opt_ PUNICODE_STRING FileName,
-    _In_ BOOLEAN RestartScan
-);
-
-NTSTATUS
-NTAPI
-NtQueryInformationFile(
-    _In_ HANDLE FileHandle,
-    _Out_ PIO_STATUS_BLOCK IoStatusBlock,
-    _Out_writes_bytes_(Length) PVOID FileInformation,
-    _In_ ULONG Length,
-    _In_ NT_FILE_INFORMATION_CLASS FileInformationClass
-);
-
-_Ret_maybenull_
-_Post_writable_byte_size_(Size)
-PVOID
-NTAPI
-RtlAllocateHeap(
-    _In_ PVOID HeapHandle,
-    _In_ ULONG Flags,
-    _In_ SIZE_T Size
-);
-
-_Success_(return != 0)
-BOOLEAN
-NTAPI
-RtlFreeHeap(
-    _In_ PVOID HeapHandle,
-    _In_opt_ ULONG Flags,
-    _Frees_ptr_opt_ PVOID BaseAddress
-);
-
-NTSTATUS
-NTAPI
-RtlInitializeCriticalSection(
-    _In_ PRTL_CRITICAL_SECTION CriticalSection
-);
-
-NTSTATUS
-NTAPI
-RtlDeleteCriticalSection(
-    _In_ PRTL_CRITICAL_SECTION CriticalSection
-);
-
-NTSTATUS
-NTAPI
-RtlEnterCriticalSection(
-    _In_ PRTL_CRITICAL_SECTION CriticalSection
-);
-
-NTSTATUS
-NTAPI
-RtlLeaveCriticalSection(
-    _In_ PRTL_CRITICAL_SECTION CriticalSection
-);
-
-_When_(Status < 0, _Out_range_(> , 0))
-_When_(Status >= 0, _Out_range_(== , 0))
-ULONG
-NTAPI
-RtlNtStatusToDosError(
-    NTSTATUS Status
-);
-
-_Success_(return != 0)
-BOOLEAN
-NTAPI
-RtlDosPathNameToNtPathName_U(
-    _In_ PCWSTR DosFileName,
-    _Out_ PUNICODE_STRING NtFileName,
-    _Out_opt_ PWSTR *FilePart,
-    _Out_opt_ PRTL_RELATIVE_NAME RelativeName
-);
-
-NTSTATUS
-NTAPI
-RtlDosPathNameToNtPathName_U_WithStatus(
-    _In_ PCWSTR DosFileName,
-    _Out_ PUNICODE_STRING NtFileName,
-    _Out_opt_ PWSTR *FilePart,
-    _Out_opt_ PRTL_RELATIVE_NAME RelativeName
-);
-
-/* xref: https://googleprojectzero.blogspot.de/2016/02/the-definitive-guide-on-win32-to-nt.html */
-_Success_(return != 0)
-BOOLEAN
-NTAPI
-RtlDosPathNameToRelativeNtPathName_U(
-    _In_ PCWSTR DosFileName,
-    _Out_ PUNICODE_STRING NtFileName,
-    _Out_opt_ PWSTR* FilePath,
-    _Out_opt_ PRTL_RELATIVE_NAME RelativeName
-);
-
-RTL_PATH_TYPE
-NTAPI
-RtlDetermineDosPathNameType_U(
-    _In_ PCWSTR Path
-);
-
-ULONG
-NTAPI
-RtlGetFullPathName_U(
-    _In_ PWSTR FileName,
-    _In_ ULONG BufferLength,
-    _Out_writes_bytes_(BufferLength) PWSTR Buffer,
-    _Out_opt_ PWSTR *FilePart
-);
-
-#if defined(DDKBUILD)
-NTSTATUS
-NTAPI
-NtQueryObject(
-   _In_opt_ HANDLE Handle,
-   _In_ OBJECT_INFORMATION_CLASS ObjectInformationClass,
-   _Out_writes_bytes_opt_(ObjectInformationLength) PVOID ObjectInformation,
-   _In_ ULONG ObjectInformationLength,
-   _Out_opt_ PULONG ReturnLength
-   );
-
-NTSTATUS
-NTAPI
-NtOpenFile(
-    _Out_ PHANDLE FileHandle,
-    _In_ ACCESS_MASK DesiredAccess,
-    _In_ POBJECT_ATTRIBUTES ObjectAttributes,
-    _Out_ PIO_STATUS_BLOCK IoStatusBlock,
-    _In_ ULONG ShareAccess,
-    _In_ ULONG OpenOptions
-);
-#endif // DDKBUILD
+    // Creating object types
+
+    NTSTATUS
+    NTAPI
+    NtCreateIoCompletion(_Out_ PHANDLE IoCompletionHandle,
+                         _In_ ACCESS_MASK DesiredAccess,
+                         _Inout_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
+                         _In_opt_ ULONG Count);
+
+    NTSTATUS
+    NTAPI
+    NtCreateKey(_Out_ PHANDLE KeyHandle,
+                _In_ ACCESS_MASK DesiredAccess,
+                _In_ POBJECT_ATTRIBUTES ObjectAttributes,
+                _Reserved_ ULONG TitleIndex,
+                _In_opt_ PUNICODE_STRING Class,
+                _In_ ULONG CreateOptions,
+                _Out_opt_ PULONG Disposition);
+
+    NTSTATUS
+    NTAPI
+    NtCreateSection(_Out_ PHANDLE SectionHandle,
+                    _In_ ACCESS_MASK DesiredAccess,
+                    _In_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
+                    _In_opt_ PLARGE_INTEGER MaximumSize,
+                    _In_ ULONG SectionPageProtection,
+                    _In_ ULONG AllocationAttributes,
+                    _In_opt_ HANDLE FileHandle);
+
+    // Opening object types
+
+    NTSTATUS
+    NTAPI
+    NtOpenDirectoryObject(_Out_ PHANDLE DirectoryHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenEvent(_Out_ PHANDLE EventHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenEventPair(_Out_ PHANDLE EventPairHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+#    if defined(DDKBUILD)
+    NTSTATUS
+    NTAPI
+    NtOpenFile(_Out_ PHANDLE FileHandle,
+               _In_ ACCESS_MASK DesiredAccess,
+               _In_ POBJECT_ATTRIBUTES ObjectAttributes,
+               _Out_ PIO_STATUS_BLOCK IoStatusBlock,
+               _In_ ULONG ShareAccess,
+               _In_ ULONG OpenOptions);
+#    endif // DDKBUILD
+
+    NTSTATUS
+    NTAPI
+    NtOpenIoCompletion(_Out_ PHANDLE IoCompletionHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenKey(_Out_ PHANDLE KeyHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenMutant(_Out_ PHANDLE MutantHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenProcessToken(_In_ HANDLE ProcessHandle, _In_ ACCESS_MASK DesiredAccess, _Out_ PHANDLE TokenHandle);
+
+    NTSTATUS
+    NTAPI
+    NtOpenSection(_Out_ PHANDLE SectionHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenSemaphore(_Out_ PHANDLE SemaphoreHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenSymbolicLinkObject(_Out_ PHANDLE LinkHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    NTSTATUS
+    NTAPI
+    NtOpenThreadToken(_In_ HANDLE ThreadHandle, _In_ ACCESS_MASK DesiredAccess, _In_ BOOLEAN OpenAsSelf, _Out_ PHANDLE TokenHandle);
+
+    NTSTATUS
+    NTAPI
+    NtOpenTimer(_Out_ PHANDLE TimerHandle, _In_ ACCESS_MASK DesiredAccess, _In_ POBJECT_ATTRIBUTES ObjectAttributes);
+
+    // Querying object information
+
+    NTSTATUS
+    NTAPI
+    NtQueryDirectoryFile(_In_ HANDLE FileHandle,
+                         _In_opt_ HANDLE Event,
+                         _In_opt_ PIO_APC_ROUTINE ApcRoutine,
+                         _In_opt_ PVOID ApcContext,
+                         _Out_ PIO_STATUS_BLOCK IoStatusBlock,
+                         _Out_writes_bytes_(Length) PVOID FileInformation,
+                         _In_ ULONG Length,
+                         _In_ NT_FILE_INFORMATION_CLASS FileInformationClass,
+                         _In_ BOOLEAN ReturnSingleEntry,
+                         _In_opt_ PUNICODE_STRING FileName,
+                         _In_ BOOLEAN RestartScan);
+
+    NTSTATUS
+    NTAPI
+    NtQueryDirectoryObject(_In_ HANDLE DirectoryHandle,
+                           _Out_writes_bytes_(Length) PVOID Buffer,
+                           _In_ ULONG Length,
+                           _In_ BOOLEAN ReturnSingleEntry,
+                           _In_ BOOLEAN RestartScan,
+                           _Inout_ PULONG Context,
+                           _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryEvent(_In_ HANDLE EventHandle,
+                 _In_ EVENT_INFORMATION_CLASS EventInformationClass,
+                 _Out_writes_bytes_(EventInformationLength) PVOID EventInformation,
+                 _In_ ULONG EventInformationLength,
+                 _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryInformationFile(_In_ HANDLE FileHandle,
+                           _Out_ PIO_STATUS_BLOCK IoStatusBlock,
+                           _Out_writes_bytes_(Length) PVOID FileInformation,
+                           _In_ ULONG Length,
+                           _In_ NT_FILE_INFORMATION_CLASS FileInformationClass);
+
+    NTSTATUS
+    NTAPI
+    NtQueryInformationToken(_In_ HANDLE TokenHandle,
+                            _In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
+                            _Out_writes_bytes_to_opt_(TokenInformationLength, *ReturnLength) PVOID TokenInformation,
+                            _In_ ULONG TokenInformationLength,
+                            _Out_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryIoCompletion(_In_ HANDLE IoCompletionHandle,
+                        _In_ IO_COMPLETION_INFORMATION_CLASS InformationClass,
+                        _Out_writes_bytes_(InformationBufferLength) PVOID IoCompletionInformation,
+                        _In_ ULONG InformationBufferLength,
+                        _Out_opt_ PULONG RequiredLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryKey(_In_ HANDLE KeyHandle,
+               _In_ KEY_INFORMATION_CLASS KeyInformationClass,
+               _Out_writes_bytes_opt_(Length) PVOID KeyInformation,
+               _In_ ULONG Length,
+               _Out_ PULONG ResultLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryMutant(_In_ HANDLE MutantHandle,
+                  _In_ MUTANT_INFORMATION_CLASS MutantInformationClass,
+                  _Out_writes_bytes_(MutantInformationLength) PVOID MutantInformation,
+                  _In_ ULONG MutantInformationLength,
+                  _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryObject(_In_opt_ HANDLE Handle,
+                  _In_ OBJECT_INFORMATION_CLASS ObjectInformationClass,
+                  _Out_writes_bytes_opt_(ObjectInformationLength) PVOID ObjectInformation,
+                  _In_ ULONG ObjectInformationLength,
+                  _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryOpenSubKeys(_In_ POBJECT_ATTRIBUTES TargetKey, _Out_ PULONG HandleCount);
+
+    NTSTATUS
+    NTAPI
+    NtQuerySection(_In_ HANDLE SectionHandle,
+                   _In_ SECTION_INFORMATION_CLASS SectionInformationClass,
+                   _Out_ PVOID SectionInformation,
+                   _In_ ULONG SectionInformationLength,
+                   _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQuerySecurityObject(_In_ HANDLE Handle,
+                          _In_ SECURITY_INFORMATION SecurityInformation,
+                          _Out_writes_bytes_opt_(Length) PSECURITY_DESCRIPTOR SecurityDescriptor,
+                          _In_ ULONG Length,
+                          _Out_ PULONG LengthNeeded);
+
+    NTSTATUS
+    NTAPI
+    NtQuerySemaphore(_In_ HANDLE SemaphoreHandle,
+                     _In_ SEMAPHORE_INFORMATION_CLASS SemaphoreInformationClass,
+                     _Out_writes_bytes_(SemaphoreInformationLength) PVOID SemaphoreInformation,
+                     _In_ ULONG SemaphoreInformationLength,
+                     _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQuerySymbolicLinkObject(_In_ HANDLE LinkHandle, _Inout_ PUNICODE_STRING LinkTarget, _Out_opt_ PULONG ReturnedLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryTimer(_In_ HANDLE TimerHandle,
+                 _In_ TIMER_INFORMATION_CLASS TimerInformationClass,
+                 _Out_ PVOID TimerInformation,
+                 _In_ ULONG TimerInformationLength,
+                 _Out_opt_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtQueryValueKey(_In_ HANDLE KeyHandle,
+                    _In_ PUNICODE_STRING ValueName,
+                    _In_ KEY_VALUE_INFORMATION_CLASS KeyValueInformationClass,
+                    _Out_writes_bytes_opt_(Length) PVOID KeyValueInformation,
+                    _In_ ULONG Length,
+                    _Out_ PULONG ResultLength);
+
+    // Setting object information
+
+    NTSTATUS
+    NTAPI
+    NtSetInformationToken(_In_ HANDLE TokenHandle,
+                          _In_ TOKEN_INFORMATION_CLASS TokenInformationClass,
+                          _In_reads_bytes_(TokenInformationLength) PVOID TokenInformation,
+                          _In_ ULONG TokenInformationLength);
+
+    NTSTATUS
+    NTAPI
+    NtSetIoCompletion(
+        _In_ HANDLE IoCompletionHandle, _In_ PVOID KeyContext, _In_opt_ PVOID ApcContext, _In_ NTSTATUS IoStatus, _In_ ULONG_PTR IoStatusInformation);
+
+    NTSTATUS
+    NTAPI
+    NtSetValueKey(_In_ HANDLE KeyHandle,
+                  _In_ PUNICODE_STRING ValueName,
+                  _In_opt_ ULONG TitleIndex,
+                  _In_ ULONG Type,
+                  _In_reads_bytes_(DataSize) PVOID Data,
+                  _In_ ULONG DataSize);
+
+    NTSTATUS
+    NTAPI
+    NtSetSecurityObject(_In_ HANDLE Handle, _In_ SECURITY_INFORMATION SecurityInformation, _In_ PSECURITY_DESCRIPTOR SecurityDescriptor);
+
+    // I/O completion ports (related)
+
+    NTSTATUS
+    NTAPI
+    NtRemoveIoCompletion(
+        _In_ HANDLE IoCompletionHandle, _Out_ PVOID* KeyContext, _Out_ PVOID* ApcContext, _Out_ PIO_STATUS_BLOCK IoStatus, _In_opt_ PLARGE_INTEGER Timeout);
+
+    // Registry (related)
+
+    NTSTATUS
+    NTAPI
+    NtDeleteValueKey(_In_ HANDLE KeyHandle, _In_ PUNICODE_STRING ValueName);
+
+    NTSTATUS
+    NTAPI
+    NtEnumerateKey(_In_ HANDLE KeyHandle,
+                   _In_ ULONG Index,
+                   _In_ KEY_INFORMATION_CLASS KeyInformationClass,
+                   _Out_writes_bytes_opt_(Length) PVOID KeyInformation,
+                   _In_ ULONG Length,
+                   _Out_ PULONG ResultLength);
+
+    NTSTATUS
+    NTAPI
+    NtEnumerateValueKey(_In_ HANDLE KeyHandle,
+                        _In_ ULONG Index,
+                        _In_ KEY_VALUE_INFORMATION_CLASS KeyValueInformationClass,
+                        _Out_writes_bytes_opt_(Length) PVOID KeyValueInformation,
+                        _In_ ULONG Length,
+                        _Out_ PULONG ResultLength);
+
+#    pragma warning(suppress : 28252)
+    NTSTATUS
+    NTAPI
+    NtRenameKey(_In_ HANDLE KeyHandle, _In_ PUNICODE_STRING NewName);
+
+    // Sections (related)
+
+    NTSTATUS
+    NTAPI
+    NtMapViewOfSection(_In_ HANDLE SectionHandle,
+                       _In_ HANDLE ProcessHandle,
+                       _Inout_ PVOID* BaseAddress,
+                       _In_ ULONG_PTR ZeroBits,
+                       _In_ SIZE_T CommitSize,
+                       _Inout_opt_ PLARGE_INTEGER SectionOffset,
+                       _Inout_ PSIZE_T ViewSize,
+                       _In_ SECTION_INHERIT InheritDisposition,
+                       _In_ ULONG AllocationType,
+                       _In_ ULONG Win32Protect);
+
+    NTSTATUS
+    NTAPI
+    NtUnmapViewOfSection(_In_ HANDLE ProcessHandle, _In_opt_ PVOID BaseAddress);
+
+    // Security (related)
+
+    NTSTATUS
+    NTAPI
+    NtAdjustGroupsToken(_In_ HANDLE TokenHandle,
+                        _In_ BOOLEAN ResetToDefault,
+                        _In_opt_ PTOKEN_GROUPS NewState,
+                        _In_range_(>=, sizeof(TOKEN_GROUPS)) ULONG BufferLength,
+                        _Out_writes_bytes_to_opt_(BufferLength, *ReturnLength) PTOKEN_GROUPS PreviousState,
+                        _Out_ PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtAdjustPrivilegesToken(_In_ HANDLE TokenHandle,
+                            _In_ BOOLEAN DisableAllPrivileges,
+                            _In_opt_ PTOKEN_PRIVILEGES NewState,
+                            _In_ ULONG BufferLength,
+                            _Out_writes_bytes_to_opt_(BufferLength, *ReturnLength) PTOKEN_PRIVILEGES PreviousState,
+                            _Out_ _When_(PreviousState == NULL, _Out_opt_) PULONG ReturnLength);
+
+    NTSTATUS
+    NTAPI
+    NtDuplicateToken(_In_ HANDLE ExistingTokenHandle,
+                     _In_ ACCESS_MASK DesiredAccess,
+                     _In_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
+                     _In_ BOOLEAN EffectiveOnly,
+                     _In_ TOKEN_TYPE TokenType,
+                     _Out_ PHANDLE NewTokenHandle);
+
+    NTSTATUS
+    NTAPI
+    NtPrivilegeCheck(_In_ HANDLE ClientToken, _Inout_ PPRIVILEGE_SET RequiredPrivileges, _Out_ PBOOLEAN Result);
+
+    // Miscellaneous (Rtl)
+
+    PVOID
+    NTAPI
+    RtlAllocateHeap(_In_ PVOID HeapHandle, _In_ ULONG Flags, _In_ SIZE_T Size);
+
+    BOOLEAN
+    NTAPI
+    RtlFreeHeap(_In_ PVOID HeapHandle, _In_opt_ ULONG Flags, _Frees_ptr_opt_ PVOID BaseAddress);
+
+    NTSTATUS
+    NTAPI
+    RtlInitializeCriticalSection(_In_ PRTL_CRITICAL_SECTION CriticalSection);
+
+    NTSTATUS
+    NTAPI
+    RtlDeleteCriticalSection(_In_ PRTL_CRITICAL_SECTION CriticalSection);
+
+    NTSTATUS
+    NTAPI
+    RtlEnterCriticalSection(_In_ PRTL_CRITICAL_SECTION CriticalSection);
+
+    NTSTATUS
+    NTAPI
+    RtlLeaveCriticalSection(_In_ PRTL_CRITICAL_SECTION CriticalSection);
+
+#    ifndef _WINTERNL_
+    ULONG
+    NTAPI
+    RtlNtStatusToDosError(_In_ NTSTATUS Status);
+#    endif // _WINTERNL_
+
+    NTSTATUS
+    NTAPI
+    RtlGetVersion(LPOSVERSIONINFOEXW lpVersionInformation);
+
+    VOID NTAPI RtlCopyLuid(_Out_ PLUID DestinationLuid, _In_ PLUID SourceLuid);
+
+    // Path processing (Rtl)
+
+    RTL_PATH_TYPE
+    NTAPI
+    RtlDetermineDosPathNameType_U(_In_ PCWSTR Path);
+
+#    if (NTDDI_VERSION >= NTDDI_WS03)
+    /* xref: https://googleprojectzero.blogspot.de/2016/02/the-definitive-guide-on-win32-to-nt.html */
+    BOOLEAN
+    NTAPI
+    RtlDosPathNameToRelativeNtPathName_U(_In_ PCWSTR DosFileName,
+                                         _Out_ PUNICODE_STRING NtFileName,
+                                         _Out_opt_ PWSTR* FilePath,
+                                         _Out_opt_ PRTL_RELATIVE_NAME RelativeName);
+
+    NTSTATUS
+    NTAPI
+    RtlDosPathNameToRelativeNtPathName_U_WithStatus(_In_ PCWSTR DosFileName,
+                                                    _Out_ PUNICODE_STRING NtFileName,
+                                                    _Out_opt_ PWSTR* FilePath,
+                                                    _Out_opt_ PRTL_RELATIVE_NAME RelativeName);
+
+    NTSTATUS
+    NTAPI
+    RtlDosPathNameToNtPathName_U_WithStatus(_In_ PCWSTR DosFileName,
+                                            _Out_ PUNICODE_STRING NtFileName,
+                                            _Out_opt_ PWSTR* FilePart,
+                                            _Out_opt_ PRTL_RELATIVE_NAME RelativeName);
+#    endif // (NTDDI_VERSION >= NTDDI_WS03)
+
+    _Success_(return != 0) BOOLEAN NTAPI RtlDosPathNameToNtPathName_U(_In_ PCWSTR DosFileName,
+                                                                      _Out_ PUNICODE_STRING NtFileName,
+                                                                      _Out_opt_ PWSTR* FilePart,
+                                                                      _Out_opt_ PRTL_RELATIVE_NAME RelativeName);
+
+    ULONG
+    NTAPI
+    RtlGetFullPathName_U(_In_ PWSTR FileName, _In_ ULONG BufferLength, _Out_writes_bytes_(BufferLength) PWSTR Buffer, _Out_opt_ PWSTR* FilePart);
+
+    /* VOID in pre-Vista */
+    NTSTATUS
+    NTAPI
+    RtlGenerate8dot3Name(_In_ PCUNICODE_STRING Name,
+                         _In_ BOOLEAN AllowExtendedCharacters,
+                         _Inout_ PGENERATE_NAME_CONTEXT Context,
+                         _Inout_ PUNICODE_STRING Name8dot3);
+
+    // String processing (Rtl)
+
+    NTSTATUS
+    NTAPI
+    RtlAppendUnicodeStringToString(_In_ PUNICODE_STRING Destination, _In_ PCUNICODE_STRING Source);
+
+    NTSTATUS
+    NTAPI
+    RtlAppendUnicodeToString(_In_ PUNICODE_STRING Destination, _In_opt_ PCWSTR Source);
+
+    LONG NTAPI RtlCompareUnicodeString(_In_ PCUNICODE_STRING String1, _In_ PCUNICODE_STRING String2, _In_ BOOLEAN CaseInSensitive);
+
+    VOID NTAPI RtlCopyUnicodeString(_In_ PUNICODE_STRING DestinationString, _In_ PCUNICODE_STRING SourceString);
+
+    BOOLEAN
+    NTAPI
+    RtlCreateUnicodeString(_Out_ PUNICODE_STRING DestinationString, _In_opt_ PCWSTR SourceString);
+
+    WCHAR
+    NTAPI
+    RtlDowncaseUnicodeChar(_In_ WCHAR SourceCharacter);
+
+    NTSTATUS
+    NTAPI
+    RtlDowncaseUnicodeString(PUNICODE_STRING DestinationString, _In_ PCUNICODE_STRING SourceString, _In_ BOOLEAN AllocateDestinationString);
+
+    BOOLEAN
+    NTAPI
+    RtlEqualUnicodeString(_In_ PCUNICODE_STRING String1, _In_ PCUNICODE_STRING String2, _In_ BOOLEAN CaseInSensitive);
+
+    BOOLEAN
+    NTAPI
+    RtlPrefixUnicodeString(_In_ PCUNICODE_STRING String1, _In_ PCUNICODE_STRING String2, _In_ BOOLEAN CaseInSensitive);
+
+    WCHAR
+    NTAPI
+    RtlUpcaseUnicodeChar(_In_ WCHAR SourceCharacter);
+
+    NTSTATUS
+    NTAPI
+    RtlUpcaseUnicodeString(_Inout_ PUNICODE_STRING DestinationString, _In_ PCUNICODE_STRING SourceString, _In_ BOOLEAN AllocateDestinationString);
+
+    NTSTATUS
+    NTAPI
+    RtlValidateUnicodeString(_In_ _Reserved_ ULONG Flags, _In_ PCUNICODE_STRING String);
+
+    // Security (Rtl/SIDs)
+
+    NTSTATUS
+    NTAPI
+    RtlAllocateAndInitializeSid(_In_ PSID_IDENTIFIER_AUTHORITY IdentifierAuthority,
+                                _In_ UCHAR SubAuthorityCount,
+                                _In_ ULONG SubAuthority0,
+                                _In_ ULONG SubAuthority1,
+                                _In_ ULONG SubAuthority2,
+                                _In_ ULONG SubAuthority3,
+                                _In_ ULONG SubAuthority4,
+                                _In_ ULONG SubAuthority5,
+                                _In_ ULONG SubAuthority6,
+                                _In_ ULONG SubAuthority7,
+                                _Outptr_ PSID* Sid);
+
+#    ifndef MAX_UNICODE_STACK_BUFFER_LENGTH
+#        define MAX_UNICODE_STACK_BUFFER_LENGTH 256 // see ntifs.h
+#    endif
+
+#    ifndef _WINTERNL_
+    NTSTATUS
+    NTAPI
+    RtlConvertSidToUnicodeString(_Inout_ PUNICODE_STRING UnicodeString, _In_ PSID Sid, _In_ BOOLEAN AllocateDestinationString);
+#    endif // _WINTERNL_
+
+    NTSTATUS
+    NTAPI
+    RtlCopySid(_In_ ULONG DestinationSidLength, _Out_writes_bytes_(DestinationSidLength) PSID DestinationSid, _In_ PSID SourceSid);
+
+    BOOLEAN
+    NTAPI
+    RtlEqualPrefixSid(_In_ PSID Sid1, _In_ PSID Sid2);
+
+    BOOLEAN
+    NTAPI
+    RtlEqualSid(_In_ PSID Sid1, _In_ PSID Sid2);
+
+    PVOID
+    NTAPI
+    RtlFreeSid(_In_ _Post_invalid_ PSID Sid);
+
+    PSID_IDENTIFIER_AUTHORITY
+    NTAPI
+    RtlIdentifierAuthoritySid(_In_ PSID Sid);
+
+    NTSTATUS
+    NTAPI
+    RtlInitializeSid(_Out_ PSID Sid, _In_ PSID_IDENTIFIER_AUTHORITY IdentifierAuthority, _In_ UCHAR SubAuthorityCount);
+
+    ULONG
+    NTAPI
+    RtlLengthRequiredSid(_In_ ULONG SubAuthorityCount);
+
+    ULONG
+    NTAPI
+    RtlLengthSid(_In_ PSID Sid);
+
+    PUCHAR
+    NTAPI
+    RtlSubAuthorityCountSid(_In_ PSID Sid);
+
+    PULONG
+    NTAPI
+    RtlSubAuthoritySid(_In_ PSID Sid, _In_ ULONG SubAuthority);
+
+    BOOLEAN
+    NTAPI
+    RtlValidSid(_In_ PSID Sid);
+
+    // Security (Rtl/SDs etc)
+
+    NTSTATUS
+    NTAPI
+    RtlAddAccessAllowedAce(_Inout_ PACL Acl, _In_ ULONG AceRevision, _In_ ACCESS_MASK AccessMask, _In_ PSID Sid);
+
+    NTSTATUS
+    NTAPI
+    RtlAddAccessAllowedAceEx(_Inout_ PACL Acl, _In_ ULONG AceRevision, _In_ ULONG AceFlags, _In_ ACCESS_MASK AccessMask, _In_ PSID Sid);
+
+    NTSTATUS
+    NTAPI
+    RtlAddAce(_Inout_ PACL Acl, _In_ ULONG AceRevision, _In_ ULONG StartingAceIndex, _In_reads_bytes_(AceListLength) PVOID AceList, _In_ ULONG AceListLength);
+
+    NTSTATUS
+    NTAPI
+    RtlCreateAcl(_Out_writes_bytes_(AclLength) PACL Acl, _In_ ULONG AclLength, _In_ ULONG AclRevision);
+
+    NTSTATUS
+    NTAPI
+    RtlCreateSecurityDescriptorRelative(_Out_ PISECURITY_DESCRIPTOR_RELATIVE SecurityDescriptor, _In_ ULONG Revision);
+
+    NTSTATUS
+    NTAPI
+    RtlDeleteAce(_Inout_ PACL Acl, _In_ ULONG AceIndex);
+
+    NTSTATUS
+    NTAPI
+    RtlGetAce(_In_ PACL Acl, _In_ ULONG AceIndex, _Outptr_ PVOID* Ace);
+
+    NTSTATUS
+    NTAPI
+    RtlGetDaclSecurityDescriptor(_In_ PSECURITY_DESCRIPTOR SecurityDescriptor,
+                                 _Out_ PBOOLEAN DaclPresent,
+                                 _Outptr_result_maybenull_ PACL* Dacl,
+                                 _Pre_ _Writable_elements_(1) _When_(!(*DaclPresent), _Post_invalid_) _When_((*DaclPresent), _Post_valid_)
+                                     PBOOLEAN DaclDefaulted);
+
+    NTSTATUS
+    NTAPI
+    RtlGetGroupSecurityDescriptor(_In_ PSECURITY_DESCRIPTOR SecurityDescriptor,
+                                  _Outptr_result_maybenull_ PSID* Group,
+                                  _Pre_ _Notnull_ _Pre_ _Writable_elements_(1) _When_(*Group == NULL, _Post_invalid_) _When_(*Group != NULL, _Post_valid_)
+                                      PBOOLEAN GroupDefaulted);
+
+    NTSTATUS
+    NTAPI
+    RtlGetOwnerSecurityDescriptor(_In_ PSECURITY_DESCRIPTOR SecurityDescriptor,
+                                  _Outptr_result_maybenull_ PSID* Owner,
+                                  _When_(*Owner == NULL, _Post_invalid_) _When_(*Owner != NULL, _Post_valid_) _Pre_ _Notnull_ _Pre_ _Writable_elements_(1)
+                                      PBOOLEAN OwnerDefaulted);
+
+    NTSTATUS
+    NTAPI
+    RtlSetGroupSecurityDescriptor(_Inout_ PSECURITY_DESCRIPTOR SecurityDescriptor, _In_opt_ PSID Group, _In_ BOOLEAN GroupDefaulted);
+
+    NTSTATUS
+    NTAPI
+    RtlSetOwnerSecurityDescriptor(_Inout_ PSECURITY_DESCRIPTOR SecurityDescriptor, _In_opt_ PSID Owner, _In_ BOOLEAN OwnerDefaulted);
+
+    // Mapped PE images (Rtl)
+
+    PIMAGE_NT_HEADERS
+    NTAPI
+    RtlImageNtHeader(_In_ PVOID Base);
+
+    PVOID
+    NTAPI
+    RtlImageDirectoryEntryToData(_In_ PVOID Base, _In_ BOOLEAN MappedAsImage, _In_ USHORT DirectoryEntry, _Out_ PULONG Size);
+
+    PVOID
+    NTAPI
+    RtlImageRvaToVa(_In_ PIMAGE_NT_HEADERS NtHeaders, _In_ PVOID Base, _In_ ULONG Rva, _Inout_opt_ PIMAGE_SECTION_HEADER* LastRvaSection);
+
 #endif // DYNAMIC_NTNATIVE
-
-typedef NTSTATUS (NTAPI *RtlGetVersion_t)(LPOSVERSIONINFOEXW);
-typedef PIMAGE_NT_HEADERS (NTAPI *RtlImageNtHeader_t)(_In_ PVOID);
-typedef PVOID (NTAPI *RtlImageDirectoryEntryToData_t)(_In_ PVOID, _In_ BOOLEAN, _In_ USHORT, _Out_ PULONG);
-typedef PVOID (NTAPI *RtlImageRvaToVa_t)(_In_ PIMAGE_NT_HEADERS, _In_ PVOID, _In_ ULONG, _Inout_opt_ PIMAGE_SECTION_HEADER *);
-typedef NTSTATUS (NTAPI *NtCreateIoCompletion_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _Inout_ POBJECT_ATTRIBUTES, _In_opt_ ULONG);
-typedef NTSTATUS (NTAPI *NtSetIoCompletion_t)(_In_ HANDLE, _In_ PVOID, _In_opt_ PVOID, _In_ NTSTATUS, _In_ ULONG_PTR);
-typedef NTSTATUS (NTAPI *NtRemoveIoCompletion_t)(_In_ HANDLE, _Out_ PVOID*, _Out_ PVOID*, _Out_ PIO_STATUS_BLOCK, _In_opt_ PLARGE_INTEGER);
-typedef NTSTATUS (NTAPI *NtQueryEvent_t)(_In_ HANDLE, _In_ EVENT_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryIoCompletion_t)(_In_ HANDLE, _In_ IO_COMPLETION_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryMutant_t)(_In_ HANDLE, _In_ MUTANT_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryObject_t)(_In_opt_ HANDLE, _In_ OBJECT_INFORMATION_CLASS, _Out_opt_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQuerySemaphore_t)(_In_ HANDLE, _In_ SEMAPHORE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQuerySection_t)(_In_ HANDLE, _In_ SECTION_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryTimer_t)(_In_ HANDLE, _In_ TIMER_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtOpenDirectoryObject_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtQueryDirectoryObject_t)(_In_ HANDLE, _Out_ PVOID, _In_ ULONG, _In_ BOOLEAN, _In_ BOOLEAN, _Inout_ PULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtOpenSymbolicLinkObject_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtQuerySymbolicLinkObject_t)(_In_ HANDLE, _Inout_ PUNICODE_STRING, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtOpenEvent_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenMutant_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenSection_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenTimer_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenSemaphore_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenEventPair_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenIoCompletion_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtOpenKey_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-typedef NTSTATUS (NTAPI *NtCreateKey_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Reserved_ ULONG, _In_opt_ PUNICODE_STRING, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtEnumerateKey_t)(_In_ HANDLE, _In_ ULONG, _In_ KEY_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtEnumerateValueKey_t)(_In_ HANDLE, _In_ ULONG, _In_ KEY_VALUE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryKey_t)(_In_ HANDLE, _In_ KEY_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING, _In_ KEY_VALUE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtSetValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING, _In_opt_ ULONG, _In_ ULONG, _In_ PVOID, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtQueryOpenSubKeys_t)(_In_ POBJECT_ATTRIBUTES, _Out_ PULONG);
-typedef NTSTATUS (NTAPI *NtRenameKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING);
-typedef NTSTATUS (NTAPI *RtlValidateUnicodeString_t)(_In_ _Reserved_ ULONG, _In_ PCUNICODE_STRING);
-typedef NTSTATUS (NTAPI *RtlDowncaseUnicodeString_t)(PUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
-typedef NTSTATUS (NTAPI *RtlUpcaseUnicodeString_t)(_Inout_ PUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
-typedef WCHAR (NTAPI *RtlDowncaseUnicodeChar_t)(_In_ WCHAR);
-typedef WCHAR (NTAPI *RtlUpcaseUnicodeChar_t)(_In_ WCHAR);
-typedef LONG (NTAPI *RtlCompareUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
-typedef BOOLEAN (NTAPI *RtlEqualUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
-typedef VOID (NTAPI *RtlCopyUnicodeString_t)(_In_ PUNICODE_STRING, _In_ PCUNICODE_STRING);
-typedef NTSTATUS (NTAPI *RtlAppendUnicodeStringToString_t)(_In_ PUNICODE_STRING, _In_ PCUNICODE_STRING);
-typedef NTSTATUS (NTAPI *RtlAppendUnicodeToString_t)(_In_ PUNICODE_STRING, _In_opt_ PCWSTR);
-typedef BOOLEAN (NTAPI *RtlPrefixUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
-typedef NTSTATUS (NTAPI *RtlGenerate8dot3Name_t)(_In_ PCUNICODE_STRING, _In_ BOOLEAN, _Inout_ PGENERATE_NAME_CONTEXT, _Inout_ PUNICODE_STRING);
-typedef NTSTATUS (NTAPI *RtlVolumeDeviceToDosName_t)(_In_ PVOID, _Out_ PUNICODE_STRING);
-typedef NTSTATUS (NTAPI *NtCreateSection_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_opt_ POBJECT_ATTRIBUTES, _In_opt_ PLARGE_INTEGER, _In_ ULONG, _In_ ULONG, _In_opt_ HANDLE);
-typedef NTSTATUS (NTAPI *NtMapViewOfSection_t)(_In_ HANDLE, _In_ HANDLE, _Inout_ PVOID *, _In_ ULONG_PTR, _In_ SIZE_T, _Inout_opt_ PLARGE_INTEGER, _Inout_ PSIZE_T, _In_ SECTION_INHERIT, _In_ ULONG, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtUnmapViewOfSection_t)(_In_ HANDLE, _In_opt_ PVOID);
-typedef NTSTATUS (NTAPI *NtQueryDirectoryFile_t)(_In_ HANDLE, _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _Out_ PVOID, _In_ ULONG, _In_ NT_FILE_INFORMATION_CLASS, _In_ BOOLEAN, _In_opt_ PUNICODE_STRING, _In_ BOOLEAN);
-typedef NTSTATUS (NTAPI *NtQueryInformationFile_t)(_In_ HANDLE, _Out_ PIO_STATUS_BLOCK, _Out_ PVOID, _In_ ULONG, _In_ NT_FILE_INFORMATION_CLASS);
-typedef PVOID (NTAPI *RtlAllocateHeap_t)(_In_ PVOID, _In_ ULONG, _In_ SIZE_T);
-typedef BOOLEAN (NTAPI *RtlFreeHeap_t)(_In_ PVOID, _In_opt_ ULONG, _Frees_ptr_opt_ PVOID);
-typedef NTSTATUS (NTAPI *RtlInitializeCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
-typedef NTSTATUS (NTAPI *RtlDeleteCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
-typedef NTSTATUS (NTAPI *RtlEnterCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
-typedef NTSTATUS (NTAPI *RtlLeaveCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
-typedef ULONG (NTAPI *RtlNtStatusToDosError_t)(NTSTATUS);
-typedef BOOLEAN (NTAPI *RtlDosPathNameToNtPathName_U_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR *, _Out_opt_ PRTL_RELATIVE_NAME);
-typedef NTSTATUS (NTAPI *RtlDosPathNameToNtPathName_U_WithStatus_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR *, _Out_opt_ PRTL_RELATIVE_NAME);
-typedef BOOLEAN (NTAPI *RtlDosPathNameToRelativeNtPathName_U_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR*, _Out_opt_ PRTL_RELATIVE_NAME);
-typedef RTL_PATH_TYPE (NTAPI *RtlDetermineDosPathNameType_U_t)(_In_ PCWSTR);
-typedef ULONG (NTAPI *RtlGetFullPathName_U_t)(_In_ PWSTR, _In_ ULONG, _Out_ PWSTR, _Out_opt_ PWSTR*);
-/* Those from wintrnl.h */
-typedef NTSTATUS (NTAPI *NtClose_t)(_In_ HANDLE);
-typedef NTSTATUS (NTAPI *NtCreateFile_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Out_ PIO_STATUS_BLOCK, _In_opt_ PLARGE_INTEGER, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_opt_ PVOID, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtOpenFile_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtDeleteValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING);
-typedef NTSTATUS (NTAPI *NtRenameKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING);
-typedef NTSTATUS (NTAPI *NtNotifyChangeMultipleKeys_t)(_In_ HANDLE, _In_opt_ ULONG, _In_opt_ OBJECT_ATTRIBUTES[], _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ BOOLEAN, _Out_writes_bytes_opt_(BufferSize) PVOID, _In_ ULONG, _In_ BOOLEAN);
-typedef NTSTATUS (NTAPI *NtQueryMultipleValueKey_t)(_In_ HANDLE, _Inout_ PKEY_VALUE_ENTRY, _In_ ULONG, _Out_ PVOID, _Inout_ PULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtSetInformationKey_t)(_In_ HANDLE, _In_ KEY_SET_INFORMATION_CLASS, _In_ PVOID, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtDeviceIoControlFile_t)(_In_ HANDLE, _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ PVOID, _In_ ULONG, _Out_opt_ PVOID, _In_ ULONG);
-typedef NTSTATUS (NTAPI *NtWaitForSingleObject_t)(_In_ HANDLE, _In_ BOOLEAN, _In_opt_ PLARGE_INTEGER);
-typedef BOOLEAN (NTAPI *RtlIsNameLegalDOS8Dot3_t)(_In_ PUNICODE_STRING, _Inout_opt_ POEM_STRING, _Inout_opt_ PBOOLEAN);
-typedef ULONG (NTAPI *RtlNtStatusToDosError_t)(NTSTATUS);
-typedef NTSTATUS (NTAPI *NtQueryInformationProcess_t)(_In_ HANDLE, _In_ PROCESSINFOCLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQueryInformationThread_t)(_In_ HANDLE, _In_ THREADINFOCLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQuerySystemInformation_t)(_In_ SYSTEM_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
-typedef NTSTATUS (NTAPI *NtQuerySystemTime_t)(_Out_ PLARGE_INTEGER);
-typedef NTSTATUS (NTAPI *RtlLocalTimeToSystemTime_t)(_In_ PLARGE_INTEGER, _Out_ PLARGE_INTEGER);
-typedef BOOLEAN (NTAPI *RtlTimeToSecondsSince1970_t)(_In_ PLARGE_INTEGER, _Out_ PULONG);
-typedef VOID (NTAPI *RtlFreeAnsiString_t)(PANSI_STRING);
-typedef VOID (NTAPI *RtlFreeUnicodeString_t)(PUNICODE_STRING);
-typedef VOID (NTAPI *RtlFreeOemString_t)(POEM_STRING);
-typedef VOID (NTAPI *RtlInitString_t)(PSTRING, PCSZ);
-typedef VOID (NTAPI *RtlInitAnsiString_t)(PANSI_STRING, PCSZ);
-typedef VOID (NTAPI *RtlInitUnicodeString_t)(PUNICODE_STRING, PCWSTR);
-typedef BOOLEAN(NTAPI *RtlCreateUnicodeString_t)(PUNICODE_STRING, PCWSTR);
-typedef NTSTATUS (NTAPI *RtlAnsiStringToUnicodeString_t)(PUNICODE_STRING, PCANSI_STRING, BOOLEAN);
-typedef NTSTATUS (NTAPI *RtlUnicodeStringToAnsiString_t)(PANSI_STRING, PCUNICODE_STRING, BOOLEAN);
-typedef NTSTATUS (NTAPI *RtlUnicodeStringToOemString_t)(POEM_STRING, PCUNICODE_STRING, BOOLEAN);
-typedef NTSTATUS (NTAPI *RtlUnicodeToMultiByteSize_t)(_Out_ PULONG, _In_ PWCH, _In_ ULONG);
-typedef NTSTATUS (NTAPI *RtlCharToInteger_t)(PCSZ, ULONG, PULONG);
-typedef NTSTATUS (NTAPI *RtlConvertSidToUnicodeString_t)(PUNICODE_STRING, PSID, BOOLEAN);
-typedef ULONG (NTAPI *RtlUniform_t)(PULONG);
+    // clang-format off
+    // Creating object types
+    typedef NTSTATUS(NTAPI* NtCreateIoCompletion_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _Inout_opt_ POBJECT_ATTRIBUTES, _In_opt_ ULONG);
+    typedef NTSTATUS(NTAPI* NtCreateKey_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Reserved_ ULONG, _In_opt_ PUNICODE_STRING, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtCreateSection_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_opt_ POBJECT_ATTRIBUTES, _In_opt_ PLARGE_INTEGER, _In_ ULONG, _In_ ULONG, _In_opt_ HANDLE);
+    // Opening object types
+    typedef NTSTATUS(NTAPI* NtOpenDirectoryObject_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenEvent_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenEventPair_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+#if defined(DDKBUILD)
+    typedef NTSTATUS(NTAPI* NtOpenFile_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ ULONG);
+#endif // DDKBUILD
+    typedef NTSTATUS(NTAPI* NtOpenIoCompletion_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenKey_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenMutant_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenProcessToken_t)(_In_ HANDLE, _In_ ACCESS_MASK, _Out_ PHANDLE);
+    typedef NTSTATUS(NTAPI* NtOpenSection_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenSemaphore_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenSymbolicLinkObject_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    typedef NTSTATUS(NTAPI* NtOpenThreadToken_t)(_In_ HANDLE, _In_ ACCESS_MASK, _In_ BOOLEAN, _Out_ PHANDLE);
+    typedef NTSTATUS(NTAPI* NtOpenTimer_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
+    // Querying object information
+    typedef NTSTATUS(NTAPI* NtQueryDirectoryFile_t)(_In_ HANDLE, _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _Out_ PVOID, _In_ ULONG, _In_ NT_FILE_INFORMATION_CLASS, _In_ BOOLEAN, _In_opt_ PUNICODE_STRING, _In_ BOOLEAN);
+    typedef NTSTATUS(NTAPI* NtQueryDirectoryObject_t)(_In_ HANDLE, _Out_ PVOID, _In_ ULONG, _In_ BOOLEAN, _In_ BOOLEAN, _Inout_ PULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryEvent_t)(_In_ HANDLE, _In_ EVENT_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryInformationFile_t)(_In_ HANDLE, _Out_ PIO_STATUS_BLOCK, _Out_ PVOID, _In_ ULONG, _In_ NT_FILE_INFORMATION_CLASS);
+    typedef NTSTATUS(NTAPI* NtQueryInformationToken_t)(_In_ HANDLE, _In_ TOKEN_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryIoCompletion_t)(_In_ HANDLE, _In_ IO_COMPLETION_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryKey_t)(_In_ HANDLE, _In_ KEY_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryMutant_t)(_In_ HANDLE, _In_ MUTANT_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryObject_t)(_In_opt_ HANDLE, _In_ OBJECT_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryOpenSubKeys_t)(_In_ POBJECT_ATTRIBUTES, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQuerySection_t)(_In_ HANDLE, _In_ SECTION_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQuerySecurityObject_t)(_In_ HANDLE, _In_ SECURITY_INFORMATION, _Out_ PSECURITY_DESCRIPTOR, _In_ ULONG, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQuerySemaphore_t)(_In_ HANDLE, _In_ SEMAPHORE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQuerySymbolicLinkObject_t)(_In_ HANDLE, _Inout_ PUNICODE_STRING, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryTimer_t)(_In_ HANDLE, _In_ TIMER_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG);
+    typedef NTSTATUS(NTAPI* NtQueryValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING, _In_ KEY_VALUE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
+    // Setting object information
+    typedef NTSTATUS(NTAPI* NtSetInformationToken_t)(_In_ HANDLE, _In_ TOKEN_INFORMATION_CLASS, _In_ PVOID, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* NtSetIoCompletion_t)(_In_ HANDLE, _In_ PVOID, _In_opt_ PVOID, _In_ NTSTATUS, _In_ ULONG_PTR);
+    typedef NTSTATUS(NTAPI* NtSetValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING, _In_opt_ ULONG, _In_ ULONG, _In_ PVOID, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* NtSetSecurityObject_t)(_In_ HANDLE, _In_ SECURITY_INFORMATION, _In_ PSECURITY_DESCRIPTOR);
+    // I/O completion ports (related)
+    typedef NTSTATUS(NTAPI* NtRemoveIoCompletion_t)(_In_ HANDLE, _Out_ PVOID*, _Out_ PVOID*, _Out_ PIO_STATUS_BLOCK, _In_opt_ PLARGE_INTEGER);
+    // Registry (related)
+    typedef NTSTATUS(NTAPI* NtDeleteValueKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING);
+    typedef NTSTATUS(NTAPI* NtEnumerateKey_t)(_In_ HANDLE, _In_ ULONG, _In_ KEY_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtEnumerateValueKey_t)(_In_ HANDLE, _In_ ULONG, _In_ KEY_VALUE_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtRenameKey_t)(_In_ HANDLE, _In_ PUNICODE_STRING);
+    // Sections (related)
+    typedef NTSTATUS(NTAPI* NtMapViewOfSection_t)(_In_ HANDLE, _In_ HANDLE, _Inout_ PVOID*, _In_ ULONG_PTR, _In_ SIZE_T, _Inout_opt_ PLARGE_INTEGER, _Inout_ PSIZE_T, _In_ SECTION_INHERIT, _In_ ULONG, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* NtUnmapViewOfSection_t)(_In_ HANDLE, _In_opt_ PVOID);
+    // Security (related)
+    typedef NTSTATUS(NTAPI* NtAdjustGroupsToken_t)(_In_ HANDLE, _In_ BOOLEAN, _In_opt_ PTOKEN_GROUPS, _In_ ULONG, _Out_ PTOKEN_GROUPS, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtAdjustPrivilegesToken_t)(_In_ HANDLE, _In_ BOOLEAN, _In_opt_ PTOKEN_PRIVILEGES, _In_ ULONG, _Out_ PTOKEN_PRIVILEGES, _Out_ PULONG);
+    typedef NTSTATUS(NTAPI* NtDuplicateToken_t)(_In_ HANDLE, _In_ ACCESS_MASK, _In_opt_ POBJECT_ATTRIBUTES, _In_ BOOLEAN, _In_ TOKEN_TYPE, _Out_ PHANDLE);
+    typedef NTSTATUS(NTAPI* NtPrivilegeCheck_t)(_In_ HANDLE, _Inout_ PPRIVILEGE_SET, _Out_ PBOOLEAN);
+    // Miscellaneous (Rtl)
+    typedef PVOID(NTAPI* RtlAllocateHeap_t)(_In_ PVOID, _In_ ULONG, _In_ SIZE_T);
+    typedef BOOLEAN(NTAPI* RtlFreeHeap_t)(_In_ PVOID, _In_opt_ ULONG, _Frees_ptr_opt_ PVOID);
+    typedef NTSTATUS(NTAPI* RtlInitializeCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
+    typedef NTSTATUS(NTAPI* RtlDeleteCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
+    typedef NTSTATUS(NTAPI* RtlEnterCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
+    typedef NTSTATUS(NTAPI* RtlLeaveCriticalSection_t)(_In_ PRTL_CRITICAL_SECTION);
+    typedef NTSTATUS(NTAPI* RtlGetVersion_t)(LPOSVERSIONINFOEXW);
+    typedef VOID(NTAPI* RtlCopyLuid_t)(_Out_ PLUID, _In_ PLUID);
+    // Path processing (Rtl)
+    typedef RTL_PATH_TYPE(NTAPI* RtlDetermineDosPathNameType_U_t)(_In_ PCWSTR);
+#if (NTDDI_VERSION >= NTDDI_WS03)
+    /* xref: https://googleprojectzero.blogspot.de/2016/02/the-definitive-guide-on-win32-to-nt.html */
+    typedef BOOLEAN(NTAPI* RtlDosPathNameToRelativeNtPathName_U_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR*, _Out_opt_ PRTL_RELATIVE_NAME);
+    typedef NTSTATUS(NTAPI* RtlDosPathNameToRelativeNtPathName_U_WithStatus_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR*, _Out_opt_ PRTL_RELATIVE_NAME);
+    typedef NTSTATUS(NTAPI* RtlDosPathNameToNtPathName_U_WithStatus_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR*, _Out_opt_ PRTL_RELATIVE_NAME);
+#endif // (NTDDI_VERSION >= NTDDI_WS03)
+    typedef BOOLEAN(NTAPI* RtlDosPathNameToNtPathName_U_t)(_In_ PCWSTR, _Out_ PUNICODE_STRING, _Out_opt_ PWSTR*, _Out_opt_ PRTL_RELATIVE_NAME);
+    typedef ULONG(NTAPI* RtlGetFullPathName_U_t)(_In_ PWSTR, _In_ ULONG, _Out_ PWSTR, _Out_opt_ PWSTR*);
+    typedef NTSTATUS(NTAPI* RtlGenerate8dot3Name_t)(_In_ PCUNICODE_STRING, _In_ BOOLEAN, _Inout_ PGENERATE_NAME_CONTEXT, _Inout_ PUNICODE_STRING); /* returns VOID in pre-Vista */
+    // String processing (Rtl)
+    typedef NTSTATUS(NTAPI* RtlAppendUnicodeStringToString_t)(_In_ PUNICODE_STRING, _In_ PCUNICODE_STRING);
+    typedef NTSTATUS(NTAPI* RtlAppendUnicodeToString_t)(_In_ PUNICODE_STRING, _In_opt_ PCWSTR);
+    typedef LONG(NTAPI* RtlCompareUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
+    typedef VOID(NTAPI* RtlCopyUnicodeString_t)(_In_ PUNICODE_STRING, _In_ PCUNICODE_STRING);
+    typedef WCHAR(NTAPI* RtlDowncaseUnicodeChar_t)(_In_ WCHAR);
+    typedef NTSTATUS(NTAPI* RtlDowncaseUnicodeString_t)(PUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
+    typedef BOOLEAN(NTAPI* RtlEqualUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
+    typedef BOOLEAN(NTAPI* RtlPrefixUnicodeString_t)(_In_ PCUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
+    typedef WCHAR(NTAPI* RtlUpcaseUnicodeChar_t)(_In_ WCHAR);
+    typedef NTSTATUS(NTAPI* RtlUpcaseUnicodeString_t)(_Inout_ PUNICODE_STRING, _In_ PCUNICODE_STRING, _In_ BOOLEAN);
+    typedef NTSTATUS(NTAPI* RtlValidateUnicodeString_t)(_In_ _Reserved_ ULONG, _In_ PCUNICODE_STRING);
+    // Security (Rtl/SIDs)
+    typedef NTSTATUS(NTAPI* RtlAllocateAndInitializeSid_t)(_In_ PSID_IDENTIFIER_AUTHORITY, _In_ UCHAR, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _Outptr_ PSID*);
+    typedef NTSTATUS(NTAPI* RtlCopySid_t)(_In_ ULONG, _Out_ PSID, _In_ PSID);
+    typedef BOOLEAN(NTAPI* RtlEqualPrefixSid_t)(_In_ PSID, _In_ PSID);
+    typedef BOOLEAN(NTAPI* RtlEqualSid_t)(_In_ PSID, _In_ PSID);
+    typedef PVOID(NTAPI* RtlFreeSid_t)(_In_ _Post_invalid_ PSID);
+    typedef PSID_IDENTIFIER_AUTHORITY(NTAPI* RtlIdentifierAuthoritySid_t)(_In_ PSID);
+    typedef NTSTATUS(NTAPI* RtlInitializeSid_t)(_Out_ PSID, _In_ PSID_IDENTIFIER_AUTHORITY, _In_ UCHAR);
+    typedef ULONG(NTAPI* RtlLengthRequiredSid_t)(_In_ ULONG);
+    typedef ULONG(NTAPI* RtlLengthSid_t)(_In_ PSID);
+    typedef PUCHAR(NTAPI* RtlSubAuthorityCountSid_t)(_In_ PSID);
+    typedef PULONG(NTAPI* RtlSubAuthoritySid_t)(_In_ PSID, _In_ ULONG);
+    typedef BOOLEAN(NTAPI* RtlValidSid_t)(_In_ PSID);
+    // Security (Rtl/SDs etc)
+    typedef NTSTATUS(NTAPI* RtlAddAccessAllowedAce_t)(_Inout_ PACL, _In_ ULONG, _In_ ACCESS_MASK, _In_ PSID);
+    typedef NTSTATUS(NTAPI* RtlAddAccessAllowedAceEx_t)(_Inout_ PACL, _In_ ULONG, _In_ ULONG, _In_ ACCESS_MASK, _In_ PSID);
+    typedef NTSTATUS(NTAPI* RtlAddAce_t)(_Inout_ PACL, _In_ ULONG, _In_ ULONG, _In_ PVOID, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* RtlCreateAcl_t)(_Out_ PACL, _In_ ULONG, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* RtlCreateSecurityDescriptorRelative_t)(_Out_ PISECURITY_DESCRIPTOR_RELATIVE, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* RtlDeleteAce_t)(_Inout_ PACL, _In_ ULONG);
+    typedef NTSTATUS(NTAPI* RtlGetAce_t)(_In_ PACL, _In_ ULONG, _Outptr_ PVOID*);
+    typedef NTSTATUS(NTAPI* RtlGetDaclSecurityDescriptor_t)(_In_ PSECURITY_DESCRIPTOR, _Out_ PBOOLEAN, _Outptr_result_maybenull_ PACL*, PBOOLEAN);
+    typedef NTSTATUS(NTAPI* RtlGetGroupSecurityDescriptor_t)(_In_ PSECURITY_DESCRIPTOR, _Outptr_result_maybenull_ PSID*, PBOOLEAN);
+    typedef NTSTATUS(NTAPI* RtlGetOwnerSecurityDescriptor_t)(_In_ PSECURITY_DESCRIPTOR, _Outptr_result_maybenull_ PSID*, PBOOLEAN);
+    typedef NTSTATUS(NTAPI* RtlSetGroupSecurityDescriptor_t)(_Inout_ PSECURITY_DESCRIPTOR, _In_opt_ PSID, _In_ BOOLEAN);
+    typedef NTSTATUS(NTAPI* RtlSetOwnerSecurityDescriptor_t)(_Inout_ PSECURITY_DESCRIPTOR, _In_opt_ PSID, _In_ BOOLEAN);
+    // Mapped PE images (Rtl)
+    typedef PIMAGE_NT_HEADERS(NTAPI* RtlImageNtHeader_t)(_In_ PVOID);
+    typedef PVOID(NTAPI* RtlImageDirectoryEntryToData_t)(_In_ PVOID, _In_ BOOLEAN, _In_ USHORT, _Out_ PULONG);
+    typedef PVOID(NTAPI* RtlImageRvaToVa_t)(_In_ PIMAGE_NT_HEADERS, _In_ PVOID, _In_ ULONG, _Inout_opt_ PIMAGE_SECTION_HEADER*);
+    // Those from wintrnl.h
+    typedef NTSTATUS(NTAPI* NtClose_t)(_In_ HANDLE); // winternl.h
+    typedef ULONG(NTAPI* RtlNtStatusToDosError_t)(_In_ NTSTATUS); // winternl.h
+    typedef BOOLEAN(NTAPI* RtlIsNameLegalDOS8Dot3_t)(_In_ PUNICODE_STRING, _Inout_opt_ POEM_STRING, _Inout_opt_ PBOOLEAN); // winternl.h
+    typedef BOOLEAN(NTAPI* RtlCreateUnicodeString_t)(_Out_ PUNICODE_STRING, _In_opt_ PCWSTR); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlConvertSidToUnicodeString_t)(_Inout_ PUNICODE_STRING, _In_ PSID, _In_ BOOLEAN); // winternl.h
+    typedef NTSTATUS(NTAPI* NtCreateFile_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Out_ PIO_STATUS_BLOCK, _In_opt_ PLARGE_INTEGER, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_ ULONG, _In_opt_ PVOID, _In_ ULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtNotifyChangeMultipleKeys_t)(_In_ HANDLE, _In_opt_ ULONG, _In_opt_ OBJECT_ATTRIBUTES[], _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ BOOLEAN, _Out_ PVOID, _In_ ULONG, _In_ BOOLEAN); // winternl.h
+    typedef NTSTATUS(NTAPI* NtQueryMultipleValueKey_t)(_In_ HANDLE, _Inout_ PKEY_VALUE_ENTRY, _In_ ULONG, _Out_ PVOID, _Inout_ PULONG, _Out_opt_ PULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtSetInformationKey_t)(_In_ HANDLE, _In_ KEY_SET_INFORMATION_CLASS, _In_ PVOID, _In_ ULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtDeviceIoControlFile_t)(_In_ HANDLE, _In_opt_ HANDLE, _In_opt_ PIO_APC_ROUTINE, _In_opt_ PVOID, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ PVOID, _In_ ULONG, _Out_opt_ PVOID, _In_ ULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtWaitForSingleObject_t)(_In_ HANDLE, _In_ BOOLEAN, _In_opt_ PLARGE_INTEGER); // winternl.h
+    typedef NTSTATUS(NTAPI* NtQueryInformationProcess_t)(_In_ HANDLE, _In_ PROCESSINFOCLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtQueryInformationThread_t)(_In_ HANDLE, _In_ THREADINFOCLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtQuerySystemInformation_t)(_In_ SYSTEM_INFORMATION_CLASS, _Out_ PVOID, _In_ ULONG, _Out_opt_ PULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* NtQuerySystemTime_t)(_Out_ PLARGE_INTEGER); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlLocalTimeToSystemTime_t)(_In_ PLARGE_INTEGER, _Out_ PLARGE_INTEGER); // winternl.h
+    typedef BOOLEAN(NTAPI* RtlTimeToSecondsSince1970_t)(_In_ PLARGE_INTEGER, _Out_ PULONG); // winternl.h
+    typedef VOID(NTAPI* RtlFreeAnsiString_t)(PANSI_STRING); // winternl.h
+    typedef VOID(NTAPI* RtlFreeUnicodeString_t)(PUNICODE_STRING); // winternl.h
+    typedef VOID(NTAPI* RtlFreeOemString_t)(POEM_STRING); // winternl.h
+    typedef VOID(NTAPI* RtlInitString_t)(PSTRING, PCSZ); // winternl.h
+    typedef VOID(NTAPI* RtlInitAnsiString_t)(PANSI_STRING, PCSZ); // winternl.h
+    typedef VOID(NTAPI* RtlInitUnicodeString_t)(PUNICODE_STRING, PCWSTR); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlAnsiStringToUnicodeString_t)(PUNICODE_STRING, PCANSI_STRING, BOOLEAN); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlUnicodeStringToAnsiString_t)(PANSI_STRING, PCUNICODE_STRING, BOOLEAN); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlUnicodeStringToOemString_t)(POEM_STRING, PCUNICODE_STRING, BOOLEAN); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlUnicodeToMultiByteSize_t)(_Out_ PULONG, _In_ PWCH, _In_ ULONG); // winternl.h
+    typedef NTSTATUS(NTAPI* RtlCharToInteger_t)(PCSZ, ULONG, PULONG); // winternl.h
+    typedef ULONG(NTAPI* RtlUniform_t)(PULONG); // winternl.h
+// clang-format on
 
 /*
   Use this to declare a variable of the name of a native function and of its
   proper type.
-    Example     : NTNATIVE_FUNC(RtlGetVersion);
-    Expands to  : RtlGetVersion_t RtlGetVersion;
+    Example     : NTNATIVE_FUNC(PfxGetVersion);
+    Expands to  : PfxGetVersion_t PfxGetVersion;
 */
-#define NTNATIVE_FUNC(x) x##_t x
+#define NTNATIVE_FUNC(x)             x##_t x
 /*
   Use to retrieve a function's pointer by passing a handle. Uses GetProcAddress()
   to do the job.
-    Example     : NTNATIVE_GETPROCADDR(hNtDll, RtlGetVersion);
-    Expands to  : GetProcAddress(hNtDll, "RtlGetVersion");
+    Example     : NTNATIVE_GETPROCADDR(hNtDll, PfxGetVersion);
+    Expands to  : GetProcAddress(hNtDll, "PfxGetVersion");
 */
 #define NTNATIVE_GETPROCADDR(mod, x) GetProcAddress(mod, #x)
 /*
   Use to coerce the type returned from GetProcAddress()
-    Example     : NTNATIVE_GETFUNC(hNtDll, RtlGetVersion)
-    Expands to  : (RtlGetVersion_t)GetProcAddress(hNtDll, "RtlGetVersion")
+    Example     : NTNATIVE_GETFUNC(hNtDll, PfxGetVersion)
+    Expands to  : (PfxGetVersion_t)GetProcAddress(hNtDll, "PfxGetVersion")
 */
-#define NTNATIVE_GETFUNC(mod, x) (x##_t)NTNATIVE_GETPROCADDR(mod, x)
+#define NTNATIVE_GETFUNC(mod, x)     (x##_t) NTNATIVE_GETPROCADDR(mod, x)
 /*
   Use to declare a variable of the same name as the function and assign it the
   function's pointer by passing a module handle. Uses GetProcAddress() to do the
   job.
-    Example     : NTNATIVE_DEFFUNC(hNtDll, RtlGetVersion);
-    Expands to  : RtlGetVersion_t RtlGetVersion = (RtlGetVersion_t)GetProcAddress(hNtDll, "RtlGetVersion");
+    Example     : NTNATIVE_DEFFUNC(hNtDll, PfxGetVersion);
+    Expands to  : PfxGetVersion_t PfxGetVersion = (PfxGetVersion_t)GetProcAddress(hNtDll, "PfxGetVersion");
 */
-#define NTNATIVE_DEFFUNC(mod, x) NTNATIVE_FUNC(x) = NTNATIVE_GETFUNC(mod, x)
+#define NTNATIVE_DEFFUNC(mod, x)     NTNATIVE_FUNC(x) = NTNATIVE_GETFUNC(mod, x)
 /*
   Use to declare a variable of the same name as the function and assign it the
   function's pointer. Uses GetProcAddress() to do the job.
-    Example     : NTDLL_DEFFUNC(RtlGetVersion);
-    Expands to  : RtlGetVersion_t RtlGetVersion = (RtlGetVersion_t)GetProcAddress(hNtDll, "RtlGetVersion");
+    Example     : NTDLL_DEFFUNC(PfxGetVersion);
+    Expands to  : PfxGetVersion_t PfxGetVersion = (PfxGetVersion_t)GetProcAddress(hNtDll, "PfxGetVersion");
 */
-#define NTDLL_DEFFUNC(x) NTNATIVE_DEFFUNC(hNtDll, x)
+#define NTDLL_DEFFUNC(x)             NTNATIVE_DEFFUNC(hNtDll, x)
 
-#define LOCAL_NTNATIVE_FUNC(x) \
-    static NTNATIVE_FUNC(x) = 0; \
-    do { \
-    static HMODULE hNtDll = NULL; \
-    if (!hNtDll) { hNtDll = GetModuleHandle(L"ntdll.dll"); } \
-    if (!hNtDll) { return STATUS_NOT_IMPLEMENTED; } \
-    if (!x) { x = NTNATIVE_GETFUNC(hNtDll, x); } \
-    if (!x) { return STATUS_NOT_IMPLEMENTED; } \
-    } while(0)
+#define LOCAL_NTNATIVE_FUNC(x)                      \
+    static NTNATIVE_FUNC(x) = 0;                    \
+    do                                              \
+    {                                               \
+        static HMODULE hNtDll = NULL;               \
+        if (!hNtDll)                                \
+        {                                           \
+            hNtDll = GetModuleHandle(L"ntdll.dll"); \
+        }                                           \
+        if (!hNtDll)                                \
+        {                                           \
+            return STATUS_NOT_IMPLEMENTED;          \
+        }                                           \
+        if (!x)                                     \
+        {                                           \
+            x = NTNATIVE_GETFUNC(hNtDll, x);        \
+        }                                           \
+        if (!x)                                     \
+        {                                           \
+            return STATUS_NOT_IMPLEMENTED;          \
+        }                                           \
+    } while (0)
 
-#define ZwClose NtClose
-#define ZwCreateFile NtCreateFile
-#define ZwOpenFile NtOpenFile
-#define ZwDeviceIoControlFile NtDeviceIoControlFile
-#define ZwWaitForSingleObject NtWaitForSingleObject
-#define ZwQueryInformationProcess NtQueryInformationProcess
-#define ZwQueryInformationThread NtQueryInformationThread
-#define ZwQueryObject NtQueryObject
-#define ZwQuerySystemInformation NtQuerySystemInformation
-#define ZwQuerySystemTime NtQuerySystemTime
-#define ZwQueryEvent NtQueryEvent
-#define ZwCreateIoCompletion NtCreateIoCompletion
-#define ZwSetIoCompletion NtSetIoCompletion
-#define ZwRemoveIoCompletion NtRemoveIoCompletion
-#define ZwQueryIoCompletion NtQueryIoCompletion
-#define ZwQueryMutant NtQueryMutant
-#define ZwQueryObject NtQueryObject
-#define ZwQuerySemaphore NtQuerySemaphore
-#define ZwQuerySection NtQuerySection
-#define ZwQueryTimer NtQueryTimer
-#define ZwOpenDirectoryObject NtOpenDirectoryObject
-#define ZwQueryDirectoryObject NtQueryDirectoryObject
-#define ZwOpenSymbolicLinkObject NtOpenSymbolicLinkObject
-#define ZwQuerySymbolicLinkObject NtQuerySymbolicLinkObject
-#define ZwOpenEvent NtOpenEvent
-#define ZwOpenMutant NtOpenMutant
-#define ZwOpenSection NtOpenSection
-#define ZwOpenSemaphore NtOpenSemaphore
-#define ZwOpenTimer NtOpenTimer
-#define ZwOpenEventPair NtOpenEventPair
-#define ZwOpenIoCompletion NtOpenIoCompletion
-#define ZwOpenKey NtOpenKey
-#define ZwCreateKey NtCreateKey
-#define ZwEnumerateKey NtEnumerateKey
-#define ZwEnumerateValueKey NtEnumerateValueKey
-#define ZwQueryKey NtQueryKey
-#define ZwQueryValueKey NtQueryValueKey
-#define ZwSetValueKey NtSetValueKey
-#define ZwDeleteValueKey NtDeleteValueKey
-#define ZwQueryOpenSubKeys NtQueryOpenSubKeys
-#define ZwRenameKey NtRenameKey
-#define ZwCreateSection NtCreateSection
-#define ZwMapViewOfSection NtMapViewOfSection
-#define ZwUnmapViewOfSection NtUnmapViewOfSection
-#define ZwQueryDirectoryFile NtQueryDirectoryFile
-#define ZwQueryInformationFile NtQueryInformationFile
+#define ZwAdjustGroupsToken        NtAdjustGroupsToken
+#define ZwAdjustPrivilegesToken    NtAdjustPrivilegesToken
+#define ZwClose                    NtClose
+#define ZwCreateFile               NtCreateFile
+#define ZwCreateIoCompletion       NtCreateIoCompletion
+#define ZwCreateKey                NtCreateKey
+#define ZwCreateSection            NtCreateSection
+#define ZwDeleteValueKey           NtDeleteValueKey
+#define ZwDeviceIoControlFile      NtDeviceIoControlFile
+#define ZwDuplicateToken           NtDuplicateToken
+#define ZwEnumerateKey             NtEnumerateKey
+#define ZwEnumerateValueKey        NtEnumerateValueKey
+#define ZwMapViewOfSection         NtMapViewOfSection
+#define ZwNotifyChangeMultipleKeys NtNotifyChangeMultipleKeys
+#define ZwOpenDirectoryObject      NtOpenDirectoryObject
+#define ZwOpenEvent                NtOpenEvent
+#define ZwOpenEventPair            NtOpenEventPair
+#define ZwOpenFile                 NtOpenFile
+#define ZwOpenIoCompletion         NtOpenIoCompletion
+#define ZwOpenKey                  NtOpenKey
+#define ZwOpenMutant               NtOpenMutant
+#define ZwOpenProcessToken         NtOpenProcessToken
+#define ZwOpenSection              NtOpenSection
+#define ZwOpenSemaphore            NtOpenSemaphore
+#define ZwOpenSymbolicLinkObject   NtOpenSymbolicLinkObject
+#define ZwOpenThreadToken          NtOpenThreadToken
+#define ZwOpenTimer                NtOpenTimer
+#define ZwPrivilegeCheck           NtPrivilegeCheck
+#define ZwQueryDirectoryFile       NtQueryDirectoryFile
+#define ZwQueryDirectoryObject     NtQueryDirectoryObject
+#define ZwQueryEvent               NtQueryEvent
+#define ZwQueryInformationFile     NtQueryInformationFile
+#define ZwQueryInformationProcess  NtQueryInformationProcess
+#define ZwQueryInformationThread   NtQueryInformationThread
+#define ZwQueryInformationToken    NtQueryInformationToken
+#define ZwQueryIoCompletion        NtQueryIoCompletion
+#define ZwQueryKey                 NtQueryKey
+#define ZwQueryMultipleValueKey    NtQueryMultipleValueKey
+#define ZwQueryMutant              NtQueryMutant
+#define ZwQueryObject              NtQueryObject
+#define ZwQueryOpenSubKeys         NtQueryOpenSubKeys
+#define ZwQuerySection             NtQuerySection
+#define ZwQuerySecurityObject      NtQuerySecurityObject
+#define ZwQuerySemaphore           NtQuerySemaphore
+#define ZwQuerySymbolicLinkObject  NtQuerySymbolicLinkObject
+#define ZwQuerySystemInformation   NtQuerySystemInformation
+#define ZwQuerySystemTime          NtQuerySystemTime
+#define ZwQueryTimer               NtQueryTimer
+#define ZwQueryValueKey            NtQueryValueKey
+#define ZwRemoveIoCompletion       NtRemoveIoCompletion
+#define ZwRenameKey                NtRenameKey
+#define ZwSetInformationKey        NtSetInformationKey
+#define ZwSetInformationToken      NtSetInformationToken
+#define ZwSetIoCompletion          NtSetIoCompletion
+#define ZwSetSecurityObject        NtSetSecurityObject
+#define ZwSetValueKey              NtSetValueKey
+#define ZwUnmapViewOfSection       NtUnmapViewOfSection
+#define ZwWaitForSingleObject      NtWaitForSingleObject
 
 #if defined(__cplusplus)
 }
 #endif
 
 #if defined(__cplusplus)
-namespace NT {
+namespace NT
+{
 #endif
 
 #ifndef WIN32_FILE_NAMESPACE
-#define WIN32_FILE_NAMESPACE        L"\\\\?\\"
+#    define WIN32_FILE_NAMESPACE L"\\\\?\\"
 #endif // WIN32_FILE_NAMESPACE
 #ifndef WIN32_DEVICE_NAMESPACE
-#define WIN32_DEVICE_NAMESPACE      L"\\\\.\\"
+#    define WIN32_DEVICE_NAMESPACE L"\\\\.\\"
 #endif // WIN32_DEVICE_NAMESPACE
 #ifndef NT_OBJMGR_NAMESPACE
-#define NT_OBJMGR_NAMESPACE         L"\\??\\"
+#    define NT_OBJMGR_NAMESPACE L"\\??\\"
 #endif // NT_OBJMGR_NAMESPACE
 
 #ifndef WIN32_FILE_NAMESPACE_A
-#define WIN32_FILE_NAMESPACE_A      "\\\\?\\"
+#    define WIN32_FILE_NAMESPACE_A "\\\\?\\"
 #endif // WIN32_FILE_NAMESPACE_A
 #ifndef WIN32_DEVICE_NAMESPACE_A
-#define WIN32_DEVICE_NAMESPACE_A    "\\\\.\\"
+#    define WIN32_DEVICE_NAMESPACE_A "\\\\.\\"
 #endif // WIN32_DEVICE_NAMESPACE_A
 #ifndef NT_OBJMGR_NAMESPACE_A
-#define NT_OBJMGR_NAMESPACE_A       "\\??\\"
+#    define NT_OBJMGR_NAMESPACE_A "\\??\\"
 #endif // NT_OBJMGR_NAMESPACE_A
 
-static UNICODE_STRING const sWin32FileNsPfx = RTL_CONSTANT_STRING(WIN32_FILE_NAMESPACE);
-static UNICODE_STRING const sWin32DeviceNsPfx = RTL_CONSTANT_STRING(WIN32_DEVICE_NAMESPACE);
-static UNICODE_STRING const sNtObjMgrNsPfx = RTL_CONSTANT_STRING(NT_OBJMGR_NAMESPACE);
+    static UNICODE_STRING const sWin32FileNsPfx = RTL_CONSTANT_STRING(WIN32_FILE_NAMESPACE);
+    static UNICODE_STRING const sWin32DeviceNsPfx = RTL_CONSTANT_STRING(WIN32_DEVICE_NAMESPACE);
+    static UNICODE_STRING const sNtObjMgrNsPfx = RTL_CONSTANT_STRING(NT_OBJMGR_NAMESPACE);
 
 #if defined(__cplusplus)
 }
 #endif
 
+#if defined(__cplusplus) && !defined(__NTPEBLDR_H_VER__)
+namespace NT
+{
+// Must correspond to IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA from km/ntimage.h
+// Kernel mode address is KI_USER_SHARED_DATA (on ARM64 this is relocatable!)
+#    if defined(_WIN32) && (defined(_M_IX86) || defined(_M_AMD64))
+#        ifndef MM_SHARED_USER_DATA_VA
+#            define MM_SHARED_USER_DATA_VA                          ((unsigned char*)0x7ffe0000)
+#            define IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA MM_SHARED_USER_DATA_VA
+#        endif
+    namespace
+    { // NB: these are intentionally defined in terms of C++ types rather than "Windows" types
+        // Modern C++: wchar_t const (&SystemRoot)[260] = (decltype(SystemRoot))(*(wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30));
+        wchar_t const (&SystemRoot)[260] = (wchar_t const (&)[260])(*(wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30));
+        unsigned short const& NativeProcessorArchitecture = *((unsigned short*)(MM_SHARED_USER_DATA_VA + 0x026a));
+        unsigned long const& MajorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x026c));
+        unsigned long const& MinorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x0270));
+    } // namespace
+#        define NTNATIVE_
+#    endif
+} // namespace NT
+#endif // __cplusplus && __NTPEBLDR_H_VER__
+
 #endif // __NTNATIVE_H_VER__
-// clang-format on

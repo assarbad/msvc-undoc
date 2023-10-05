@@ -33,10 +33,10 @@ else
 	echo "$CLANGFMT"
 fi
 
-command find -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) |while read fname; do
+command find -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' -o -name '*.c' \) |while read fname; do
 	case "${fname#./}" in
 		# Ignore a bunch of folders
-		bin/* | obj/* | .vs/* ) ;;
+		bin/* | obj/* | .vs/* | cmocka/* | thirdparty/* | Tests/googlemock/* | Tests/googletest/* | utfcpp/* | fmt/* | lua/* ) ;;
 		# Only process what remains
 		*)
 			echo -e "Formatting: ${cW}${fname#./}${cZ}"

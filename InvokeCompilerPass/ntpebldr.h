@@ -34,7 +34,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef __NTPEBLDR_H_VER__
-#define __NTPEBLDR_H_VER__ 2023073123
+#define __NTPEBLDR_H_VER__ 2023100520
 #if !NTPEBLDR_NO_PRAGMA_ONCE && ((defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP))
 #    pragma once
 #endif
@@ -47,10 +47,29 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
 #    undef _NTSTATUS_
 #    undef WIN32_NO_STATUS
 #endif
+#pragma warning(push)
 #pragma warning(disable : 4005)
 #include <ntstatus.h>
-#pragma warning(default : 4005)
+#pragma warning(pop)
+#pragma push_macro("NTSYSCALLAPI")
+#ifdef NTSYSCALLAPI
+#    undef NTSYSCALLAPI
+#    define NTSYSCALLAPI
+#endif
+#pragma warning(disable : 4201)
+#define OBJECT_INFORMATION_CLASS  OBJECT_INFORMATION_CLASS_MOCK
+#define _OBJECT_INFORMATION_CLASS _OBJECT_INFORMATION_CLASS_MOCK
+#define ObjectBasicInformation    ObjectBasicInformation_Mock
+#define ObjectTypeInformation     ObjectTypeInformation_Mock
+#define NtQueryObject             NtQueryObject_Mock
 #include <winternl.h>
+#undef OBJECT_INFORMATION_CLASS
+#undef _OBJECT_INFORMATION_CLASS
+#undef ObjectBasicInformation
+#undef ObjectTypeInformation
+#undef NtQueryObject
+#pragma warning(default : 4201)
+#pragma pop_macro("NTSYSCALLAPI")
 
 #ifndef NTPEBLDR_LITERAL_UNICODE_STRING
 #    define NTPEBLDR_LITERAL_UNICODE_STRING(s)                            \
@@ -65,13 +84,15 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
 #ifndef NTPEBLDR_NAIVE_CRT_INLINES
 #    define NTPEBLDR_NAIVE_CRT_INLINES 1
 #endif
-#ifndef STATIC_INLINE
-#    ifdef _MSC_VER
-#        define STATIC_INLINE static __forceinline
-#    else
-#        define STATIC_INLINE static inline
-#    endif // _MSC_VER
-#endif     // STATIC_INLINE
+#pragma push_macro("STATIC_INLINE")
+#ifdef STATIC_INLINE
+#    undef STATIC_INLINE
+#endif // STATIC_INLINE
+#ifdef _MSC_VER
+#    define STATIC_INLINE static __forceinline
+#else
+#    define STATIC_INLINE static inline
+#endif // _MSC_VER
 #if !NTPEBLDR_NAIVE_CRT_INLINES
 #    include <cstdio> // towupper/towlower et. al.
 #endif
@@ -82,21 +103,24 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
 
 namespace NT
 {
+#if !defined(__NTNATIVE_H_VER__)
 // Must correspond to IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA from km/ntimage.h
 // Kernel mode address is KI_USER_SHARED_DATA (on ARM64 this is relocatable!)
-#if defined(_WIN32) && (defined(_M_IX86) || defined(_M_AMD64))
-#    ifndef MM_SHARED_USER_DATA_VA
-#        define MM_SHARED_USER_DATA_VA                          ((unsigned char*)0x7ffe0000)
-#        define IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA MM_SHARED_USER_DATA_VA
-#    endif
+#    if defined(_WIN32) && (defined(_M_IX86) || defined(_M_AMD64))
+#        ifndef MM_SHARED_USER_DATA_VA
+#            define MM_SHARED_USER_DATA_VA                          ((unsigned char*)0x7ffe0000)
+#            define IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA MM_SHARED_USER_DATA_VA
+#        endif
     namespace
-    {
-        WCHAR const (&SystemRoot)[260] = (decltype(SystemRoot))(*(WCHAR*)(MM_SHARED_USER_DATA_VA + 0x30));
-        USHORT const& NativeProcessorArchitecture = *((USHORT*)(MM_SHARED_USER_DATA_VA + 0x026a));
-        ULONG const& MajorVersion = *((ULONG*)(MM_SHARED_USER_DATA_VA + 0x026c));
-        ULONG const& MinorVersion = *((ULONG*)(MM_SHARED_USER_DATA_VA + 0x0270));
+    { // NB: these are intentionally defined in terms of C++ types rather than "Windows" types
+        // Modern C++: wchar_t const (&SystemRoot)[260] = (decltype(SystemRoot))(*(wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30));
+        wchar_t const (&SystemRoot)[260] = (wchar_t const (&)[260])(*(wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30));
+        unsigned short const& NativeProcessorArchitecture = *((unsigned short*)(MM_SHARED_USER_DATA_VA + 0x026a));
+        unsigned long const& MajorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x026c));
+        unsigned long const& MinorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x0270));
     } // namespace
-#endif
+#    endif
+#endif // !__NTNATIVE_H_VER__
 
     using byte = unsigned char;
 
@@ -121,7 +145,7 @@ namespace NT
     static_assert(offsetof(LDR_DATA_TABLE_ENTRY, DllBase) == 3 * sizeof(LIST_ENTRY), "DllBase offset has unexpected value");
 
     typedef struct
-    {
+    { //-V802
         PVOID DllBase;
         PVOID EntryPoint;
         ULONG SizeOfImage;
@@ -164,7 +188,7 @@ namespace NT
                   "DllBase offset has unexpected value");
 
     typedef struct _PEB_LDR_DATA
-    {
+    { //-V802
         ULONG Length;
         BOOLEAN Initialized;
         HANDLE SsHandle;
@@ -210,6 +234,7 @@ namespace NT
     static_assert(sizeof(TEB) == 0x1000, "Expected size to be a fixed, known value");
 #    endif // _M_X64
 
+#    pragma warning(push)
 #    pragma warning(disable : 4201)
     typedef struct // xref: http://terminus.rewolf.pl/terminus/structures/ntdll/_PEB_combined.html
     {
@@ -252,7 +277,7 @@ namespace NT
         PVOID Reserved12[1];
         ULONG SessionId;
     } PEB, *PPEB;
-#    pragma warning(default : 4201)
+#    pragma warning(pop)
 #endif // NTPEBLDR_LOCAL_PEBTEB_STRUCT
 
     template <typename> struct NTSTRING
@@ -338,12 +363,20 @@ namespace NT
                 {
                     return 0;
                 }
+                else if (!s1 && s2)
+                {
+                    return -1;
+                }
+                else if (s1 && !s2)
+                {
+                    return 1;
+                }
                 byte const* bs1 = (byte*)s1;
                 byte const* bs2 = (byte*)s2;
                 for (size_t idx = 0; idx <= len; idx++)
                 {
-                    auto const& b1 = bs1[idx];
-                    auto const& b2 = bs2[idx];
+                    auto const& b1 = bs1[idx]; //-V522
+                    auto const& b2 = bs2[idx]; //-V522
                     if (b1 != b2)
                     {
                         return b1 - b2;
@@ -362,12 +395,20 @@ namespace NT
                 {
                     return 0;
                 }
+                else if (!s1 && s2)
+                {
+                    return -1;
+                }
+                else if (s1 && !s2)
+                {
+                    return 1;
+                }
                 unsigned short const* bs1 = (unsigned short*)s1;
                 unsigned short const* bs2 = (unsigned short*)s2;
                 for (size_t idx = 0; idx <= len; idx++)
                 {
-                    auto const& b1 = bs1[idx];
-                    auto const& b2 = bs2[idx];
+                    auto const& b1 = bs1[idx]; //-V522
+                    auto const& b2 = bs2[idx]; //-V522
                     if (b1 != b2)
                     {
                         return b1 - b2;
@@ -681,7 +722,7 @@ namespace NT
             auto const* tblentry = GetLdrDataTableEntryPredicateContext(current, order);
             auto const* curr_entry = GetLdrDataTableEntry(current, order);
             NTSTATUS Status;
-            if (STATUS_NOT_FOUND != (Status = predicate(*tblentry, curr_entry, context)))
+            if (STATUS_NOT_FOUND != (Status = predicate(*tblentry, curr_entry, context))) //-V522
             {
                 return Status;
             }
@@ -863,7 +904,7 @@ namespace NT
         namespace by_trait
         {
             typedef struct _MapByTrait
-            {
+            { //-V802
                 NTSTATUS Status;
                 PVOID Address;
                 PVOID DllBase;
@@ -961,7 +1002,7 @@ namespace NT
             {
                 template <size_t Length> STATIC_INLINE void InitDllExt(WCHAR (&DllExt)[Length])
                 {
-                    constexpr WCHAR NtDllName[] = L"ntdll.dll";
+                    constexpr WCHAR NtDllName[] = L"ntdll.dll"; //-V808
                     auto const* ntdll = GetNtDllEntry();
                     if (!ntdll)
                     {
@@ -1042,7 +1083,7 @@ namespace NT
                 return STATUS_NOT_FOUND;
             }
 
-            template <typename CTX, cbfunc_t<CTX, PebLdrOrder::load> Predicate> STATIC_INLINE HMODULE GetModHandle(UNICODE_STRING const& DllName)
+            template <typename CTX, cbfunc_t<CTX, PebLdrOrder::load> Predicate> STATIC_INLINE HMODULE GetModHandle(UNICODE_STRING const& DllName) //-V835
             {
                 CTX context = {nullptr, DllName};
                 NTSTATUS Status = IteratePebLdrDataTable<CTX>(Predicate, context);
@@ -1135,13 +1176,13 @@ namespace NT
         return GetModHandleByOrderIndex<PebLdrOrder::init>(Index);
     }
 
-    STATIC_INLINE HMODULE GetModHandleByBaseName(UNICODE_STRING const& DllName)
+    STATIC_INLINE HMODULE GetModHandleByBaseName(UNICODE_STRING const& DllName) //-V835
     {
         using namespace predefined_helpers::by_string;
         return GetModHandle<MapByUnicodeString, MapByBaseDllNamePredicate>(DllName);
     }
 
-    STATIC_INLINE HMODULE GetModHandleByFullName(UNICODE_STRING const& DllName)
+    STATIC_INLINE HMODULE GetModHandleByFullName(UNICODE_STRING const& DllName) //-V835
     {
         using namespace predefined_helpers::by_string;
         return GetModHandle<MapByUnicodeString, MapByFullDllNamePredicate>(DllName);
@@ -1154,6 +1195,10 @@ namespace NT
             constexpr PebLdrOrder const order = PebLdrOrder::memory;
             auto const* head = GetPebLdrListHead(order);
             auto const* ldrentry = GetLdrDataTableEntry(head, order);
+            if (!ldrentry)
+            {
+                return nullptr;
+            }
             // Return handle for the module that created the process
             return (HMODULE)ldrentry->DllBase;
         }
@@ -1189,6 +1234,7 @@ namespace NT
                     return nthdrs32->OptionalHeader.DataDirectory[datadir_index];
                 }
             }
+            [[fallthrough]];
         case IMAGE_FILE_MACHINE_AMD64:
             if (datadir_index < nthdrs->OptionalHeader.NumberOfRvaAndSizes)
             {
@@ -1297,4 +1343,5 @@ namespace NT
     }
 } // namespace NT
 
+#pragma pop_macro("STATIC_INLINE")
 #endif // __NTPEBLDR_H_VER__

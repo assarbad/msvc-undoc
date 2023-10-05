@@ -11,11 +11,11 @@
 
 #include <Windows.h>
 
- #ifdef _USRDLL
-    #define DLLEXPORT __declspec(dllexport)
- #else
-    #define DLLEXPORT __declspec(dllimport)
- #endif
+#ifdef _USRDLL
+#    define DLLEXPORT __declspec(dllexport)
+#else
+#    define DLLEXPORT __declspec(dllimport)
+#endif
 
 EXTERN_C_START
 
