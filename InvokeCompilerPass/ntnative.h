@@ -101,8 +101,20 @@
 #    define _Post_invalid_
 #endif
 
+#ifndef _Notnull_
+#    define _Notnull_
+#endif
+
+#ifndef _Pre_
+#    define _Pre_
+#endif
+
 #ifndef _When_
 #    define _When_(x, y)
+#endif
+
+#ifndef _In_range_
+#    define _In_range_(x, y)
 #endif
 
 #ifndef _Out_range_
@@ -123,6 +135,30 @@
 
 #ifndef _Inout_updates_
 #    define _Inout_updates_(x)
+#endif
+
+#ifndef _Out_writes_bytes_to_opt_
+#    define _Out_writes_bytes_to_opt_(x, y)
+#endif
+
+#ifndef _In_reads_opt_
+#    define _In_reads_opt_(x)
+#endif
+
+#ifndef _Strict_type_match_
+#    define _Strict_type_match_
+#endif
+
+#ifndef _Outptr_
+#    define _Outptr_
+#endif
+
+#ifndef _Outptr_result_maybenull_
+#    define _Outptr_result_maybenull_
+#endif
+
+#ifndef _Writable_elements_
+#    define _Writable_elements_(x)
 #endif
 
 #if defined(DDKBUILD)
