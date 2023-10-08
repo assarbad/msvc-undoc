@@ -34,7 +34,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef __NTPEBLDR_H_VER__
-#define __NTPEBLDR_H_VER__ 2023100520
+#define __NTPEBLDR_H_VER__ 2023100820
 #if !NTPEBLDR_NO_PRAGMA_ONCE && ((defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP))
 #    pragma once
 #endif
@@ -56,19 +56,34 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
 #    undef NTSYSCALLAPI
 #    define NTSYSCALLAPI
 #endif
+#pragma warning(push)
 #pragma warning(disable : 4201)
 #define OBJECT_INFORMATION_CLASS  OBJECT_INFORMATION_CLASS_MOCK
 #define _OBJECT_INFORMATION_CLASS _OBJECT_INFORMATION_CLASS_MOCK
+#define _TEB                      _TEB_MOCK
+#define TEB                       TEB_MOCK
+#define PTEB                      PTEB_MOCK
+#define _PEB                      _PEB_MOCK
+#define PEB                       PEB_MOCK
+#define PPEB                      PPEB_MOCK
 #define ObjectBasicInformation    ObjectBasicInformation_Mock
 #define ObjectTypeInformation     ObjectTypeInformation_Mock
 #define NtQueryObject             NtQueryObject_Mock
+#define NtCurrentTeb              NtCurrentTeb_Mock
 #include <winternl.h>
 #undef OBJECT_INFORMATION_CLASS
 #undef _OBJECT_INFORMATION_CLASS
+#undef _TEB
+#undef TEB
+#undef PTEB
+#undef _PEB
+#undef PEB
+#undef PPEB
 #undef ObjectBasicInformation
 #undef ObjectTypeInformation
 #undef NtQueryObject
-#pragma warning(default : 4201)
+#undef NtCurrentTeb
+#pragma warning(pop)
 #pragma pop_macro("NTSYSCALLAPI")
 
 #ifndef NTPEBLDR_LITERAL_UNICODE_STRING
@@ -78,9 +93,9 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
         }
 #endif // NTPEBLDR_LITERAL_UNICODE_STRING
 
-#ifndef NTPEBLDR_LOCAL_PEBTEB_STRUCT
-#    define NTPEBLDR_LOCAL_PEBTEB_STRUCT 1
-#endif
+// #ifndef NTPEBLDR_LOCAL_PEBTEB_STRUCT
+// #    define NTPEBLDR_LOCAL_PEBTEB_STRUCT 1
+// #endif
 #ifndef NTPEBLDR_NAIVE_CRT_INLINES
 #    define NTPEBLDR_NAIVE_CRT_INLINES 1
 #endif
@@ -100,6 +115,14 @@ static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible co
 #if defined(NTPEBLDR_PRINT_FUNCS) || defined(_DEBUG)
 #    include <tchar.h>
 #endif // _DEBUG
+
+#ifndef _countof
+#    ifdef __crt_countof
+#        define _countof __crt_countof
+#    else
+#        define _countof(x) (sizeof(x) / sizeof((x)[0]))
+#    endif // __crt_countof
+#endif     // _countof
 
 namespace NT
 {
@@ -200,43 +223,9 @@ namespace NT
         HANDLE ShutdownThreadId;
     } PEB_LDR_DATA, *PPEB_LDR_DATA;
 
-#if NTPEBLDR_LOCAL_PEBTEB_STRUCT
-    typedef struct // xref: http://terminus.rewolf.pl/terminus/structures/ntdll/_TEB_combined.html
-    {
-        NT_TIB NtTib;
-        PVOID EnvironmentPointer;
-        CLIENT_ID ClientId;
-        PVOID ActiveRpcHandle;
-        PVOID ThreadLocalStoragePointer;
-        PPEB ProcessEnvironmentBlock;
-        ULONG LastErrorValue;
-        ULONG CountOfOwnedCriticalSections;
-        PVOID CsrClientThread;
-        PVOID Win32ThreadInfo;
-        ULONG User32Reserved[26];
-        ULONG UserReserved[5];
-        PVOID WOW32Reserved;
-        LCID CurrentLocale;
-        ULONG FpSoftwareStatusRegister;
-        PVOID ReservedForDebuggerInstrumentation[16];
-        PVOID SystemReserved1[38];
-        NTSTATUS ExceptionCode;
-#    ifdef _M_X64
-        ULONG UnknownAndDontCare[0x55D];
-#    elif defined(_M_IX86)
-        ULONG UnknownAndDontCare[0x396];
-#    endif // _M_X64
-           // Padding up to size 0x1838
-    } TEB, *PTEB;
-#    ifdef _M_X64
-    static_assert(sizeof(TEB) == 0x1838, "Expected size to be a fixed, known value");
-#    elif defined(_M_IX86)
-    static_assert(sizeof(TEB) == 0x1000, "Expected size to be a fixed, known value");
-#    endif // _M_X64
-
-#    pragma warning(push)
-#    pragma warning(disable : 4201)
-    typedef struct // xref: http://terminus.rewolf.pl/terminus/structures/ntdll/_PEB_combined.html
+#pragma warning(push)
+#pragma warning(disable : 4201)
+    typedef struct _PEB // xref: http://terminus.rewolf.pl/terminus/structures/ntdll/_PEB_combined.html
     {
         BOOLEAN InheritedAddressSpace;
         BOOLEAN ReadImageFileExecOptions;
@@ -277,8 +266,46 @@ namespace NT
         PVOID Reserved12[1];
         ULONG SessionId;
     } PEB, *PPEB;
-#    pragma warning(pop)
-#endif // NTPEBLDR_LOCAL_PEBTEB_STRUCT
+#pragma warning(pop)
+
+#if !defined(__NTNATIVE_H_VER__)
+    typedef struct _TEB // xref: http://terminus.rewolf.pl/terminus/structures/ntdll/_TEB_combined.html
+    {
+        NT_TIB NtTib;
+        PVOID EnvironmentPointer;
+        struct
+        {
+            HANDLE UniqueProcess;
+            HANDLE UniqueThread;
+        } ClientId;
+        PVOID ActiveRpcHandle;
+        PVOID ThreadLocalStoragePointer;
+        struct NT::PEB* ProcessEnvironmentBlock;
+        ULONG LastErrorValue;
+        ULONG CountOfOwnedCriticalSections;
+        PVOID CsrClientThread;
+        PVOID Win32ThreadInfo;
+        ULONG User32Reserved[26];
+        ULONG UserReserved[5];
+        PVOID WOW32Reserved;
+        LCID CurrentLocale;
+        ULONG FpSoftwareStatusRegister;
+        PVOID ReservedForDebuggerInstrumentation[16];
+        PVOID SystemReserved1[38];
+        NTSTATUS ExceptionCode;
+#    ifdef _M_X64
+        ULONG UnknownAndDontCare[0x55D];
+#    elif defined(_M_IX86)
+        ULONG UnknownAndDontCare[0x396];
+#    endif // _M_X64
+           // Padding up to size 0x1838
+    } TEB, *PTEB;
+#endif // !defined(__NTNATIVE_H_VER__)
+#ifdef _M_X64
+    static_assert(sizeof(TEB) == 0x1838, "Expected size to be a fixed, known value");
+#elif defined(_M_IX86)
+    static_assert(sizeof(TEB) == 0x1000, "Expected size to be a fixed, known value");
+#endif // _M_X64
 
     template <typename> struct NTSTRING
     {
@@ -315,9 +342,15 @@ namespace NT
         STATIC_INLINE TEB* NtCurrentTeb()
         {
 #if defined(_WIN64) && defined(_M_X64)
-            return (TEB*)__readgsqword(0x30);
+            return (TEB*)__readgsqword(FIELD_OFFSET(NT_TIB, Self));
+#    ifdef _MSVC_LANG
+            static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x30, "Something is wrong with the NT_TIB struct");
+#    endif // _MSVC_LANG
 #elif defined(_WIN32) && defined(_M_IX86)
-            return (TEB*)__readfsdword(0x18);
+            return (TEB*)__readfsdword(FIELD_OFFSET(NT_TIB, Self));
+#    ifdef _MSVC_LANG
+            static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x18, "Something is wrong with the NT_TIB struct");
+#    endif // _MSVC_LANG
 #else
 #    error This isn't currently implemented on the current platform, it seems. Review the code, implement it and retry.
 #endif
@@ -559,25 +592,23 @@ namespace NT
 
         STATIC_INLINE DWORD RtlGetLastWin32Error()
         {
-#if NTPEBLDR_LOCAL_PEBTEB_STRUCT
             return NtCurrentTeb()->LastErrorValue;
-#else
-            auto const* pdwLastError = (DWORD*)((byte*)&NtCurrentTeb()->ProcessEnvironmentBlock + sizeof(PVOID));
-            return *pdwLastError;
-#endif // NTPEBLDR_LOCAL_PEBTEB_STRUCT
         }
 
-        STATIC_INLINE void RtlSetLastWin32Error(DWORD LastError) // the real implementation does a little more, and includes a debug helper
+#if !defined(__NTNATIVE_H_VER__)
+        STATIC_INLINE ULONG NTAPI RtlSetLastWin32Error(DWORD dwError)
         {
-#if NTPEBLDR_LOCAL_PEBTEB_STRUCT
-            NtCurrentTeb()->LastErrorValue = LastError;
-#else
-            auto* pdwLastError = (DWORD*)((byte*)&NtCurrentTeb()->ProcessEnvironmentBlock + sizeof(PVOID));
-            *pdwLastError = LastError;
-#endif // NTPEBLDR_LOCAL_PEBTEB_STRUCT
+            ((NT::TEB*)NtCurrentTeb())->LastErrorValue = dwError;
+            return dwError;
         }
 
-    } // namespace ntdll
+        STATIC_INLINE DWORD RtlSetLastWin32ErrorAndNtStatusFromNtStatus(NTSTATUS Status)
+        {
+            DWORD dwWin32Error = ::RtlNtStatusToDosError(Status); // ERROR_MR_MID_NOT_FOUND if no corresponding Win32 status exists
+            return RtlSetLastWin32Error(dwWin32Error);            // RtlSetLastWin32Error
+        }
+#endif // !defined(__NTNATIVE_H_VER__)
+    }  // namespace ntdll
 
     inline namespace util
     {
