@@ -3,6 +3,7 @@ import idautils
 import ida_bytes
 import ida_funcs
 import ida_idc
+import ida_name
 import ida_struct
 import ida_typeinf
 import ida_xref
@@ -252,6 +253,64 @@ struct calltype
 };
 """
 
+c1_and_c1xx_dll_hdr = """\
+struct c1switch_t
+{
+  const char *Name;
+  void *pValueOrFunc;
+  bool field_10;
+  bool field_11;
+  bool field_12;
+  bool field_13;
+  int field_14;
+};
+"""
+
+c2dll_hdr = """\
+struct c2switch_t
+{
+  wchar_t *const Name;
+  void *pValue;
+  long long field_10;
+  int field_18;
+  int field_1C;
+};
+"""
+
+clexe_hdr = """\
+struct early_switch_t
+{
+  void *SwitchName;
+  void *SwitchFlag;
+  long long SwitchUnknown;
+};
+
+struct late_switch_t
+{
+  void *SwitchName;
+  long long SwitchType;
+  void* VarOrFunc;
+};
+
+struct form_t
+{
+  void *field_0;
+  void *field_8;
+  void *field_10;
+  void *field_18;
+  void *field_20;
+  void *field_28;
+  long long field_30;
+};
+
+struct combo_t
+{
+  void *field_0;
+  void *field_8;
+  void *field_10;
+};
+"""
+
 
 def process_calltypes(ea: int, arrsize: int, elemsize: int, typestr: str):
     sid = ida_struct.get_struc_id(typestr)
@@ -300,7 +359,11 @@ def fixup_tooltype(ea: int):
 def make_array_helper(arrsize: int, ea: int):
     retval = idc.make_array(ea, arrsize)
     if not retval:
-        return retval, f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
+        name = ida_name.get_name(ea)
+        errstr = f"ERROR: Failed to define array [{arrsize}] at {ea:#x}!"
+        if name:
+            errstr = f"ERROR: Failed to define array [{arrsize}] at {ea:#x} ({name})!"
+        return retval, errstr
     return retval, f"INFO: Created array at {ea:#x}!"
 
 
@@ -310,6 +373,18 @@ def fixup_szphase(ea: int):
 
 
 toolchain_renames = {
+    "c2.dll": {
+        "?crack_cmd@@YAHPEBUcmdtab@@PEAGP6APEAGXZH@Z": (
+            "crack_cmd",
+            "void * {newname}(const struct cmdtab *table, wchar_t *nxtwrd, wchar_t *(*callback)(void));",
+        ),
+        "?nextword@@YAPEAGXZ": ("nextword", "wchar_t *{newname}(void);"),
+        "?ProcessSwitches@@YAXXZ": ("ProcessSwitches", "void {newname}(void);"),
+        "?MainInit@@YAXHPEAPEAG@Z": ("MainInit", "int {newname}(int argc, wchar_t **argv);"),
+        "?MainMod@@3UtagMOD@@A": ("MainMod", "tagMOD {newname};"),
+        "?COMPILER_VERSION_W@@3QBGB": ("COMPILER_VERSION_W", "wchar_t const* const {newname};"),
+        # substr
+    },
     "cl.exe": {
         "?LOGO@@YAXH@Z": ("LOGO", "void {newname}(int);"),
         "?MP_is_server@@YAHXZ": ("MP_is_server", "BOOL {newname}();"),
@@ -322,6 +397,9 @@ toolchain_renames = {
         ),  # use to convert env variable command line arguments to argv-like list
         "argcount": ("argcount", "size_t {newname}(wchar_t** argv);"),
         "main": ("wmain", "int {newname}(int argc, wchar_t** argv);"),
+        # "?cc_switches@@YAXPEAUcontext_t@@H@Z": (),
+        # "early_switch_scan" # -> detect early_switches
+        # "?prefast_init@@YAXXZ"
         # Data
         "?AllowCwithCLR@@3HA": ("AllowCwithCLR", "BOOL {newname};"),
         "?AnalyzePathFlag@@3HA": ("AnalyzePathFlag", "BOOL {newname};"),
@@ -445,7 +523,7 @@ toolchain_renames = {
         "?scrutinize_generated_il@@3_NA": ("scrutinize_generated_il", "bool {newname};"),
         "?server_filename@@3PAGA": ("server_filename", "wchar_t {newname}[0x400];", partial(make_array_helper, 0x400)),
         "?wszVerCLR@@3PAGA": ("wszVerCLR", "wchar_t {newname}[0x400];", partial(make_array_helper, 0x400)),
-        "Buffer": ("Buffer", "wchar_t {newname}[260];", partial(make_array_helper, 260)),
+        # "Buffer": ("Buffer", "wchar_t {newname}[260];", partial(make_array_helper, 260)), ... name is too generic
     },
     "link.exe": {
         "?CheckErrNo@@YAXXZ": ("CheckErrNo", "void {newname}();"),
