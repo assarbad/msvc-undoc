@@ -373,6 +373,34 @@ def fixup_szphase(ea: int):
 
 
 toolchain_renames = {
+    "c1.dll": {
+        "?crack_cmd@@YAHPEBUcmdtab@@PEADP6APEADXZH@Z": (
+            "crack_cmd",
+            "void * {newname}(const struct cmdtab *table, char *nxtwrd, char *(*callback)(void));",
+        ),
+        "?nextword@@YAPEAGXZ": ("nextword", "char *{newname}(void);"),
+        "?init_main1@@YAXHPEAPEAD@Z": ("init_main1", "void {newname}(int argc, char** argv);"),
+        "?main_compile@@YAHXZ": ("main_compile", "int {newname}(void);"),
+        "?CallMain@@YAHHPEAPEAD@Z": ("CallMain", "int {newname}(int argc, char** argv);"),
+        "Trap_main_compile": ("Trap_main_compile", "int {newname}();"),
+        "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
+        "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
+        "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
+    },
+    "c1xx.dll": {
+        "?crack_cmd@@YAHPEBUcmdtab@@PEADP6APEADXZH@Z": (
+            "crack_cmd",
+            "void * {newname}(const struct cmdtab *table, char *nxtwrd, char *(*callback)(void));",
+        ),
+        "?nextword@@YAPEAGXZ": ("nextword", "char *{newname}(void);"),
+        "?init_main1@@YAXHPEAPEAD@Z": ("init_main1", "void {newname}(int argc, char** argv);"),
+        "?main_compile@@YAHXZ": ("main_compile", "int {newname}(void);"),
+        "?CallMain@@YAHHPEAPEAD@Z": ("CallMain", "int {newname}(int argc, char** argv);"),
+        "Trap_main_compile": ("Trap_main_compile", "int {newname}();"),
+        "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
+        "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
+        "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
+    },
     "c2.dll": {
         "?crack_cmd@@YAHPEBUcmdtab@@PEAGP6APEAGXZH@Z": (
             "crack_cmd",
