@@ -33,11 +33,17 @@ env_interesting_funcs = {
 }
 
 
-slotidx = 1023
-marked_positions_ea = {}
+rfname: str = None  # global root file name of IDB
+glblinfo = idaapi.get_inf_structure()
+slotidx: int = 1023
+marked_positions_ea: set = {}
 
 
 def set_color(ea: int, what: int, color: int) -> Tuple[Optional[bool], Optional[str]]:
+    """\
+        Colors a given EA and returns a tuple of a bool (or None) for success failure
+        and a hopefully meaningful status message
+    """
     valid_whats = {idc.CIC_ITEM, idc.CIC_FUNC, idc.CIC_SEGM}
     if what not in valid_whats:
         return False, f"invalid {what=} for {ea:#x}, the following are valid: {valid_whats=}"
@@ -71,6 +77,11 @@ def set_color_code_or_else_with_carp(ea: int, code_color: int, else_color: Optio
 
 
 def add_func_flags(ea: int, flags_to_add: int) -> bool:
+    """\
+        Adds flags to a function given by its EA
+
+        Returns True in case of success. False in case of failure and None in case nothing had to be done (flags already set)
+    """
     flags = ida_bytes.get_flags(ea)
     if not ida_bytes.is_code(flags):
         return None  # nothing was done, because it was data
@@ -88,6 +99,9 @@ def add_func_flags(ea: int, flags_to_add: int) -> bool:
 
 
 def mark_position(ea: int, cmt: str):
+    """\
+        Applies a bookmark/mark comment to a given EA
+    """
     global slotidx
     global marked_positions_ea
     if ea not in marked_positions_ea:
@@ -102,7 +116,10 @@ def mark_position(ea: int, cmt: str):
             print(f"INFO: {ea:#x} has existing comment: {oldcmt}")
 
 
-def get_strlit(ea) -> Optional[str]:
+def get_strlit(ea: int) -> Optional[str]:
+    """\
+        Returns the string contents a given string literal has or None if no string literal
+    """
     flags = ida_bytes.get_flags(ea)
     if ida_bytes.is_strlit(flags):
         strtype = idc.get_str_type(ea)
@@ -114,6 +131,9 @@ def get_strlit(ea) -> Optional[str]:
 
 
 def sizeof(typestr: str) -> int:
+    """\
+        Determines the size of a known type
+    """
     ti = ida_typeinf.tinfo_t()
     if ti.get_named_type(None, typestr):
         assert ti.present(), f"{typestr} isn't really present"
@@ -230,29 +250,6 @@ def detect_environment_variables():
         print(f"{var_ea:#x}: {varname}")
 
 
-linkexe_hdr = """\
-enum TOOL_TYPE
-{
-  ttHelper = 0,
-  ttCvtCIL = 1,
-  ttDumper = 2,
-  ttEditor = 3,
-  ttPushThunkObjGenerator = 4,
-  ttLibraryManager = 5,
-  ttLinker = 6,
-};
-
-struct calltype
-{
-  LPCWSTR ToolName;
-  LPCWSTR ExecutableName;
-  LPCWSTR ParamName;
-  uint ParamNameLength;
-  TOOL_TYPE ToolType;
-  int (__cdecl *MainFunc)(int argc, wchar_t** argv);
-};
-"""
-
 c1_and_c1xx_dll_hdr = """\
 struct c1switch_t
 {
@@ -266,7 +263,11 @@ struct c1switch_t
 };
 """
 
-c2dll_hdr = """\
+
+per_module_typedefs = {
+    "c1.dll": c1_and_c1xx_dll_hdr,
+    "c1xx.dll": c1_and_c1xx_dll_hdr,
+    "c2.dll": """\
 struct c2switch_t
 {
   wchar_t *const Name;
@@ -275,9 +276,8 @@ struct c2switch_t
   int field_18;
   int field_1C;
 };
-"""
-
-clexe_hdr = """\
+""",
+    "cl.exe": """\
 struct early_switch_t
 {
   void *SwitchName;
@@ -309,7 +309,30 @@ struct combo_t
   void *field_8;
   void *field_10;
 };
-"""
+""",
+    "link.exe": """\
+enum TOOL_TYPE
+{
+  ttHelper = 0,
+  ttCvtCIL = 1,
+  ttDumper = 2,
+  ttEditor = 3,
+  ttPushThunkObjGenerator = 4,
+  ttLibraryManager = 5,
+  ttLinker = 6,
+};
+
+struct calltype
+{
+  LPCWSTR ToolName;
+  LPCWSTR ExecutableName;
+  LPCWSTR ParamName;
+  uint ParamNameLength;
+  TOOL_TYPE ToolType;
+  int (__cdecl *MainFunc)(int argc, wchar_t** argv);
+};
+""",
+}
 
 
 def process_calltypes(ea: int, arrsize: int, elemsize: int, typestr: str):
@@ -740,18 +763,11 @@ def rename_single(oldname: str, newname: Optional[str], rule: tuple) -> bool:
 
 
 def rename_and_retype(renames: dict, verbose: bool = False):
-    rfname = idc.get_root_filename()  # get_input_file_path() for IDB _path_
-    assert rfname, "Could not retrieve name of the file used to create the IDB"
+    assert rfname, "Expected that the name of the file used to create the IDB has been globally set"
+    print(f"INFO: applying renaming and re-typing rules for '{rfname}'")
     if rfname not in renames:
         print(f"WARNING: Could not find '{rfname}' as top-level key in the renaming rules")
         return
-    if rfname in {"link.exe"}:  # TODO: move this out and make more data-driven
-        errs = ida_typeinf.parse_decls(None, linkexe_hdr, None, ida_typeinf.HTI_DCL)
-        if errs in {0}:
-            print(f"INFO: no errors applying C types for '{rfname}'")
-        else:
-            print(f"WARNING: {errs} errors applying C types for '{rfname}'")
-    print(f"INFO: applying renaming and re-typing rules for '{rfname}'")
 
     all_rules = set(renames[rfname].keys())
     rules = renames[rfname]
@@ -836,23 +852,26 @@ def mark_lib_functions():
         lambda x: x.startswith("std::error_category::"),
         lambda x: x.startswith("std::basic_string_view<unsigned short,"),
         lambda x: x.startswith("std::basic_stringbuf<unsigned short,"),
-        lambda x: x == "??$swprintf_s@$0CAA@@@YAHAEAY0CAA@GPEBGZZ",
-        lambda x: x == "_vswprintf_s_l",
-        lambda x: x == "memset_zero_avx",
-        lambda x: x == "memcpy_s",
-        lambda x: x == "initialize_legacy_wide_specifiers",
-        lambda x: x == "fwprintf",
-        lambda x: x == "_cprintf",
-        lambda x: x == "_vcprintf_l",
-        lambda x: x == "_vfprintf_l",
-        lambda x: x == "_vfwprintf_l",
-        lambda x: x == "_vsnprintf_s_l",
-        lambda x: x == "_vsnwprintf_s_l",
-        lambda x: x == "_vswprintf_s_l",
-        lambda x: x == "_snwprintf_s",
-        lambda x: x == "_snprintf_s",
         lambda x: x.startswith("__scrt_"),
-        lambda x: x == "__delayLoadHelper2",
+        lambda x: x
+        in {
+            "??$swprintf_s@$0CAA@@@YAHAEAY0CAA@GPEBGZZ",
+            "_vswprintf_s_l",
+            "memset_zero_avx",
+            "memcpy_s",
+            "initialize_legacy_wide_specifiers",
+            "fwprintf",
+            "_cprintf",
+            "_vcprintf_l",
+            "_vfprintf_l",
+            "_vfwprintf_l",
+            "_vsnprintf_s_l",
+            "_vsnwprintf_s_l",
+            "_vswprintf_s_l",
+            "_snwprintf_s",
+            "_snprintf_s",
+            "__delayLoadHelper2",
+        },
     ]
     counter = 0
     for ea, name in idautils.Names():
@@ -946,17 +965,139 @@ def find_string_refs():
             print(f"{num}: {ea:#x}")
 
 
+def apply_per_module_typedefs():
+    assert rfname, "Expected that the name of the file used to create the IDB has been globally set"
+    if rfname in per_module_typedefs:
+        errs = ida_typeinf.parse_decls(None, per_module_typedefs[rfname], None, ida_typeinf.HTI_DCL)
+        if errs in {0}:
+            print(f"INFO: no errors applying C types for '{rfname}'")
+        else:
+            print(f"WARNING: {errs} errors applying C types for '{rfname}'")
+
+
+def find_single_func_containing(needle: str) -> Optional[int]:
+    func = [func for func in idautils.Names() if needle in func[1]]
+    if len(func) == 1:  # assert len(func) == 1, "Expecting to find the name and a single instance of a name containing '{needle}' only"
+        fct = idaapi.get_func(func[0][0])
+        if fct:
+            return func[0][0]
+        else:
+            print(f"WARNING: item at {func[0][0]:#x} was not a function")
+    else:
+        print(f"WARNING: found more than a single name with '{needle}' in it")
+    return None
+
+
+def find_rdata_xrefs_to(ea: int) -> list[int]:
+    """\
+        Finds xrefs to a given item (head) in the .rdata segment and returns a list of them
+    """
+    func = idaapi.get_func(ea)
+    retval = []
+    if func:
+        rdata = idaapi.get_segm_by_name(".rdata")
+        # print(f"DEBUG: .rdata spans: {rdata.start_ea:#x} ... {rdata.end_ea:#x}")
+        for head in idautils.Heads(rdata.start_ea, rdata.end_ea):
+            flags = ida_bytes.get_flags(head)
+            if ida_bytes.is_data(flags):
+                for xref in idautils.XrefsTo(head, 0):
+                    if xref.frm >= func.start_ea and xref.frm < func.end_ea:
+                        retval.append(head)
+        if not retval:  # still empty? Try brute force ...
+            print("WARNING: Came up empty-handed, trying brute force now.")
+            byteaddr = rdata.start_ea
+            while byteaddr < rdata.end_ea:
+                flags = ida_bytes.get_flags(byteaddr)
+                if ida_bytes.is_data(flags) or ida_bytes.is_unknown(flags):
+                    for xref in idautils.XrefsTo(byteaddr, 0):
+                        if xref.frm >= func.start_ea and xref.frm < func.end_ea:
+                            retval.append(byteaddr)
+                byteaddr += ida_bytes.get_item_size(byteaddr)
+    else:
+        print(f"WARNING: {ea:#x} does not appear to be a function")
+    return retval
+
+
+def prettify_cmdswitches(ea: int, rfname: str):
+    if not idc.set_name(ea, "cmdswitches"):
+        print(f"WARNING: failed to set new name for {ea:#x} in {rfname} ... proceeding anyway")
+    typename = "c2switch_t" if rfname in {"c2.dll"} else "c1switch_t" if rfname in {"c1.dll", "c1xx.dll"} else None
+    if not typename:
+        print(f"WARNING: no applicable type name found for cmdswitches {rfname}. Perhaps you forgot to import them?")
+        return
+    typesize = sizeof(typename)
+    terminators = {"c2switch_t": 16 * b"\0" + b"\3" + 15 * b"\0", "c1switch_t": typesize * b"\0"}
+    rdata = idaapi.get_segm_by_name(".rdata")
+    print(f"Treating {ea:#x}")
+    addr = ea
+    terminator = terminators[typename]
+    arritems = None
+    assert len(terminator) == typesize, f"These must be identical, but aren't: {len(terminator)=} != {typesize=}"
+    while addr < rdata.end_ea:
+        record = ida_bytes.get_bytes(addr, typesize)
+        if record == terminator:
+            overall = addr + typesize - ea
+            arritems = overall // typesize
+            assert overall % typesize == 0, f"Unexpectedly {overall} = {addr+typesize:#x} - {ea:#x} was not divisible by {typesize=} without remainder."
+            print(f"INFO: found last item at: {addr=:#x} -> {overall=} -> {arritems=}")
+            break
+        addr += typesize
+    if arritems is None:
+        print(f"WARNING: unable determine number of sizeof({typename})=={typesize} records at {ea:#x}")
+        return
+    # make_array_helper, arritems)
+    # TODO/FIXME
+
+
+def decode_crack_cmd():
+    assert rfname, "Expected that the name of the file used to create the IDB has been globally set"
+    assert glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
+    if rfname not in {"c1.dll", "c1xx.dll", "c2.dll"}:
+        print(f"WARNING: {rfname} not eligible for crack_cmd decoding")
+        return
+    needle = "crack_cmd"
+    crack_cmd = find_single_func_containing(needle)
+    if not crack_cmd:
+        print(f"WARNING: found no functions with '{needle}' in the name for {rfname}")
+        return
+    candidates = find_rdata_xrefs_to(crack_cmd)
+    if not candidates:
+        print(f"WARNING: found no suitable data xrefs to .rdata in function with '{needle}' in the name (at {crack_cmd:#x}) for {rfname}")
+        return
+    PTRSIZE = 8  # remember: assumes 64-bit!
+    for dataitem in candidates:
+        datasize = ida_bytes.get_item_size(dataitem)
+        print(f"Candidate for crack_cmd table: {dataitem:#x} -> {datasize}")
+    # Filter the list down
+    candidates = [
+        x
+        for x in candidates
+        if (ida_bytes.get_item_size(x) in {PTRSIZE} and ida_typeinf.idc_guess_type(x) in {"char *", "char*"})
+        or (ida_bytes.get_item_size(x) in {1} and ida_typeinf.idc_guess_type(x) is None and ida_bytes.is_unknown(ida_bytes.get_flags(x)))
+    ]
+    # We simply won't continue if more than a single candidate remains
+    if len(candidates) != 1:
+        print(f"WARNING: known filter conditions not enough to find tableof command line switches for {rfname}")
+        return
+    prettify_cmdswitches(candidates[0], rfname)
+
+
 def main():
+    global rfname
+    rfname = idc.get_root_filename()  # get_input_file_path() for IDB _path_
+    assert rfname, "Could not retrieve name of the file used to create the IDB"
     clear_output_console()
+    apply_per_module_typedefs()
     # find_string_refs()
-    rename_and_retype(toolchain_renames)
-    mark_lib_functions()
-    color_lambdas()
-    color_initializers()
-    color_dtors()
-    color_delayloads()
-    mark_and_color_usagefuncs()
-    detect_environment_variables()
+    decode_crack_cmd()
+    # rename_and_retype(toolchain_renames)
+    # mark_lib_functions()
+    # color_lambdas()
+    # color_initializers()
+    # color_dtors()
+    # color_delayloads()
+    # mark_and_color_usagefuncs()
+    # detect_environment_variables()
 
 
 if __name__ == "__main__":
