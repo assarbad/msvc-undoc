@@ -723,7 +723,7 @@ toolchain_renames = {
 }
 
 
-def retype_single(oldname: str, newname: Optional[str], rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> bool:
+def retype_single(oldname: str, newname: Optional[str], rule: tuple, tinfo_flags=idc.TINFO_DEFINITE) -> Tuple[bool, Optional[callable], Optional[str]]:
     if len(rule) in {1}:  # normalize
         rule = (rule[0], None, None, None)  # fmt: skip
     elif len(rule) in {2}:  # normalize
@@ -988,9 +988,10 @@ def find_single_func_containing(needle: str) -> Optional[int]:
     return None
 
 
-def find_rdata_xrefs_to(ea: int) -> list[int]:
+def find_rdata_xrefs_to(ea: int, try_harder: bool = False) -> list[int]:
     """\
-        Finds xrefs to a given item (head) in the .rdata segment and returns a list of them
+        Finds xrefs to a given item (head) in the .rdata segment and returns a tuple
+        with a list and a bool. The bool indicates whether brute force was tried or not!
     """
     func = idaapi.get_func(ea)
     retval = []
@@ -1003,7 +1004,7 @@ def find_rdata_xrefs_to(ea: int) -> list[int]:
                 for xref in idautils.XrefsTo(head, 0):
                     if xref.frm >= func.start_ea and xref.frm < func.end_ea:
                         retval.append(head)
-        if not retval:  # still empty? Try brute force ...
+        if not retval or try_harder:  # still empty? Try brute force ...
             print("WARNING: Came up empty-handed, trying brute force now.")
             byteaddr = rdata.start_ea
             while byteaddr < rdata.end_ea:
@@ -1012,27 +1013,26 @@ def find_rdata_xrefs_to(ea: int) -> list[int]:
                     for xref in idautils.XrefsTo(byteaddr, 0):
                         if xref.frm >= func.start_ea and xref.frm < func.end_ea:
                             retval.append(byteaddr)
+                            try_harder = True
                 byteaddr += ida_bytes.get_item_size(byteaddr)
     else:
         print(f"WARNING: {ea:#x} does not appear to be a function")
-    return retval
+    if retval:
+        retval = list(set(retval))  # make sure to filter duplicates
+    return retval, try_harder
 
 
-def prettify_cmdswitches(ea: int, rfname: str):
-    if not idc.set_name(ea, "cmdswitches"):
-        print(f"WARNING: failed to set new name for {ea:#x} in {rfname} ... proceeding anyway")
-    typename = "c2switch_t" if rfname in {"c2.dll"} else "c1switch_t" if rfname in {"c1.dll", "c1xx.dll"} else None
-    if not typename:
-        print(f"WARNING: no applicable type name found for cmdswitches {rfname}. Perhaps you forgot to import them?")
-        return
-    typesize = sizeof(typename)
-    terminators = {"c2switch_t": 16 * b"\0" + b"\3" + 15 * b"\0", "c1switch_t": typesize * b"\0"}
+def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dict) -> Optional[tuple]:
+    newname = "cmdswitches"
+    if not idc.set_name(ea, newname):
+        print(f"WARNING: failed to set new name '{newname}' for {ea:#x} ... proceeding anyway")
     rdata = idaapi.get_segm_by_name(".rdata")
-    print(f"Treating {ea:#x}")
+    print(f"INFO: Processing likely {ea:#x} (changes will only be done if confirmed)")
     addr = ea
     terminator = terminators[typename]
     arritems = None
     assert len(terminator) == typesize, f"These must be identical, but aren't: {len(terminator)=} != {typesize=}"
+    # Try to parse EA as typename elements with typesize each
     while addr < rdata.end_ea:
         record = ida_bytes.get_bytes(addr, typesize)
         if record == terminator:
@@ -1042,11 +1042,34 @@ def prettify_cmdswitches(ea: int, rfname: str):
             print(f"INFO: found last item at: {addr=:#x} -> {overall=} -> {arritems=}")
             break
         addr += typesize
+    # This happens if we run into the end of .rdata without hitting a known terminator
     if arritems is None:
         print(f"WARNING: unable determine number of sizeof({typename})=={typesize} records at {ea:#x}")
-        return
-    # make_array_helper, arritems)
-    # TODO/FIXME
+        return None
+    # Make unknown bytes across the whole range
+    if not ida_bytes.del_items(ea, ida_bytes.DELIT_DELNAMES, addr - ea):
+        print(f"WARNING: failed to undefine range between {ea:#x} and {addr:#x}")
+        return None
+    rule = ((ea, newname,), f"{typename} {newname};",)  # fmt: skip
+    # Set struct type (single item initially); this also imports the local type into structs
+    done, _, msg = retype_single(newname, None, rule)  # fmt: skip
+    print(msg)
+    if not done:
+        print("ERROR: Cannot proceed.")
+        return None
+    done, msg = make_array_helper(arritems, ea)
+    print(msg)
+    if not done:
+        print("ERROR: Cannot proceed.")
+        return None
+    rule = ((ea, newname,), f"{typename} {newname}[{arritems}];",)  # fmt: skip
+    # Set C array type this time around ...
+    done, _, msg = retype_single(newname, None, rule)  # fmt: skip
+    print(msg)
+    if not done:
+        return None
+    print(f"INFO: finished prettifying {newname}.")
+    return (ea, addr, arritems,)  # fmt: skip
 
 
 def decode_crack_cmd():
@@ -1060,26 +1083,45 @@ def decode_crack_cmd():
     if not crack_cmd:
         print(f"WARNING: found no functions with '{needle}' in the name for {rfname}")
         return
-    candidates = find_rdata_xrefs_to(crack_cmd)
-    if not candidates:
-        print(f"WARNING: found no suitable data xrefs to .rdata in function with '{needle}' in the name (at {crack_cmd:#x}) for {rfname}")
+    typename = "c2switch_t" if rfname in {"c2.dll"} else "c1switch_t" if rfname in {"c1.dll", "c1xx.dll"} else None
+    if not typename:
+        print(f"WARNING: no applicable type name found for cmdswitches {rfname}. Perhaps you forgot to import them?")
         return
-    PTRSIZE = 8  # remember: assumes 64-bit!
-    for dataitem in candidates:
-        datasize = ida_bytes.get_item_size(dataitem)
-        print(f"Candidate for crack_cmd table: {dataitem:#x} -> {datasize}")
-    # Filter the list down
-    candidates = [
-        x
-        for x in candidates
-        if (ida_bytes.get_item_size(x) in {PTRSIZE} and ida_typeinf.idc_guess_type(x) in {"char *", "char*"})
-        or (ida_bytes.get_item_size(x) in {1} and ida_typeinf.idc_guess_type(x) is None and ida_bytes.is_unknown(ida_bytes.get_flags(x)))
-    ]
-    # We simply won't continue if more than a single candidate remains
-    if len(candidates) != 1:
-        print(f"WARNING: known filter conditions not enough to find tableof command line switches for {rfname}")
-        return
-    prettify_cmdswitches(candidates[0], rfname)
+    typesize = sizeof(typename)
+    terminators = {"c2switch_t": 16 * b"\0" + b"\3" + 15 * b"\0", "c1switch_t": typesize * b"\0"}
+    for try_harder in (False, True):
+        candidates, tried_harder = find_rdata_xrefs_to(crack_cmd, try_harder)
+        if not candidates:
+            print(f"WARNING: found no suitable data xrefs to .rdata in function with '{needle}' in the name (at {crack_cmd:#x}) for {rfname}")
+            return
+        PTRSIZE = 8  # remember: assumes 64-bit!
+        for dataitem in candidates:
+            datasize = ida_bytes.get_item_size(dataitem)
+            print(f"INFO: Candidate for crack_cmd table: {dataitem:#x}, size={datasize}")
+        # Filter the list down
+        candidates = [
+            x
+            for x in candidates
+            if (ida_bytes.get_item_size(x) in {PTRSIZE} and ida_typeinf.idc_guess_type(x) in {"char *", "char*", "wchar_t *", "wchar_t*"})
+            or (
+                ida_bytes.get_item_size(x) in {1}
+                and ida_typeinf.idc_guess_type(x) is None
+                and ida_bytes.is_unknown(ida_bytes.get_flags(x))
+                or (ida_bytes.get_item_size(x) % typesize == 0 and typename in ida_typeinf.idc_guess_type(x))
+            )
+        ]
+        # We simply won't continue if more than a single candidate remains
+        if len(candidates) != 1:
+            if tried_harder:
+                print(f"WARNING: known filter conditions not enough to find tableof command line switches for {rfname}")
+                return
+            else:
+                continue
+        result = prettify_cmdswitches(candidates[0], typename, typesize, terminators)
+        if result is not None:
+            start, end, items = result
+            mark_position(result[0], f"Command line switches ({items}) processed in crack_cmd() (size={end - start})")
+            break  # looks odd? ... true, but if we get here we don't need to duplicate the work of the ~4 lines above ... no need to "try harder"
 
 
 def main():
