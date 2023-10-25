@@ -409,6 +409,9 @@ toolchain_renames = {
         "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
         "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
         "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
+        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion"),
+        "?warning_introduced_in_current_release@@YA_NW4WarningNumber@@@Z": ("warning_introduced_in_current_release", "bool {newname}(enum WarningNumber);"),
+        "?InitSpecialWarnings@@YAXXZ": ("InitSpecialWarnings", "void {newname}();"),  # use this and the above to set warningbyrel_t array
     },
     "c1xx.dll": {
         "?crack_cmd@@YAHPEBUcmdtab@@PEADP6APEADXZH@Z": (
@@ -423,6 +426,9 @@ toolchain_renames = {
         "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
         "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
         "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
+        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion"),
+        "?warning_introduced_in_current_release@@YA_NW4WarningNumber@@@Z": ("warning_introduced_in_current_release", "bool {newname}(enum WarningNumber);"),
+        "?InitSpecialWarnings@@YAXXZ": ("InitSpecialWarnings", "void {newname}();"),  # use this and the above to set warningbyrel_t array
     },
     "c2.dll": {
         "?crack_cmd@@YAHPEBUcmdtab@@PEAGP6APEAGXZH@Z": (
@@ -1022,7 +1028,8 @@ def find_rdata_xrefs_to(ea: int, try_harder: bool = False) -> list[int]:
     return retval, try_harder
 
 
-def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dict) -> Optional[tuple]:
+def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dict, PTRSIZE: int = 8) -> Optional[tuple]:
+    assert PTRSIZE == 8 and glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
     newname = "cmdswitches"
     if not idc.set_name(ea, newname):
         print(f"WARNING: failed to set new name '{newname}' for {ea:#x} ... proceeding anyway")
@@ -1032,20 +1039,29 @@ def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dic
     terminator = terminators[typename]
     arritems = None
     assert len(terminator) == typesize, f"These must be identical, but aren't: {len(terminator)=} != {typesize=}"
+    switches = []
     # Try to parse EA as typename elements with typesize each
     while addr < rdata.end_ea:
         record = ida_bytes.get_bytes(addr, typesize)
+        strlit_offs = ida_bytes.get_qword(addr)
+        switch = get_strlit(strlit_offs)
+        if switch:
+            switches.append(switch)
         if record == terminator:
             overall = addr + typesize - ea
             arritems = overall // typesize
             assert overall % typesize == 0, f"Unexpectedly {overall} = {addr+typesize:#x} - {ea:#x} was not divisible by {typesize=} without remainder."
             print(f"INFO: found last item at: {addr=:#x} -> {overall=} -> {arritems=}")
             break
+        elif switch is None:
+            print(f"WARNING: unable read string literal at {strlit_offs:#x} referenced from {addr:#x}")
         addr += typesize
     # This happens if we run into the end of .rdata without hitting a known terminator
     if arritems is None:
         print(f"WARNING: unable determine number of sizeof({typename})=={typesize} records at {ea:#x}")
         return None
+    if len(switches) != (arritems - 1):
+        print(f"WARNING: expected number of collected switches ({len(switches)}) to match number of array items ({arritems}) minus one. Not the case.")
     # Make unknown bytes across the whole range
     if not ida_bytes.del_items(ea, ida_bytes.DELIT_DELNAMES, addr - ea):
         print(f"WARNING: failed to undefine range between {ea:#x} and {addr:#x}")
@@ -1069,12 +1085,16 @@ def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dic
     if not done:
         return None
     print(f"INFO: finished prettifying {newname}.")
+    # TODO: collect more and make it more digestible outside (e.g. via YAML)
+    # TODO: mark the items referencing any of the dummy variables
+    for switch in switches:
+        print(switch)
     return (ea, addr, arritems,)  # fmt: skip
 
 
-def decode_crack_cmd():
+def decode_crack_cmd(PTRSIZE: int = 8):  # remember: assumes 64-bit!
     assert rfname, "Expected that the name of the file used to create the IDB has been globally set"
-    assert glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
+    assert PTRSIZE == 8 and glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
     if rfname not in {"c1.dll", "c1xx.dll", "c2.dll"}:
         print(f"WARNING: {rfname} not eligible for crack_cmd decoding")
         return
@@ -1094,7 +1114,6 @@ def decode_crack_cmd():
         if not candidates:
             print(f"WARNING: found no suitable data xrefs to .rdata in function with '{needle}' in the name (at {crack_cmd:#x}) for {rfname}")
             return
-        PTRSIZE = 8  # remember: assumes 64-bit!
         for dataitem in candidates:
             datasize = ida_bytes.get_item_size(dataitem)
             print(f"INFO: Candidate for crack_cmd table: {dataitem:#x}, size={datasize}")
