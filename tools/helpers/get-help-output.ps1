@@ -17,6 +17,7 @@ $VerbosePreference = "continue"
 
 $tools = (
     "armasm.exe",
+    "armasm64.exe",
     "cl.exe",
     "lib.exe",
     "link.exe",
@@ -29,6 +30,16 @@ Get-ChildItem -Recurse -Path $pwd|%{
     $fname = $_.FullName
     if ($null -ne ($tools|? {$fname.EndsWith($_)}))
     {
-        echo (Get-Item -Path $fname).VersionInfo.FileVersion
+        $ver = (Get-Item -Path $fname).VersionInfo.FileVersion
+        $ver = $ver | Select-String "^\d+(\.\d+)+" | % { $_.Matches[0].Groups[0].Value } # handle some wonky version strings
+        echo "$fname ($ver)"
+        if ($_.Name.Contains("arm"))
+        {
+            & $fname -h 2>&1 | Tee-Object -Path "${fname}-${ver}.txt" | Out-Null
+        }
+        else
+        {
+            & $fname /? 2>&1 | Tee-Object -Path "${fname}-${ver}.txt" | Out-Null
+        }
     }
 }

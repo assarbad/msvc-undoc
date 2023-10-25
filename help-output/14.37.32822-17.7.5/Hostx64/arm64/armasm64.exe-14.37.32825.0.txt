@@ -1,0 +1,27 @@
+Microsoft (R) ARM Macro Assembler Version 14.37.32825.0 for 64 bits
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+ Usage:      armasm [<options>] sourcefile objectfile
+             armasm [<options>] -o objectfile sourcefile
+             armasm -h              for help
+
+<options>:            (Upper case shows allowable abbreviation)
+  -Errors     errorsfile       redirect stderr diagnostics to errorsfile
+  -I          dir[;dir]        add dirs to include search path
+  -PreDefine  directive        pre-execute a SET{L,A,S} directive
+  -NOWarn                      turn off warning messages
+  -ignore <warning-num>        don't report warning-num
+  -help                        help (this information)
+  -via <file>                  read further arguments from <file>
+  -machine <machine>           set the PE machine type field
+  -g                           generate debugging info
+  -gh:SHA1                     use SHA1 for file checksum in debug info
+  -gh:SHA_256                  use SHA256 for file checksum in debug info (default)
+  -funcOverride:<func>         emit function overriding support for <func>
+  -errorReport:<option>        deprecated. Report internal assembler errors to Microsoft
+      none - do not send report
+      prompt - prompt to immediately send report
+      queue - at next admin logon, prompt to send report (default)
+      send - send report automatically
+ 
+<machine>:  ARM64 | ARM64EC
