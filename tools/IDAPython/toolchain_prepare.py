@@ -9,8 +9,10 @@ import ida_typeinf
 import ida_xref
 import idc
 import re
+import yaml
 from collections import namedtuple
 from functools import partial
+from pathlib import Path
 from typing import Optional, Tuple
 
 # colors via https://latexcolor.com/
@@ -409,7 +411,7 @@ toolchain_renames = {
         "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
         "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
         "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
-        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion"),
+        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion",),
         "?warning_introduced_in_current_release@@YA_NW4WarningNumber@@@Z": ("warning_introduced_in_current_release", "bool {newname}(enum WarningNumber);"),
         "?InitSpecialWarnings@@YAXXZ": ("InitSpecialWarnings", "void {newname}();"),  # use this and the above to set warningbyrel_t array
     },
@@ -426,7 +428,7 @@ toolchain_renames = {
         "?DummyFlag@@3_NA": ("DummyFlag", "bool {newname};"),
         "?DummyString@@3PEBDEB": ("DummyString", "char* {newname};"),
         "?DummyNumber@@3HA": ("DummyNumber", "int {newname};"),
-        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion"),
+        "?Cmd_WarnVersion@@3W4ClVersion@@A": ("Cmd_WarnVersion",),
         "?warning_introduced_in_current_release@@YA_NW4WarningNumber@@@Z": ("warning_introduced_in_current_release", "bool {newname}(enum WarningNumber);"),
         "?InitSpecialWarnings@@YAXXZ": ("InitSpecialWarnings", "void {newname}();"),  # use this and the above to set warningbyrel_t array
     },
@@ -1030,6 +1032,7 @@ def find_rdata_xrefs_to(ea: int, try_harder: bool = False) -> list[int]:
 
 def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dict, PTRSIZE: int = 8) -> Optional[tuple]:
     assert PTRSIZE == 8 and glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
+    known_types = {1, 5, 10, 0x22, 0x24, 0x26, 0x28, 0x29,}  # fmt: skip
     newname = "cmdswitches"
     if not idc.set_name(ea, newname):
         print(f"WARNING: failed to set new name '{newname}' for {ea:#x} ... proceeding anyway")
@@ -1046,7 +1049,17 @@ def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dic
         strlit_offs = ida_bytes.get_qword(addr)
         switch = get_strlit(strlit_offs)
         if switch:
-            switches.append(switch)
+            not_final = None
+            switch_type = None
+            if typename in {"c1switch_t"}:
+                not_final = ida_bytes.get_byte(addr + 2 * PTRSIZE)
+                if not_final not in {0, 1}:
+                    print(f"WARNING: record at {addr:#x} contains a value other than 0 or 1 for the 'type' at offset 0x10 at {addr=:#x}")
+                switch_type = ida_bytes.get_byte(addr + 2 * PTRSIZE + 1)
+                assert switch_type in known_types, f"Encountered unknown switch type {switch_type}/{switch_type:#x} (offset 0x11) at {addr=:#x}"
+            else:
+                assert False, f"Not implemented for {typename}"
+            switches.append((switch, not_final, switch_type,))  # fmt: skip
         if record == terminator:
             overall = addr + typesize - ea
             arritems = overall // typesize
@@ -1085,10 +1098,9 @@ def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dic
     if not done:
         return None
     print(f"INFO: finished prettifying {newname}.")
-    # TODO: collect more and make it more digestible outside (e.g. via YAML)
     # TODO: mark the items referencing any of the dummy variables
-    for switch in switches:
-        print(switch)
+    with open(Path(__file__).absolute().parent / f"{rfname}.yml", "w") as yamlout:
+        yaml.safe_dump(switches, stream=yamlout, explicit_start=True, default_flow_style=None)
     return (ea, addr, arritems,)  # fmt: skip
 
 
@@ -1132,7 +1144,7 @@ def decode_crack_cmd(PTRSIZE: int = 8):  # remember: assumes 64-bit!
         # We simply won't continue if more than a single candidate remains
         if len(candidates) != 1:
             if tried_harder:
-                print(f"WARNING: known filter conditions not enough to find tableof command line switches for {rfname}")
+                print(f"ERROR: known filter conditions not enough to find tableof command line switches for {rfname}")
                 return
             else:
                 continue
@@ -1151,14 +1163,14 @@ def main():
     apply_per_module_typedefs()
     # find_string_refs()
     decode_crack_cmd()
-    # rename_and_retype(toolchain_renames)
-    # mark_lib_functions()
-    # color_lambdas()
-    # color_initializers()
-    # color_dtors()
-    # color_delayloads()
-    # mark_and_color_usagefuncs()
-    # detect_environment_variables()
+    rename_and_retype(toolchain_renames)
+    mark_lib_functions()
+    color_lambdas()
+    color_initializers()
+    color_dtors()
+    color_delayloads()
+    mark_and_color_usagefuncs()
+    detect_environment_variables()
 
 
 if __name__ == "__main__":
