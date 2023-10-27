@@ -1,0 +1,2581 @@
+---
+- - -AllowCompatibleILVersions
+  - 1
+  - 'true'
+  - [2, 3]
+- - -vzeroupper
+  - 1
+  - 'true'
+  - [2, 9]
+- - -vzeroupper-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -bigobj
+  - 1
+  - 'true'
+  - [1, 3]
+- - -experimental:tlsDllInterface
+  - 1
+  - 'true'
+  - [1, 8]
+- - -experimental:tlsDllInterface-
+  - 5
+  - 'false'
+  - [1, 8]
+- - -guardswtablesuppress
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardswtablesuppress-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardspecanalysismode:all
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -guardspecanalysismode:v1_0
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -guardspecanalysismode:v1_1
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -guardspecmode#
+  - 36
+  - decimal
+  - [2, 3]
+- - -guardspecload
+  - 1
+  - 'true'
+  - [1, 3]
+- - -guardspecload-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardspecloadmax
+  - 1
+  - 'true'
+  - [1, 3]
+- - -guardspecloadmax-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardspecloadcf
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardspecloadcf-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardspecjmp
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardspecjmp-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardretpoline
+  - 1
+  - 'true'
+  - [2, 8]
+- - -guardretpoline-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -guardssepistub
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardssepistub-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardssleafopt
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardssleafopt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardssnogs
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardssnogs-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardssverifysp
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardssverifysp-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardss#
+  - 36
+  - decimal
+  - [1, 3]
+- - -guardehcont
+  - 1
+  - 'true'
+  - [1, 9]
+- - -guardehcont-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -guardcheckesp#
+  - 36
+  - decimal
+  - [2, 3]
+- - -guardnopadglobals
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardrevokeonexception
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardopttable
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardgsforcfg
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardgsforcfg-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardgsnoshadow
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardnochecks
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardfastfail
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardcompat#
+  - 36
+  - decimal
+  - [2, 3]
+- - -guard32bytealign
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardcfgfuncptr
+  - 1
+  - 'true'
+  - [1, 9]
+- - -guardcfgfuncptr-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -guardignoresuppress
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardignoresuppress-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardimmportthunk
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardcfgdispatch
+  - 1
+  - 'true'
+  - [1, 9]
+- - -guardcfgdispatch-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -guardcfemu
+  - 1
+  - 'true'
+  - [1, 3]
+- - -guardxfg
+  - 1
+  - 'true'
+  - [1, 9]
+- - -guardxfg-
+  - 5
+  - 'false'
+  - [1, 9]
+- - -guardxfgavoidhazards-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -guardnothunkchecks
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardlongjmp
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardnolongjmp
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardnolongjmp-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardfidsreloc
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardfidsreloc-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardjumptables
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardjumptables-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -guardjumptables_dbgbreak
+  - 1
+  - 'true'
+  - [2, 3]
+- - -guardcfgcheckname:#
+  - 41
+  - callback
+  - [2, 2]
+- - -guardcfgcheckfptrname:#
+  - 41
+  - callback
+  - [2, 2]
+- - -guardcfgdispatchname:#
+  - 41
+  - callback
+  - [2, 2]
+- - -guardcfgdispatchfptrname:#
+  - 41
+  - callback
+  - [2, 2]
+- - -guardmemcpy
+  - 1
+  - 'true'
+  - [2, 9]
+- - -guardmemcpy-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -guardmemcpymode:indirect
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -guardmemcpymode:direct
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -guard#
+  - 36
+  - decimal
+  - [1, 3]
+- - -NoInitallStructWarning
+  - 1
+  - 'true'
+  - [1, 8]
+- - -cbstring
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Gs#
+  - 36
+  - decimal
+  - [1, 4]
+- - -Gt#
+  - 36
+  - decimal
+  - [1, 4]
+- - -Gil
+  - 1
+  - 'true'
+  - [2, 3]
+- - -clrpure
+  - 1
+  - 'true'
+  - [1, 3]
+- - -clrnetcore
+  - 1
+  - 'true'
+  - [1, 3]
+- - -clrsafe
+  - 1
+  - 'true'
+  - [1, 3]
+- - -clrinitlocals
+  - 1
+  - 'true'
+  - [1, 3]
+- - -SIAuthor
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ConservativeInteriorPointers
+  - 1
+  - 'true'
+  - [2, 3]
+- - -cvtcil
+  - 1
+  - 'true'
+  - [1, 3]
+- - -stkfill#
+  - 36
+  - decimal
+  - [2, 5]
+- - -fastcap
+  - 1
+  - 'true'
+  - [1, 3]
+- - -framechain
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Wall
+  - 1
+  - 'true'
+  - [1, 3]
+- - -G#
+  - 35
+  - c2:unknown
+  - [1, 11]
+- - -W#
+  - 35
+  - c2:unknown
+  - [1, 11]
+- - -OptimizeHugeFunctions
+  - 1
+  - 'true'
+  - [2, 3]
+- - -OptimizeHugeFunctions-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -EmitExProcDbgSym
+  - 1
+  - 'true'
+  - [2, 3]
+- - -EmitExProcDbgSym-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -FastFail
+  - 1
+  - 'true'
+  - [2, 3]
+- - -FastFail-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -FatObjFunc
+  - 1
+  - 'true'
+  - [1, 3]
+- - -FatObjData
+  - 1
+  - 'true'
+  - [1, 3]
+- - -FitObjFunc
+  - 5
+  - 'false'
+  - [1, 3]
+- - -FitObjData
+  - 5
+  - 'false'
+  - [1, 3]
+- - -fixupsymbol:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -db#
+  - 34
+  - string
+  - [2, 0]
+- - -dumpCallGraph:#
+  - 34
+  - string
+  - [2, 0]
+- - -off#
+  - 34
+  - string
+  - [2, 0]
+- - -ef#
+  - 34
+  - string
+  - [2, 0]
+- - -forceZ7
+  - 1
+  - 'true'
+  - [1, 3]
+- - -f#
+  - 34
+  - string
+  - [1, 1]
+- - -Fd#
+  - 34
+  - string
+  - [1, 0]
+- - -coldfuncs:#
+  - 34
+  - string
+  - [1, 0]
+- - -hotfuncs:#
+  - 34
+  - string
+  - [1, 0]
+- - -packfuncs:#
+  - 34
+  - string
+  - [1, 0]
+- - -kernel
+  - 1
+  - 'true'
+  - [1, 3]
+- - -NoRTTI
+  - 1
+  - 'true'
+  - [1, 3]
+- - -isize#
+  - 36
+  - decimal
+  - [2, 3]
+- - -il#
+  - 34
+  - string
+  - [1, 1]
+- - -inlS#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlT#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlfcsw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlflcsw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlcsw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlcasw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inldasw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlld#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inld#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlniln#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlnild#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlnoln#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlnold#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlnobr#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlnlw
+  - 1
+  - 'true'
+  - [2, 3]
+- - -inlocsa1#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlocsa2#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlocsa3#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlocsa4#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlcrmax#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlfcsa#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inluserinl#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlmlsa#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlipfw#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlLnDbg#
+  - 36
+  - decimal
+  - [2, 3]
+- - -inlCalleeFrameSizeLimit:#
+  - 36
+  - decimal
+  - [2, 5]
+- - -inlinelog
+  - 1
+  - 'true'
+  - [2, 3]
+- - -inlinelogfull:#
+  - 34
+  - string
+  - [2, 0]
+- - -inlineelogfull:#
+  - 41
+  - callback
+  - [2, 2]
+- - -NoOptimizedInlinees
+  - 1
+  - 'true'
+  - [2, 3]
+- - -inlinelogdetails:#
+  - 34
+  - string
+  - [2, 0]
+- - -inlinestats
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ShowDecisionFile
+  - 1
+  - 'true'
+  - [2, 3]
+- - -inlLimitFuncId#
+  - 36
+  - decimal
+  - [2, 5]
+- - -inlLimitCount#
+  - 36
+  - decimal
+  - [2, 5]
+- - -inlsort-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -inlsort+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -vol#
+  - 36
+  - decimal
+  - [2, 3]
+- - -EHs
+  - 1
+  - 'true'
+  - [1, 3]
+- - -EHa
+  - 1
+  - 'true'
+  - [1, 3]
+- - -EHr
+  - 1
+  - 'true'
+  - [1, 3]
+- - -OptimizeAMP
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Loop#
+  - 36
+  - decimal
+  - [2, 3]
+- - -loopopt
+  - 1
+  - 'true'
+  - [2, 3]
+- - -useoldhandlers
+  - 1
+  - 'true'
+  - [2, 3]
+- - -incremental
+  - 1
+  - 'true'
+  - [1, 3]
+- - -incremental_rebuild
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ipdbin:#
+  - 34
+  - string
+  - [2, 0]
+- - -iobjin:#
+  - 34
+  - string
+  - [2, 0]
+- - -ipdb#
+  - 34
+  - string
+  - [2, 0]
+- - -iobj#
+  - 34
+  - string
+  - [2, 0]
+- - -tsiobj#
+  - 36
+  - decimal
+  - [2, 5]
+- - -objdir:#
+  - 34
+  - string
+  - [2, 0]
+- - -ltcgEditFid#
+  - 36
+  - decimal
+  - [2, 3]
+- - -ltcgEditVid#
+  - 36
+  - decimal
+  - [2, 3]
+- - -ltcgEditNum#
+  - 36
+  - decimal
+  - [2, 3]
+- - -ltcgNoDiff
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ltcgVCallsiteIgnore#
+  - 36
+  - decimal
+  - [2, 3]
+- - -ltcgTime
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ltcgNoRecompileCheck
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ltcgSkipMinorVerCheck
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ReducedOptimizeHugeFunctions
+  - 1
+  - 'true'
+  - [1, 3]
+- - -ReducedOptimizeThreshold:#
+  - 36
+  - decimal
+  - [1, 5]
+- - -wbrd#
+  - 34
+  - string
+  - [2, 0]
+- - -MLd
+  - 1
+  - 'true'
+  - [1, 3]
+- - -MDd
+  - 1
+  - 'true'
+  - [1, 3]
+- - -MTd
+  - 1
+  - 'true'
+  - [1, 3]
+- - -ML
+  - 1
+  - 'true'
+  - [1, 3]
+- - -MD
+  - 1
+  - 'true'
+  - [1, 3]
+- - -MT
+  - 1
+  - 'true'
+  - [1, 3]
+- - -msilDebug
+  - 1
+  - 'true'
+  - [2, 3]
+- - -size
+  - 1
+  - 'true'
+  - [2, 3]
+- - -speed
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ehopt
+  - 5
+  - 'false'
+  - [1, 3]
+- - -noehopt
+  - 1
+  - 'true'
+  - [1, 3]
+- - -FH4-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -FH4
+  - 1
+  - 'true'
+  - [2, 9]
+- - -newcolor
+  - 1
+  - 'true'
+  - [2, 3]
+- - -newcolor-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -cands
+  - 1
+  - 'true'
+  - [2, 3]
+- - -linscan
+  - 1
+  - 'true'
+  - [2, 3]
+- - -tile-allocator
+  - 1
+  - 'true'
+  - [2, 8]
+- - -tile-allocator-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -tile-fastpath
+  - 1
+  - 'true'
+  - [2, 8]
+- - -tile-fastpath-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -TileAsmStats
+  - 1
+  - 'true'
+  - [1, 8]
+- - -nolock
+  - 1
+  - 'true'
+  - [2, 3]
+- - -nowinrtopts
+  - 1
+  - 'true'
+  - [2, 3]
+- - -nodatasort
+  - 1
+  - 'true'
+  - [2, 3]
+- - -dshigh#
+  - 36
+  - decimal
+  - [2, 5]
+- - -dslow#
+  - 36
+  - decimal
+  - [2, 5]
+- - -Fl#
+  - 38
+  - stringlist_append
+  - [1, 12]
+- - -ltcg
+  - 1
+  - 'true'
+  - [1, 3]
+- - -optref
+  - 1
+  - 'true'
+  - [1, 3]
+- - -pchmap#
+  - 34
+  - string
+  - [1, 0]
+- - -winmdonly
+  - 1
+  - 'true'
+  - [1, 3]
+- - -hft#
+  - 36
+  - decimal
+  - [2, 6]
+- - -nocfgrngchk
+  - 1
+  - 'true'
+  - [1, 3]
+- - -noguardshadowall
+  - 1
+  - 'true'
+  - [2, 3]
+- - -FAf
+  - 1
+  - 'true'
+  - [1, 3]
+- - -FAF
+  - 1
+  - 'true'
+  - [1, 3]
+- - -AsmStats
+  - 1
+  - 'true'
+  - [1, 8]
+- - -NoAsmVer
+  - 1
+  - 'true'
+  - [2, 8]
+- - -FA#
+  - 34
+  - string
+  - [1, 0]
+- - -Fa#
+  - 34
+  - string
+  - [1, 0]
+- - -Fs#
+  - 34
+  - string
+  - [1, 0]
+- - -Bd
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Brepro
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Zi
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Z7
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Za
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Zl
+  - 5
+  - 'false'
+  - [1, 3]
+- - -Zvc6
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Zo-
+  - 5
+  - 'false'
+  - [1, 3]
+- - -Zi+
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PgoPdbOff
+  - 5
+  - 'false'
+  - [1, 3]
+- - -H#
+  - 36
+  - decimal
+  - [1, 7]
+- - -Fo#
+  - 34
+  - string
+  - [1, 1]
+- - -ObjSubDir#
+  - 34
+  - string
+  - [1, 0]
+- - -trimfile:#
+  - 34
+  - string
+  - [1, 0]
+- - -experimental:deterministic
+  - 1
+  - 'true'
+  - [1, 3]
+- - -pathmap:#
+  - 45
+  - c2:unknown
+  - [1, 16]
+- - '"-pathmap:#'
+  - 45
+  - c2:unknown
+  - [1, 16]
+- - -dos
+  - 1
+  - 'true'
+  - [1, 3]
+- - -S
+  - 1
+  - 'true'
+  - [1, 3]
+- - -nowarn4715
+  - 5
+  - 'false'
+  - [2, 3]
+- - -nowarn4786
+  - 5
+  - 'false'
+  - [2, 3]
+- - -ZI
+  - 1
+  - 'true'
+  - [1, 3]
+- - -ZX
+  - 1
+  - 'true'
+  - [1, 3]
+- - -EnCStackInitAll
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ZW
+  - 1
+  - 'true'
+  - [1, 3]
+- - -ZW:nometadata
+  - 1
+  - 'true'
+  - [1, 3]
+- - -omp
+  - 1
+  - 'true'
+  - [1, 3]
+- - -omp:experimental
+  - 1
+  - 'true'
+  - [1, 3]
+- - -omp:llvm
+  - 1
+  - 'true'
+  - [1, 3]
+- - -await:heapelide
+  - 1
+  - 'true'
+  - [1, 3]
+- - -await
+  - 1
+  - 'true'
+  - [1, 3]
+- - -pdbrpc
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoPBInline
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoDFInline
+  - 5
+  - 'false'
+  - [2, 3]
+- - -PogoNotEmitCGNodeDbgInfo
+  - 5
+  - 'false'
+  - [2, 3]
+- - -pinth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -PogoNoMDSBoost#
+  - 36
+  - decimal
+  - [2, 3]
+- - -PogoNoMDSInlTh#
+  - 36
+  - decimal
+  - [2, 6]
+- - -pinssr#
+  - 36
+  - decimal
+  - [2, 3]
+- - -pspeed#
+  - 36
+  - decimal
+  - [2, 3]
+- - -PPhase#
+  - 36
+  - decimal
+  - [2, 5]
+- - -PogoAlwaysSize#
+  - 36
+  - decimal
+  - [2, 3]
+- - -pgi#
+  - 34
+  - string
+  - [1, 0]
+- - -pgo#
+  - 34
+  - string
+  - [1, 0]
+- - -pgu#
+  - 34
+  - string
+  - [1, 0]
+- - -pi#
+  - 34
+  - string
+  - [2, 0]
+- - -po#
+  - 34
+  - string
+  - [2, 0]
+- - -pv#
+  - 34
+  - string
+  - [2, 0]
+- - -Fg#
+  - 34
+  - string
+  - [2, 0]
+- - -spgo
+  - 1
+  - 'true'
+  - [1, 3]
+- - -spdname:#
+  - 34
+  - string
+  - [1, 0]
+- - -SpgoDensityTH#
+  - 36
+  - decimal
+  - [2, 3]
+- - -SpgoMinCoverTH#
+  - 36
+  - decimal
+  - [2, 3]
+- - -SpgoCodeSeparation
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SpgoPackHotCode
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SpgoHotCodeTH#
+  - 36
+  - decimal
+  - [2, 6]
+- - -SpgoCompileColdFunctionsWithoutProfileData
+  - 1
+  - 'true'
+  - [2, 3]
+- - -pagepackeroff
+  - 5
+  - 'false'
+  - [2, 3]
+- - -pagesize#
+  - 36
+  - decimal
+  - [2, 3]
+- - -clinesize#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psweight#
+  - 36
+  - decimal
+  - [2, 3]
+- - -pstypeth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psepcodth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psickratio#
+  - 36
+  - decimal
+  - [2, 5]
+- - -psepcodorder
+  - 1
+  - 'true'
+  - [2, 3]
+- - -datalayoutoff
+  - 5
+  - 'false'
+  - [2, 3]
+- - -layoutD2D#
+  - 36
+  - decimal
+  - [2, 3]
+- - -layoutF2Doff
+  - 5
+  - 'false'
+  - [2, 3]
+- - -thunklayout
+  - 1
+  - 'true'
+  - [2, 3]
+- - -pspinth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -pspinsaveth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psavepgd#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psinvalidon
+  - 1
+  - 'true'
+  - [2, 3]
+- - -psinvalidoff
+  - 5
+  - 'false'
+  - [2, 3]
+- - -psvcallopt#
+  - 36
+  - decimal
+  - [2, 3]
+- - -psvcalllimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -palwinth#
+  - 36
+  - decimal
+  - [2, 3]
+- - -PGCMemMin#
+  - 36
+  - decimal
+  - [2, 6]
+- - -PGCMemMax#
+  - 36
+  - decimal
+  - [2, 6]
+- - -MixDataCode
+  - 1
+  - 'true'
+  - [2, 3]
+- - -UseExPgd
+  - 1
+  - 'true'
+  - [2, 3]
+- - -callcap
+  - 1
+  - 'true'
+  - [1, 3]
+- - -cap
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Qimprecise_fwaits
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Qfast_transcendentals
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Qsafe_fp_loads
+  - 1
+  - 'true'
+  - [1, 3]
+- - -archSSE42
+  - 8
+  - c2:unknown
+  - [1, 10]
+- - -archAVX
+  - 8
+  - c2:unknown
+  - [1, 10]
+- - -archAVX2
+  - 8
+  - c2:unknown
+  - [1, 10]
+- - -archAVX512
+  - 8
+  - c2:unknown
+  - [1, 10]
+- - -atom
+  - 1
+  - 'true'
+  - [1, 3]
+- - -alignedVec
+  - 1
+  - 'true'
+  - [2, 3]
+- - -FpcvtIA
+  - 1
+  - 'true'
+  - [1, 3]
+- - -FpcvtBC
+  - 1
+  - 'true'
+  - [1, 3]
+- - -QIntel-jcc-erratum
+  - 1
+  - 'true'
+  - [1, 8]
+- - -QIntel-jcc-erratum:#
+  - 34
+  - string
+  - [2, 0]
+- - -QIntel-jcc-erratum-partial
+  - 1
+  - 'true'
+  - [2, 8]
+- - -QIntel-jcc-erratum-partial:#
+  - 34
+  - string
+  - [2, 0]
+- - -NoPrefetch
+  - 1
+  - 'true'
+  - [2, 3]
+- - -NoLUR
+  - 1
+  - 'true'
+  - [2, 3]
+- - -NoWX
+  - 1
+  - 'true'
+  - [2, 3]
+- - -initialAppDomain
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Ob#
+  - 36
+  - decimal
+  - [1, 3]
+- - -Og
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Ot
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Os
+  - 1
+  - 'true'
+  - [1, 3]
+- - -hotpatch
+  - 1
+  - 'true'
+  - [1, 3]
+- - -MakeHotPatch
+  - 1
+  - 'true'
+  - [2, 3]
+- - -home
+  - 1
+  - 'true'
+  - [1, 3]
+- - -doforcealign
+  - 1
+  - 'true'
+  - [2, 3]
+- - -AlignFuncs
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoCodeCoverage
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoNtoskrnl
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoKmode
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoNoShare
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoNoMDS
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoNoThunks
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoSafeMode
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoNoDataDiff
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoColdOpt
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoDeadOpt
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoDeadOff
+  - 5
+  - 'false'
+  - [1, 3]
+- - -PogoColdOff
+  - 5
+  - 'false'
+  - [1, 3]
+- - -PogoNotOptEditedFunc
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoNoRDataLayout
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoDwordProbe
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoInlineSimpleProbe+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoInlineSimpleProbe-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -PogoProbeCalls+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoProbeCalls-
+  - 5
+  - 'false'
+  - [1, 3]
+- - -PogoNoDllMainCallback
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoDiagnose
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoDynamicRatio
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoRedirLimit#
+  - 36
+  - decimal
+  - [2, 3]
+- - -PogoRedirConsiderArgs
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PogoUseX86Pgd
+  - 1
+  - 'true'
+  - [1, 3]
+- - -PogoAggressive
+  - 1
+  - 'true'
+  - [1, 3]
+- - -errorreport:queue
+  - 1
+  - 'true'
+  - [1, 3]
+- - -errorreport:prompt
+  - 1
+  - 'true'
+  - [1, 3]
+- - -errorreport:send
+  - 1
+  - 'true'
+  - [1, 3]
+- - -errorreport:none
+  - 1
+  - 'true'
+  - [1, 3]
+- - -crash#
+  - 36
+  - decimal
+  - [2, 6]
+- - -MPdiagMutex#
+  - 34
+  - string
+  - [1, 0]
+- - -searchAltPathForScope
+  - 1
+  - 'true'
+  - [2, 3]
+- - -mnunmrf#
+  - 34
+  - string
+  - [2, 0]
+- - -UI#
+  - 34
+  - string
+  - [2, 0]
+- - -schdat#
+  - 36
+  - decimal
+  - [2, 3]
+- - -Yc
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Yu
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Y-
+  - 1
+  - 'true'
+  - [1, 3]
+- - -typedil
+  - 1
+  - 'true'
+  - [1, 8]
+- - -notypeopt
+  - 1
+  - 'true'
+  - [2, 8]
+- - -pdbpath:#
+  - 34
+  - string
+  - [2, 0]
+- - -prunedbinfo
+  - 1
+  - 'true'
+  - [2, 9]
+- - -nodbinfoprune
+  - 5
+  - 'false'
+  - [2, 9]
+- - -udtforceinclude:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -noCodeGenTypeOpt
+  - 1
+  - 'true'
+  - [2, 8]
+- - -noEcgTypeOpt
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ecgTypeOpt
+  - 1
+  - 'true'
+  - [2, 8]
+- - -TypeModLimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -typeoptcfg#
+  - 34
+  - string
+  - [2, 0]
+- - -siltcginstrs#
+  - 36
+  - decimal
+  - [2, 5]
+- - -iso_volatile
+  - 5
+  - 'false'
+  - [1, 3]
+- - -iso_volatile-
+  - 1
+  - 'true'
+  - [1, 3]
+- - -memoryBarriers
+  - 1
+  - 'true'
+  - [2, 3]
+- - -cgthreads#
+  - 36
+  - decimal
+  - [1, 6]
+- - -threads#
+  - 36
+  - decimal
+  - [2, 6]
+- - -assert
+  - 1
+  - 'true'
+  - [2, 3]
+- - -noadditionalscheduling
+  - 5
+  - 'false'
+  - [2, 8]
+- - -additionalscheduling
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ignoreob3exception
+  - 1
+  - 'true'
+  - [2, 8]
+- - -nomtdeps
+  - 1
+  - 'true'
+  - [2, 3]
+- - -nomttddeps
+  - 1
+  - 'true'
+  - [2, 3]
+- - -mtcallerlimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -mtcalleelimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -cgsummary
+  - 1
+  - 'true'
+  - [2, 3]
+- - -cgsummary+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -wpasummary
+  - 1
+  - 'true'
+  - [2, 3]
+- - -incltcgsummary
+  - 1
+  - 'true'
+  - [2, 3]
+- - -incltcgdiag
+  - 1
+  - 'true'
+  - [2, 3]
+- - -incltcgclimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -incltcgcglimit#
+  - 36
+  - decimal
+  - [2, 5]
+- - -ignoreC1007
+  - 1
+  - 'true'
+  - [2, 3]
+- - -RTTIReportingIgnoreDisabled
+  - 1
+  - 'true'
+  - [2, 3]
+- - -initsummary
+  - 1
+  - 'true'
+  - [2, 3]
+- - -singleMethodCompile:#
+  - 34
+  - string
+  - [2, 0]
+- - -preventIntermediateNaNs
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PreExec+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PreExec-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -CollapseAtExit+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -CollapseAtExit-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -PoolPageSize#
+  - 36
+  - decimal
+  - [2, 5]
+- - '"-pdbmap#'
+  - 34
+  - string
+  - [1, 0]
+- - -epilogunwind
+  - 1
+  - 'true'
+  - [2, 3]
+- - -epilogunwindrequirev2
+  - 1
+  - 'true'
+  - [2, 3]
+- - -jumptablerdata
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Qvec-
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Qvec-report:#
+  - 36
+  - decimal
+  - [1, 3]
+- - -Qvec-sse2only
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Qvec-mathlib-
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Qslpvec-
+  - 1
+  - 'true'
+  - [2, 3]
+- - -Qpar
+  - 1
+  - 'true'
+  - [1, 3]
+- - -Qpar-report:#
+  - 36
+  - decimal
+  - [1, 3]
+- - -ssaopt-perf
+  - 1
+  - 'true'
+  - [2, 8]
+- - -disablefirstbitfieldopts
+  - 1
+  - 'true'
+  - [2, 3]
+- - -DisableIvLoopSimplications
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-loopopt-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-loop-block-copy-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-loop-block-copy-stop-at
+  - 36
+  - decimal
+  - [2, 5]
+- - -legacy-loopopt-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -sdlMode
+  - 1
+  - 'true'
+  - [1, 3]
+- - '"-winmdmap#'
+  - 34
+  - string
+  - [1, 0]
+- - -AmpShaderInformation
+  - 1
+  - 'true'
+  - [2, 3]
+- - -MPX
+  - 1
+  - 'true'
+  - [1, 3]
+- - -NoTypeChanges
+  - 1
+  - 'true'
+  - [2, 3]
+- - -TypeProp+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -TypeProp-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SpecDevirt+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SpecDevirt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -BinaryDevirt+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -BinaryDevirt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -UseVTableDevirt+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -UseVTableDevirt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SepFallback+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SepFallback-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -OnlySpecDevirtForInlining+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -OnlySpecDevirtForInlining-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -ThrowingNew
+  - 1
+  - 'true'
+  - [1, 3]
+- - -ThrowingNew-
+  - 5
+  - 'false'
+  - [1, 3]
+- - -Timing
+  - 1
+  - 'true'
+  - [2, 3]
+- - -TPReport
+  - 1
+  - 'true'
+  - [2, 3]
+- - -AssertRecursiveInline
+  - 1
+  - 'true'
+  - [2, 3]
+- - -OptimizeMagicStatics+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -OptimizeMagicStatics-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -MarkStaticBodiesCold+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -MarkStaticBodiesCold-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -DisablePGIMT
+  - 1
+  - 'true'
+  - [2, 3]
+- - -EnablePGIMT
+  - 5
+  - 'false'
+  - [2, 3]
+- - -DisableWPABUMT
+  - 1
+  - 'true'
+  - [2, 3]
+- - -EnableWPABUMT
+  - 5
+  - 'false'
+  - [2, 3]
+- - -DisableWPATDMT
+  - 1
+  - 'true'
+  - [2, 3]
+- - -EnableWPATDMT
+  - 5
+  - 'false'
+  - [2, 3]
+- - -wpaTDAliasLimit#
+  - 36
+  - decimal
+  - [2, 6]
+- - -DisableWPAConstParam
+  - 1
+  - 'true'
+  - [2, 3]
+- - -queuerand#
+  - 36
+  - decimal
+  - [2, 6]
+- - -queueseed#
+  - 36
+  - decimal
+  - [2, 6]
+- - -FuncCache#
+  - 36
+  - decimal
+  - [2, 6]
+- - -SSAOptimizer-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-all-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cse-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-pre-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-rse-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-dce-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-all-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-merge-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-sink-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-hoist-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-question-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-clean-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-spec-store+
+  - 5
+  - 'false'
+  - [2, 8]
+- - -ssa-cfg-spec-store-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-cfg-jt-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-bit-estimator-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-all-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-vect-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-fma-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-minmax-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-rsqrt-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-divrem-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-undef-int-overflow-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-patterns-ternlog-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-bit-track-opt-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -NewPerfectLoopUnroll+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -NewPerfectLoopUnroll-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -FuncletComdat+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -FuncletComdat-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -FuncOverride:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -BaseMapFileName:#
+  - 34
+  - string
+  - [2, 0]
+- - -LambdaAliasAnalysis+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -LambdaAliasAnalysis-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -StrictInlineDecisions
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PermissiveInlineDecisions
+  - 1
+  - 'true'
+  - [2, 3]
+- - -InlineDecisions:#
+  - 43
+  - c2:unknown
+  - [2, 14]
+- - -NoSmallFunctionOpt
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SpeedDecisions:#
+  - 34
+  - string
+  - [2, 0]
+- - -StrictSpeedDecisions
+  - 1
+  - 'true'
+  - [2, 3]
+- - -OnlyPrePass
+  - 1
+  - 'true'
+  - [2, 3]
+- - -ReturnUdtEHInline
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ReturnUdtEHInline-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -SkipLegalityCheckTo:#
+  - 41
+  - callback
+  - [2, 2]
+- - -SkipLegalityCheckFor:#
+  - 41
+  - callback
+  - [2, 2]
+- - -SkipLegalityCheck:#
+  - 41
+  - callback
+  - [2, 2]
+- - -SkipHeuristicTo:#
+  - 41
+  - callback
+  - [2, 2]
+- - -SkipHeuristicFor:#
+  - 41
+  - callback
+  - [2, 2]
+- - -SkipHeuristic:#
+  - 41
+  - callback
+  - [2, 2]
+- - -RecomputeAddrTaken-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -RecomputeAddrTaken+
+  - 1
+  - 'true'
+  - [2, 9]
+- - -SecureHotPatch:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -SecureHotPatchFile:#
+  - 34
+  - string
+  - [2, 0]
+- - -SHPAddrTaken+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPAddrTaken-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPLinkInclude+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPLinkInclude-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPVerifyFuncs+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPVerifyFuncs-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPNoGlobalCP+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPNoGlobalCP-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPAllowGCGIU+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPAllowGCGIU-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPAllowDevirt+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPAllowDevirt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPAllowParamRangeOpt+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPAllowParamRangeOpt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPAllowWPARestrict+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPAllowWPARestrict-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPIndirectConstants+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPIndirectConstants-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPNoThunkForDirectCalls+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -SHPNoThunkForDirectCalls-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -SHPHotswap
+  - 1
+  - 'true'
+  - [2, 3]
+- - -compileFunc:#
+  - 34
+  - string
+  - [2, 0]
+- - -PureFuncOpt
+  - 1
+  - 'true'
+  - [2, 3]
+- - -PureFuncOpt-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -JMC
+  - 1
+  - 'true'
+  - [1, 3]
+- - -JMC-
+  - 5
+  - 'false'
+  - [1, 3]
+- - -CoroOptsWorkaround
+  - 1
+  - 'true'
+  - [2, 3]
+- - -CoroOptsWorkaround-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -CoroNewPromotion
+  - 1
+  - 'true'
+  - [2, 8]
+- - -CoroNewPromotion-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -TurnOffWarn746
+  - 1
+  - 'true'
+  - [2, 3]
+- - -VolatileMetadata
+  - 1
+  - 'true'
+  - [1, 9]
+- - -VolatileMetadata-
+  - 5
+  - 'false'
+  - [1, 9]
+- - -noVolatileMetadata
+  - 1
+  - 'true'
+  - [2, 8]
+- - -VolatileNoFence-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -DeepThoughtInliner+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -DeepThoughtInliner-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -UseModel-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -MinFoldedCmp:#
+  - 36
+  - decimal
+  - [2, 3]
+- - -DeferMerge+
+  - 1
+  - 'true'
+  - [2, 3]
+- - -DeferMerge-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -ASAN
+  - 1
+  - 'true'
+  - [1, 8]
+- - -ASanRAII-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -ASan
+  - 1
+  - 'true'
+  - [1, 8]
+- - -Fuzzer
+  - 1
+  - 'true'
+  - [1, 8]
+- - -AsanInstrumentationWithCallThreshhold:#
+  - 36
+  - decimal
+  - [1, 3]
+- - -AsanInstrumentationPerFunctionThreshold:#
+  - 36
+  - decimal
+  - [1, 3]
+- - -UseAfterReturn
+  - 1
+  - 'true'
+  - [1, 9]
+- - -UseAfterReturn-
+  - 5
+  - 'false'
+  - [1, 9]
+- - -ASanIgnoreSimpleLocalReadsAndWrites
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ASanIgnoreSimpleLocalReadsAndWrites-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -VCAsanLib
+  - 1
+  - 'true'
+  - [2, 9]
+- - -VCAsanLib-
+  - 5
+  - 'false'
+  - [1, 9]
+- - -AsanStripGlobalMetadata
+  - 1
+  - 'true'
+  - [2, 9]
+- - -AsanStripGlobalMetadata-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -Sancov
+  - 1
+  - 'true'
+  - [1, 9]
+- - -Sancov-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCov
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCov-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovAnalysisMode:*
+  - 8
+  - c2:unknown
+  - [1, 10]
+- - -SanCovCoverageType:trace-pc-guard
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:trace-pc-guard-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:trace-pc
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:trace-pc-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:inline-8bit-counters
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:inline-8bit-counters-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:inline-bool-flag
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:inline-bool-flag-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:indirect-calls
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:indirect-calls-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:trace-cmp
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:trace-cmp-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:trace-div
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:trace-div-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovCoverageType:pc-table
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCovCoverageType:pc-table-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCov:no-prune
+  - 1
+  - 'true'
+  - [1, 9]
+- - -SanCov:no-prune-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -SanCovAllowList:#
+  - 43
+  - c2:unknown
+  - [1, 14]
+- - -SanCovBlockList:#
+  - 43
+  - c2:unknown
+  - [1, 14]
+- - -pattern-opt-lowered-pre-color-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -pattern-opt-lowered-pre-color+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -pattern-opt-lowered-post-color-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -pattern-opt-lowered-post-color+
+  - 1
+  - 'true'
+  - [2, 8]
+- - -pattern-opt-disable:#
+  - 44
+  - c2:unknown
+  - [2, 15]
+- - -ssa-peeps-pre-color
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-peeps-pre-color-:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -ssa-peeps-post-color
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ssa-peeps-post-color-:#
+  - 42
+  - c2:unknown
+  - [2, 13]
+- - -AttributeSeed#
+  - 36
+  - decimal
+  - [2, 5]
+- - -AttributeFreq#
+  - 36
+  - decimal
+  - [2, 5]
+- - -ExtendedWarningInfo
+  - 1
+  - 'true'
+  - [2, 8]
+- - -ExtendedWarningInfoCount#
+  - 36
+  - decimal
+  - [2, 3]
+- - -CastGuard
+  - 1
+  - 'true'
+  - [1, 9]
+- - -CastGuard-
+  - 5
+  - 'false'
+  - [2, 9]
+- - -CastGuardFailureMode:nop
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -CastGuardFailureMode:fastfail
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -CastGuardFailureMode:debugbreak
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -CastGuardFailureMode:os_handled
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -CastGuardFailureMode:user_handled
+  - 8
+  - c2:unknown
+  - [2, 10]
+- - -CastGuardOption:force_type_system
+  - 1
+  - 'true'
+  - [2, 8]
+- - -CastGuardOption:dump_layout_info
+  - 1
+  - 'true'
+  - [2, 8]
+- - -CastGuardTestFlags:#
+  - 36
+  - decimal
+  - [2, 3]
+- - -DisableTailCallError
+  - 1
+  - 'true'
+  - [2, 3]
+- - -DisableTailCallError-
+  - 5
+  - 'false'
+  - [2, 3]
+- - -glopt-limit-build-addrs
+  - 1
+  - 'true'
+  - [2, 8]
+- - -loop-unswitch-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -vect-avg-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -vect-multiversion-by-trip-count
+  - 1
+  - 'true'
+  - [2, 8]
+- - -vect-multiversion-by-trip-count-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -vect-hoist-array-base-expression
+  - 1
+  - 'true'
+  - [2, 8]
+- - -vect-hoist-array-base-expression-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -Zc:nrvo
+  - 1
+  - 'true'
+  - [2, 8]
+- - -Zc:nrvo-
+  - 1
+  - 'true'
+  - [2, 8]
+- - -Zc:tlsGuards
+  - 1
+  - 'true'
+  - [1, 8]
+- - -Zc:tlsGuards-
+  - 1
+  - 'true'
+  - [1, 8]
+- - -Zc:checkGwOdr
+  - 1
+  - 'true'
+  - [2, 8]
+- - -Zc:checkGwOdr-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -IRExplorer-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -optimize-enterloads-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -optimize-enterloads-extended-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -build-cmov-
+  - 5
+  - 'false'
+  - [2, 8]
+- - -unroll-loops-with-calls-
+  - 5
+  - 'false'
+  - [2, 8]
+- - '*'
+  - 34
+  - string
+  - [0, 0]

@@ -440,7 +440,7 @@ toolchain_renames = {
         "?nextword@@YAPEAGXZ": ("nextword", "wchar_t *{newname}(void);"),
         "?ProcessSwitches@@YAXXZ": ("ProcessSwitches", "void {newname}(void);"),
         "?MainInit@@YAXHPEAPEAG@Z": ("MainInit", "int {newname}(int argc, wchar_t **argv);"),
-        "?MainMod@@3UtagMOD@@A": ("MainMod", "tagMOD {newname};"),
+        # "?MainMod@@3UtagMOD@@A": ("MainMod", "tagMOD {newname};"),
         "?COMPILER_VERSION_W@@3QBGB": ("COMPILER_VERSION_W", "wchar_t const* const {newname};"),
         # substr
     },
@@ -1032,7 +1032,22 @@ def find_rdata_xrefs_to(ea: int, try_harder: bool = False) -> list[int]:
 
 def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dict, PTRSIZE: int = 8) -> Optional[tuple]:
     assert PTRSIZE == 8 and glblinfo.is_64bit(), "This code was designed with 64-bit in mind. 32-bit was never tested."
-    known_types = {1, 5, 10, 0x22, 0x24, 0x26, 0x28, 0x29,}  # fmt: skip
+    known_types = {
+        1: "true",
+        5: "false",
+        8: "c2:unknown",
+        10: "callback",
+        0x22: "string",
+        0x23: "c2:unknown",
+        0x24: "decimal",
+        0x26: "stringlist_append",
+        0x28: "hex",
+        0x29: "callback",
+        0x2A: "c2:unknown",
+        0x2B: "c2:unknown",
+        0x2C: "c2:unknown",
+        0x2D: "c2:unknown",
+    }
     newname = "cmdswitches"
     if not idc.set_name(ea, newname):
         print(f"WARNING: failed to set new name '{newname}' for {ea:#x} ... proceeding anyway")
@@ -1049,17 +1064,26 @@ def prettify_cmdswitches(ea: int, typename: str, typesize: int, terminators: dic
         strlit_offs = ida_bytes.get_qword(addr)
         switch = get_strlit(strlit_offs)
         if switch:
+            # Unpack from record above, which we have already read anyway ...
             not_final = None
             switch_type = None
+
             if typename in {"c1switch_t"}:
                 not_final = ida_bytes.get_byte(addr + 2 * PTRSIZE)
                 if not_final not in {0, 1}:
                     print(f"WARNING: record at {addr:#x} contains a value other than 0 or 1 for the 'type' at offset 0x10 at {addr=:#x}")
                 switch_type = ida_bytes.get_byte(addr + 2 * PTRSIZE + 1)
                 assert switch_type in known_types, f"Encountered unknown switch type {switch_type}/{switch_type:#x} (offset 0x11) at {addr=:#x}"
+            elif typename in {"c2switch_t"}:
+                switch_type = ida_bytes.get_byte(addr + 3 * PTRSIZE)
+                not_final = (
+                    ida_bytes.get_dword(addr + 3 * PTRSIZE + 4),
+                    ida_bytes.get_qword(addr + 2 * PTRSIZE),
+                )
+                assert switch_type in known_types, f"Encountered unknown switch type {switch_type}/{switch_type:#x} (offset 0x11) at {addr=:#x}"
             else:
                 assert False, f"Not implemented for {typename}"
-            switches.append((switch, not_final, switch_type,))  # fmt: skip
+            switches.append((switch, switch_type, known_types[switch_type], not_final,))  # fmt: skip
         if record == terminator:
             overall = addr + typesize - ea
             arritems = overall // typesize
