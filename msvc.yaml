@@ -218,7 +218,7 @@ msvc:
         documented: null
         mentions:
         - https://stackoverflow.com/q/33790425
-        purpose: null
+        purpose: By specifying `/alternatename:X=Y` you can tell the linker to use `Y` when searching for symbol `Y`
         researched: false
         resources:
         - https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
@@ -973,6 +973,7 @@ msvc:
         - https://stackoverflow.com/q/45538668
         - https://www.codeproject.com/Articles/5317556/Creating-Your-Very-Own-x64-PE-Packer-Protector-fro
         - https://xavibel.com/2023/01/18/shellcode-windows-x86-create-administrator-user-dynamic-peb-edt/
+        - https://developercommunity.visualstudio.com/t/emit-pe-coff-optional-header-data/787245
         purpose: null
         researched: false
         resources: []
@@ -2099,6 +2100,9 @@ msvc:
       nocoffgrpinfo:
         args: {}
         documented: null
+        mentions:
+        - https://developercommunity.visualstudio.com/t/emit-pe-coff-optional-header-data/787245
+        - https://stackoverflow.com/a/49116906
         purpose: null
         researched: false
         resources: []
