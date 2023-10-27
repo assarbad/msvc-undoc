@@ -16,7 +16,7 @@ The undocumented or barely mentioned switches are in bold, [the documented ones]
 | **`/allowimagesizeover2gb`** |  |
 | [`/allowisolation`](https://learn.microsoft.com/cpp/build/reference/allowisolation-manifest-lookup) | Specifies behavior for manifest lookup. |
 | **`/allpdata`** |  |
-| **[`/alternatename`](https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024)** |  |
+| **[`/alternatename`](https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024)** | By specifying `/alternatename:X=Y` you can tell the linker to use `Y` when searching for symbol `Y` |
 | [`/appcontainer`](https://learn.microsoft.com/cpp/build/reference/appcontainer-windows-store-app) | Specifies whether the app must run within an appcontainer process environment. |
 | **`/arm64hazardexist`** |  |
 | **`/arm64hazardfree`** |  |
@@ -300,7 +300,7 @@ The undocumented or barely mentioned switches are in bold, [the documented ones]
 | `MSVCETW_PARENT_CONTEXT_THREAD_ID` |                                                    |
 | `PRINT_HRESULT_ON_FAIL`            | `1` (or even non-empty?)                           |
 | `VSLANG`                           | the LANGID (e.g. 1033/0x409 for US-English)        |
-| `VS_UNICODE_OUTPUT`                | some "port" (pipe?), used by Visual Studio IDE, used to detect running in the IDE|
+| `VS_UNICODE_OUTPUT`                | file number (integer, such as for stdout, stderr), used by Visual Studio IDE, used to detect running in the IDE|
 | `VSTEL_SolutionSessionID`          | some GUID; adhoc generated?                        |
 | `VSTEL_CurrentSolutionBuildID`     | an (unsigned?) integer (PID/TID?)                  |
 | `VSTEL_ProjectID`                  | a GUID; does it correspond to project GUID?        |
