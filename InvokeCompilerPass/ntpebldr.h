@@ -34,14 +34,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #ifndef __NTPEBLDR_H_VER__
-#define __NTPEBLDR_H_VER__ 2023100820
+#define __NTPEBLDR_H_VER__ 2023103123
 #if !NTPEBLDR_NO_PRAGMA_ONCE && ((defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP))
 #    pragma once
 #endif
 #if defined(__cplusplus) && defined(_MSVC_LANG) && (__cplusplus == 199711L)
-static_assert(_MSVC_LANG >= 201703L, "This header expects a C++17 compatible compiler.");
+static_assert(_MSVC_LANG >= 201703L); // "This header expects a C++17 compatible compiler."
+#elif defined(_MSC_VER) && !defined(_MSVC_LANG)
+#    error This header expects a C++17 compatible compiler.
 #else
-static_assert(__cplusplus >= 201703L, "This header expects a C++17 compatible compiler.");
+static_assert(__cplusplus >= 201703L); // "This header expects a C++17 compatible compiler."
 #endif
 #if defined(WIN32_NO_STATUS)
 #    undef _NTSTATUS_

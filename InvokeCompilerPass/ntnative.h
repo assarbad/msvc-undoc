@@ -40,10 +40,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef __NTNATIVE_H_VER__
-#define __NTNATIVE_H_VER__ 2023100821
+#define __NTNATIVE_H_VER__ 2023103123
 #if (defined(_MSC_VER) && (_MSC_VER >= 1020)) || defined(__MCPP)
 #    pragma once
 #endif // Check for "#pragma once" support
+
+#pragma push_macro("STATIC_INLINE")
+#ifdef STATIC_INLINE
+#    undef STATIC_INLINE
+#endif // STATIC_INLINE
+#ifdef _MSC_VER
+#    define STATIC_INLINE static __forceinline
+#else
+#    define STATIC_INLINE static inline
+#endif // _MSC_VER
 
 // Fake the SAL1 annotations where they don't exist.
 #if !defined(__in_bcount) && !defined(_In_reads_bytes_)
@@ -392,7 +402,7 @@ extern "C"
 #    define SYMBOLIC_LINK_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
 #endif // SYMBOLIC_LINK_ALL_ACCESS
 
-#ifndef _NTDEF_
+#if !defined(_NTDEF_) && !defined(_NTSTATUS_)
     typedef _Success_(return >= 0) LONG NTSTATUS;
     typedef NTSTATUS* PNTSTATUS;
 #    define NT_SUCCESS(Status)     (((NTSTATUS)(Status)) >= 0)
@@ -1564,9 +1574,7 @@ extern "C"
     typedef NTSTATUS(NTAPI* NtOpenDirectoryObject_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
     typedef NTSTATUS(NTAPI* NtOpenEvent_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
     typedef NTSTATUS(NTAPI* NtOpenEventPair_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
-#if defined(DDKBUILD)
     typedef NTSTATUS(NTAPI* NtOpenFile_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES, _Out_ PIO_STATUS_BLOCK, _In_ ULONG, _In_ ULONG);
-#endif // DDKBUILD
     typedef NTSTATUS(NTAPI* NtOpenIoCompletion_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
     typedef NTSTATUS(NTAPI* NtOpenKey_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
     typedef NTSTATUS(NTAPI* NtOpenMutant_t)(_Out_ PHANDLE, _In_ ACCESS_MASK, _In_ POBJECT_ATTRIBUTES);
@@ -1897,37 +1905,46 @@ extern "C"
         } TEB, *PTEB;
 #endif // !defined(__NTPEBLDR_H_VER__)
 
-    static inline TEB* NtCurrentTeb()
-    {
+#if defined(__cplusplus)
+        __forceinline struct ::_TEB* NtCurrentTeb() // must not use static linking
+        {
 #    if defined(_WIN64) && defined(_M_X64)
-        return (TEB*)__readgsqword(FIELD_OFFSET(NT_TIB, Self));
+            return (struct ::_TEB*)__readgsqword(FIELD_OFFSET(NT_TIB, Self));
 #        ifdef _MSVC_LANG
-        static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x30, "Something is wrong with the NT_TIB struct");
+            static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x30, "Something is wrong with the NT_TIB struct");
 #        endif // _MSVC_LANG
 #    elif defined(_WIN32) && defined(_M_IX86)
 #        pragma warning(suppress : 4312)
-        return (TEB*)__readfsdword(FIELD_OFFSET(NT_TIB, Self));
+            return (struct ::_TEB*)__readfsdword(FIELD_OFFSET(NT_TIB, Self));
 #        ifdef _MSVC_LANG
-        static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x18, "Something is wrong with the NT_TIB struct");
+            static_assert(FIELD_OFFSET(NT_TIB, Self) == 0x18, "Something is wrong with the NT_TIB struct");
 #        endif // _MSVC_LANG
 #    else
 #        error This isn't currently implemented on the current platform, it seems. Review the code, implement it and retry.
 #    endif
-    }
-#if defined(__cplusplus)
+        }
     } // namespace NT
 #endif
 
-    static inline ULONG NTAPI RtlSetLastWin32Error(DWORD dwError)
+    STATIC_INLINE ULONG NTAPI RtlSetLastWin32Error(DWORD dwError)
     {
+#if defined(__cplusplus)
         ((NT::TEB*)NT::NtCurrentTeb())->LastErrorValue = dwError;
+#else
+    ((TEB*)NtCurrentTeb())->LastErrorValue = dwError;
+#endif
         return dwError;
     }
 
-    static inline DWORD RtlSetLastWin32ErrorAndNtStatusFromNtStatus(NTSTATUS Status)
+    STATIC_INLINE DWORD RtlSetLastWin32ErrorAndNtStatusFromNtStatus(NTSTATUS Status)
     {
+#if defined(__cplusplus)
         DWORD dwWin32Error = ::RtlNtStatusToDosError(Status); // ERROR_MR_MID_NOT_FOUND if no corresponding Win32 status exists
         ::RtlSetLastWin32Error(dwWin32Error);                 // RtlSetLastWin32Error
+#else
+    DWORD dwWin32Error = RtlNtStatusToDosError(Status); // ERROR_MR_MID_NOT_FOUND if no corresponding Win32 status exists
+    RtlSetLastWin32Error(dwWin32Error);                 // RtlSetLastWin32Error
+#endif
         return dwWin32Error;
     }
 
@@ -1964,13 +1981,7 @@ namespace NT
     static UNICODE_STRING const sWin32DeviceNsPfx = RTL_CONSTANT_STRING(WIN32_DEVICE_NAMESPACE);
     static UNICODE_STRING const sNtObjMgrNsPfx = RTL_CONSTANT_STRING(NT_OBJMGR_NAMESPACE);
 
-#if defined(__cplusplus)
-} // namespace NT
-#endif
-
-#if defined(__cplusplus) && !defined(__NTPEBLDR_H_VER__)
-namespace NT
-{
+#if !defined(__NTPEBLDR_H_VER__)
 // Must correspond to IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA from km/ntimage.h
 // Kernel mode address is KI_USER_SHARED_DATA (on ARM64 this is relocatable!)
 #    if defined(_WIN32) && (defined(_M_IX86) || defined(_M_AMD64))
@@ -1978,6 +1989,8 @@ namespace NT
 #            define MM_SHARED_USER_DATA_VA                          ((unsigned char*)0x7ffe0000)
 #            define IMAGE_DYNAMIC_RELOCATION_MM_SHARED_USER_DATA_VA MM_SHARED_USER_DATA_VA
 #        endif
+
+#        if defined(__cplusplus)
     namespace
     { // NB: these are intentionally defined in terms of C++ types rather than "Windows" types
         // Modern C++: wchar_t const (&SystemRoot)[260] = (decltype(SystemRoot))(*(wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30));
@@ -1985,10 +1998,19 @@ namespace NT
         unsigned short const& NativeProcessorArchitecture = *((unsigned short*)(MM_SHARED_USER_DATA_VA + 0x026a));
         unsigned long const& MajorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x026c)); //-V206 //-V126
         unsigned long const& MinorVersion = *((unsigned long*)(MM_SHARED_USER_DATA_VA + 0x0270)); //-V206 //-V126
-    }                                                                                             // namespace
-#        define NTNATIVE_
+    }                                                                                             // anonymous namespace
+#        else
+    wchar_t* const wcsSystemRoot = (wchar_t*)(MM_SHARED_USER_DATA_VA + 0x30);
+    unsigned short const* const wNativeProcessorArchitecture = (unsigned short*)(MM_SHARED_USER_DATA_VA + 0x026a);
+    unsigned long const* const dwMajorVersion = (unsigned long*)(MM_SHARED_USER_DATA_VA + 0x026c);
+    unsigned long const* const dwMinorVersion = (unsigned long*)(MM_SHARED_USER_DATA_VA + 0x0270);
+#        endif
 #    endif
-} // namespace NT
-#endif // __cplusplus && __NTPEBLDR_H_VER__
+#endif
 
+#if defined(__cplusplus)
+} // namespace NT
+#endif
+
+#pragma pop_macro("STATIC_INLINE")
 #endif // __NTNATIVE_H_VER__
