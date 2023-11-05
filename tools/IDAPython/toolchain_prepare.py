@@ -471,6 +471,11 @@ toolchain_renames = {
         "?flagmatch@@YAHPEAUflag_t@@0@Z": ("flagmatch", "bool {newname}(struct flag_t *flag1, struct flag_t *flag2);"),
         "?expand@@YAPEAUflag_t@@PEAGPEAU1@@Z": ("expand", "struct flag_t * {newname}(wchar_t *pattern, struct flag_t *a2);"),
         "?prefast_init@@YAXXZ": ("prefast_init", "void {newname}();"),
+        "?execute_scrutinized_c1xx@@YAHPEAUcontext_t@@P6AH0@Z@Z": (
+            "execute_scrutinized_c1xx",
+            "BOOL {newname}(struct context_t *context, int (*callback)(struct context_t *));",
+        ),
+        "?adjustPchName@@YAPEBGPEBGPEAGH@Z": ("adjustPchName", "wchar_t *__fastcall {newname}(const wchar_t *a1, wchar_t *a2);"),
         "?appendflag@@YAPEAUflag_t@@PEAPEAU1@PEAU1@@Z": ("appendflag", "struct flag_t * {newname}(struct flag_t **existing_flag, struct flag_t *newflag);"),
         "?deactivate_passes@@YAXPEAUflag_t@@@Z": ("deactivate_passes", "void {newname}(struct flag_t *flag);"),
         "?link_dll@@YAXPEAUflag_t@@@Z": ("link_dll", "void link_dll(struct flag_t *newflag);"),
