@@ -458,7 +458,22 @@ toolchain_renames = {
         "main": ("wmain", "int {newname}(int argc, wchar_t** argv);"),
         # "?cc_switches@@YAXPEAUcontext_t@@H@Z": (),
         # "early_switch_scan" # -> detect early_switches
-        # "?prefast_init@@YAXXZ"
+        # ?handlematch@@YAHPEBQEBGHPEAHH@Z
+        "?newflag@@YAPEAUflag_t@@PEBG00H@Z": (
+            "newflag",
+            "struct flag_t * {newname}(const wchar_t *szFlag1, const wchar_t *szFlag2, const wchar_t *szFlag3, uint16_t unknown_flag_flag);",
+        ),
+        "?execute@@YAHW4driver_phases@@PEAUpassinfo_t@@PEBG2PEAPEAG@Z": (
+            "execute",
+            "__int64 {newname}(int a1, struct passinfo_t *passinfo, const wchar_t *lpszPassDllName, const wchar_t *a4, wchar_t **argv);",
+        ),
+        "?Dargs@@YAPEAUflag_t@@PEBQEBGHPEAH@Z": ("Dargs", "struct flag_t * {newname}(wchar_t **argv, int a2, int *argidx);"),
+        "?flagmatch@@YAHPEAUflag_t@@0@Z": ("flagmatch", "bool {newname}(struct flag_t *flag1, struct flag_t *flag2);"),
+        "?expand@@YAPEAUflag_t@@PEAGPEAU1@@Z": ("expand", "struct flag_t * {newname}(wchar_t *pattern, struct flag_t *a2);"),
+        "?prefast_init@@YAXXZ": ("prefast_init", "void {newname}();"),
+        "?appendflag@@YAPEAUflag_t@@PEAPEAU1@PEAU1@@Z": ("appendflag", "struct flag_t * {newname}(struct flag_t **existing_flag, struct flag_t *newflag);"),
+        "?deactivate_passes@@YAXPEAUflag_t@@@Z": ("deactivate_passes", "void {newname}(struct flag_t *flag);"),
+        "?link_dll@@YAXPEAUflag_t@@@Z": ("link_dll", "void link_dll(struct flag_t *newflag);"),
         # Data
         "?AllowCwithCLR@@3HA": ("AllowCwithCLR", "BOOL {newname};"),
         "?AnalyzePathFlag@@3HA": ("AnalyzePathFlag", "BOOL {newname};"),
