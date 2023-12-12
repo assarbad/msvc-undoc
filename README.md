@@ -60,6 +60,10 @@ The following `Directory.Build.props` provides a simple example of how to use th
 </Project>
 ```
 
+# ETW-related GUIDs
+
+*  `GUID_MSVC_PROVIDER`: `{9C642431-C036-7958-4B0E-FE163528322B}`
+
 [1]: https://www.geoffchappell.com/studies/msvc/index.htm
 [2]: http://blog.airesoft.co.uk/2013/01/plug-in-to-cls-kitchen/
 [3]: https://chromium.googlesource.com/chromium/src/build/config/+/refs/heads/main/win/BUILD.gn
