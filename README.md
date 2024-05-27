@@ -22,7 +22,7 @@
 # Additional resources
 
 * [Versions of Visual C++][7] and the `_MSC_VER` and `_MSC_FULL_VER` values for various versions documented ([archived][8])
-  * GPLv3-licensed [project to read the values from binaries][9] created with MSVC (can be suppressed via `/emittoolversioninfo:no` to the `link.exe`)
+  * BSD-2-Clause-licensed [project to read the values from binaries][9] created with MSVC (can be suppressed via `/emittoolversioninfo:no` to the `link.exe`)
 * [The mysterious 'Rich' header][10] ([archived][11])
   * [Article by Daniel Pistelli][12]
 * Performance-related resources
