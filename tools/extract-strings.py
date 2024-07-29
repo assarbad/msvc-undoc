@@ -6,7 +6,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 __author__ = "Oliver Schneider"
 __copyright__ = "2023 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
 __version__ = "0.1.0"
-__compatible__ = ((3, 11),)
+__compatible__ = ((3, 11), (3, 12),)  # fmt: skip
 __doc__ = """
 =================
  extract-strings
