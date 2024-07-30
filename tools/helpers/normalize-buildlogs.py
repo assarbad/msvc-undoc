@@ -5,7 +5,7 @@ from __future__ import print_function, with_statement, unicode_literals, divisio
 
 __author__ = "Oliver Schneider"
 __copyright__ = "2024 Oliver Schneider (assarbad.net), under the terms of the UNLICENSE"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __compatible__ = ((3, 11), (3, 12),)  # fmt: skip
 __doc__ = """
 ===============================
@@ -23,7 +23,6 @@ import sys
 
 from functools import partial  # also cache
 from pathlib import Path, PureWindowsPath
-from os.path import commonprefix
 
 # from pprint import pformat, pprint
 # from typing import Optional
@@ -59,7 +58,16 @@ def custom_split(inp: str) -> list[str]:
     return list(map(lambda x: x[1:-1] if x[0:1] in {"'", '"'} and x[0:1] == x[-1:1] else x, list(lexer)))
 
 
-def parse_cl(inp: list[str]) -> (argparse.Namespace, list[str]):
+def find_dupes(inp: list[str]) -> dict:
+    if len(inp) > len(set(inp)):
+        count_dict = {}
+        for item in inp:
+            count_dict[item] = count_dict.get(item, 0) + 1
+        return {k: v for k, v in count_dict.items() if v > 2}
+    return {}
+
+
+def parse_cl(inp: list[str]) -> argparse.Namespace:
     from argparse import ArgumentParser
 
     cl = ArgumentParser(prog="cl.exe.py", description="Mock parser for cl.exe arguments", add_help=False, prefix_chars="-/", exit_on_error=False)
@@ -68,7 +76,16 @@ def parse_cl(inp: list[str]) -> (argparse.Namespace, list[str]):
     cl.add_argument(dest="files", metavar="FILES", action="append", nargs="*")
 
     known, unknown = cl.parse_known_args(inp)
-    return known, unknown
+    known.unknown = unknown  # attach to the namespace object
+
+    # Check for dupes (case-insensitive)
+    if known.includes:
+        known.dupe_includes = find_dupes([str(x).lower() for x in known.includes])
+    if known.defines:
+        known.dupe_defines = find_dupes([str(x).lower() for x in known.defines])
+    if known.unknown:
+        known.dupe_unknown = find_dupes([x.lower() for x in known.unknown])
+    return known
 
 
 def parse_link(inp: list[str]) -> argparse.Namespace:
@@ -76,9 +93,27 @@ def parse_link(inp: list[str]) -> argparse.Namespace:
 
     link = ArgumentParser(prog="link.exe.py", description="Mock parser for link.exe arguments", add_help=False, prefix_chars="-/", exit_on_error=False)
 
-    return link.parse_args(inp)
+    known, unknown = link.parse_known_args(inp)
+
+    known.libraries = [x for x in unknown if x[0] not in {"-", "/"} and x.lower().endswith(".lib")]
+    seen = {}
+    seen = set(known.libraries)
+
+    unknown = [x for x in unknown if x not in seen]  # Exclude previously seen items
+    known.objects = [x for x in unknown if x[0] not in {"-", "/"} and x.lower().endswith(".obj")]
+    seen.update(set(known.objects))
+
+    unknown = [x for x in unknown if x not in seen]  # Exclude previously seen items
+    known.resources = [x for x in unknown if x[0] not in {"-", "/"} and x.lower().endswith(".res")]
+    seen.update(set(known.resources))
+
+    unknown = [x for x in unknown if x not in seen]  # Exclude previously seen items
+    known.unknown = unknown  # attach to the namespace object
+
+    return known
 
 
+# TODO: perhaps refactor this further to get rid of minor path differences (e.g. Debug vs. Release)?
 def mutate_lines(inplist: list[str]) -> list[str]:
     output = []
     for inp in inplist:
@@ -86,29 +121,34 @@ def mutate_lines(inplist: list[str]) -> list[str]:
         args = custom_split(inp)
         if args[0].upper() in {"CL"}:
             prog = args[0].lower()
-            known, unknown = parse_cl(args[1:])
+            args = parse_cl(args[1:])
             output.append(prog)
-            for include in sorted(known.includes):
+            for include in sorted(args.includes, key=lambda x: str(x).lower()):
                 output.append(f"\t/I{include}")
-            for define in sorted(known.defines):
+            for define in sorted(args.defines, key=lambda x: x.lower()):
                 output.append(f"\t/D{define}")
-            eprint(repr(known.files))
-            if isinstance(known.files[0], list):
-                eprint("Assuming list of list of strings")
-                for tu in sorted(known.files[0]):
+            if isinstance(args.files[0], list):
+                for tu in sorted(args.files[0], key=lambda x: x.lower()):
                     output.append(f"\t{tu}")
-            elif isinstance(known.files[0], str):
-                eprint("Assuming list of strings")
-                for tu in sorted(known.files):
+            elif isinstance(args.files[0], str):
+                for tu in sorted(args.files, key=lambda x: x.lower()):
                     output.append(f"\t{tu}")
             else:
-                eprint(f"ERROR: invalid known.files: {repr(known.files)}")
-            for option in unknown:  # do _not_ sort!
+                eprint(f"ERROR: invalid args.files: {repr(args.files)}")
+            for option in args.unknown:  # do _not_ sort!
                 output.append(f"\t{option}")
-        # elif args[0].upper() in {"LINK"}:
-        #     prog = args[0].lower()
-        #     known, unknown = parse_link(args[1:])
-        #     output.append(prog)
+        elif args[0].upper() in {"LINK"}:
+            prog = args[0].lower()
+            args = parse_link(args[1:])
+            output.append(prog)
+            for lib in sorted(args.libraries, key=lambda x: x.lower()):
+                output.append(f"\t{lib}")
+            for obj in sorted(args.objects, key=lambda x: x.lower()):
+                output.append(f"\t{obj}")
+            for res in sorted(args.resources, key=lambda x: x.lower()):
+                output.append(f"\t{res}")
+            for option in args.unknown:  # do _not_ sort!
+                output.append(f"\t{option}")
         if args is None:
             eprint(f"Nothing to parse in: {repr(inp)}")
             continue
@@ -125,9 +165,14 @@ def main() -> int:
             for line in inp.readlines():
                 line = line.strip()
                 if line not in inlines:
-                    inlines.append(line)
+                    # special case: e.g. link got called again with automatically modified argument (i.e. invoking itself again)
+                    if inlines and inlines[-1] in line:
+                        inlines[-1] = line
+                    else:
+                        inlines.append(line)
+
         if not inlines:
-            eprint(f"No lines were read, so skipping output")
+            eprint("No lines were read, so skipping output")
             continue
         newlines = mutate_lines(inlines)
         with open(Path(infile).with_suffix(".normalized.log"), "w") as outp:
