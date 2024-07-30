@@ -118,6 +118,7 @@ def mutate_lines(inplist: list[str]) -> list[str]:
     output = []
     for inp in inplist:
         inp = re.sub(r"^.+?\\link\.exe", r"LINK", inp, 0, re.IGNORECASE)
+        inp = re.sub(r"^.+?\\lib\.exe", r"LIB", inp, 0, re.IGNORECASE)
         args = custom_split(inp)
         if args[0].upper() in {"CL"}:
             prog = args[0].lower()
@@ -137,7 +138,7 @@ def mutate_lines(inplist: list[str]) -> list[str]:
                 eprint(f"ERROR: invalid args.files: {repr(args.files)}")
             for option in args.unknown:  # do _not_ sort!
                 output.append(f"\t{option}")
-        elif args[0].upper() in {"LINK"}:
+        elif args[0].upper() in {"LINK", "LIB"}:
             prog = args[0].lower()
             args = parse_link(args[1:])
             output.append(prog)
